@@ -61,9 +61,11 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button variant="default" size="default">
-              Zum Shop
-            </Button>
+            <Link to="/produkte">
+              <Button variant="default" size="default">
+                Zum Shop
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -102,9 +104,11 @@ export function Header() {
                 </li>
               ))}
               <li className="pt-4">
-                <Button variant="default" className="w-full">
-                  Zum Shop
-                </Button>
+                <Link to="/produkte" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="default" className="w-full">
+                    Zum Shop
+                  </Button>
+                </Link>
               </li>
             </ul>
           </div>
