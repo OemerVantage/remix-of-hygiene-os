@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { CartDrawer } from "@/components/CartDrawer";
 
 const navItems = [
   { label: "Über uns", href: "/ueber-uns" },
@@ -59,8 +60,9 @@ export function Header() {
             ))}
           </ul>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
+          {/* CTA Buttons */}
+          <div className="hidden lg:flex items-center gap-3">
+            <CartDrawer />
             <Link to="/produkte">
               <Button variant="default" size="default">
                 Zum Shop
@@ -103,8 +105,9 @@ export function Header() {
                   </Link>
                 </li>
               ))}
-              <li className="pt-4">
-                <Link to="/produkte" onClick={() => setMobileMenuOpen(false)}>
+              <li className="pt-4 flex items-center gap-3">
+                <CartDrawer />
+                <Link to="/produkte" onClick={() => setMobileMenuOpen(false)} className="flex-1">
                   <Button variant="default" className="w-full">
                     Zum Shop
                   </Button>
