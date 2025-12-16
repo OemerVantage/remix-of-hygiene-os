@@ -13,6 +13,8 @@ interface ProductData {
   title: string;
   description: string;
   handle: string;
+  productType: string;
+  vendor: string;
   priceRange: {
     minVariantPrice: {
       amount: string;
@@ -97,6 +99,8 @@ const ProductDetail = () => {
           title: product.title,
           description: product.description,
           handle: product.handle,
+          productType: product.productType || '',
+          vendor: product.vendor || '',
           priceRange: product.priceRange,
           images: product.images,
           variants: product.variants,
