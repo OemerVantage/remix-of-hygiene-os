@@ -21,9 +21,9 @@ export function CTASection() {
             Beratung anfragen
           </Button>
           <Button
-            variant="outline"
+            variant="secondary"
             size="lg"
-            className="border-2 border-primary-foreground text-primary-foreground bg-transparent hover:bg-primary-foreground/20"
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
             Zum Shop
           </Button>
