@@ -7,7 +7,7 @@ const navItems = [
   { label: "Branchenlösungen", href: "#solutions" },
   { label: "Produkte", href: "#products", highlight: true },
   { label: "Ratgeber", href: "#guides" },
-  { label: "Kontakt", href: "#contact" },
+  { label: "Kontakt", href: "/kontakt" },
 ];
 
 export function Header() {
