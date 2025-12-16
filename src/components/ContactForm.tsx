@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, MapPin, Phone, Mail, Clock } from "lucide-react";
 
 const contactSchema = z.object({
   name: z
@@ -42,6 +42,29 @@ const contactSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
+
+const contactInfo = [
+  {
+    icon: MapPin,
+    title: "Adresse",
+    content: "Musterstraße 123, 12345 Berlin",
+  },
+  {
+    icon: Phone,
+    title: "Telefon",
+    content: "+49 (0) 123 456 789",
+  },
+  {
+    icon: Mail,
+    title: "E-Mail",
+    content: "info@hygiscout.de",
+  },
+  {
+    icon: Clock,
+    title: "Öffnungszeiten",
+    content: "Mo-Fr: 9:00 - 18:00 Uhr",
+  },
+];
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,116 +102,187 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-muted/50">
-      <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Kontaktieren Sie uns
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Haben Sie Fragen? Wir sind für Sie da und freuen uns auf Ihre Nachricht.
-            </p>
+    <section className="py-20 bg-gradient-to-br from-background via-muted/30 to-background relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16 animate-fade-in">
+          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+            Kontakt
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+            Wir freuen uns auf
+            <span className="text-primary block mt-2">Ihre Nachricht</span>
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Haben Sie Fragen zu unseren Produkten oder Dienstleistungen? 
+            Unser Team steht Ihnen gerne zur Verfügung.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-5 gap-12 max-w-6xl mx-auto">
+          {/* Contact Info */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-card rounded-3xl p-8 border border-border shadow-lg animate-fade-in">
+              <h3 className="text-2xl font-bold text-foreground mb-8">
+                Kontaktinformationen
+              </h3>
+              <div className="space-y-6">
+                {contactInfo.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className="flex items-start gap-4 group"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                      <item.icon className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">{item.title}</p>
+                      <p className="text-foreground font-medium">{item.content}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Trust Badge */}
+            <div className="bg-gradient-to-r from-primary to-primary/80 rounded-3xl p-8 text-primary-foreground animate-fade-in">
+              <h4 className="font-bold text-lg mb-2">Schnelle Antwort garantiert</h4>
+              <p className="text-primary-foreground/80 text-sm">
+                Wir antworten innerhalb von 24 Stunden auf alle Anfragen.
+              </p>
+            </div>
           </div>
 
-          <div className="bg-card rounded-2xl shadow-lg p-8 border border-border">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name *</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Ihr vollständiger Name"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+          {/* Form */}
+          <div className="lg:col-span-3 animate-fade-in">
+            <div className="bg-card rounded-3xl shadow-xl p-8 md:p-10 border border-border relative overflow-hidden">
+              {/* Form decoration */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2" />
+              
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground font-medium">
+                            Name <span className="text-primary">*</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Ihr vollständiger Name"
+                              className="h-12 rounded-xl border-border/50 bg-background/50 focus:border-primary focus:ring-primary/20 transition-all"
+                              {...field}
+                              disabled={isSubmitting}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>E-Mail *</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="ihre@email.de"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground font-medium">
+                            E-Mail <span className="text-primary">*</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="ihre@email.de"
+                              className="h-12 rounded-xl border-border/50 bg-background/50 focus:border-primary focus:ring-primary/20 transition-all"
+                              {...field}
+                              disabled={isSubmitting}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Telefon (optional)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="tel"
-                          placeholder="+49 123 456789"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground font-medium">
+                          Telefon <span className="text-muted-foreground text-sm">(optional)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            placeholder="+49 123 456789"
+                            className="h-12 rounded-xl border-border/50 bg-background/50 focus:border-primary focus:ring-primary/20 transition-all"
+                            {...field}
+                            disabled={isSubmitting}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nachricht *</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Wie können wir Ihnen helfen?"
-                          className="min-h-[150px] resize-none"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground font-medium">
+                          Nachricht <span className="text-primary">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Wie können wir Ihnen helfen? Beschreiben Sie Ihr Anliegen..."
+                            className="min-h-[160px] rounded-xl border-border/50 bg-background/50 focus:border-primary focus:ring-primary/20 transition-all resize-none"
+                            {...field}
+                            disabled={isSubmitting}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <Button
-                  type="submit"
-                  className="w-full"
-                  size="lg"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Wird gesendet...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Nachricht senden
-                    </>
-                  )}
-                </Button>
-              </form>
-            </Form>
+                  <Button
+                    type="submit"
+                    className="w-full h-14 text-lg rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                    size="lg"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Wird gesendet...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-5 w-5" />
+                        Nachricht senden
+                      </>
+                    )}
+                  </Button>
+
+                  <p className="text-center text-sm text-muted-foreground">
+                    Mit dem Absenden stimmen Sie unserer{" "}
+                    <a href="#" className="text-primary hover:underline">
+                      Datenschutzerklärung
+                    </a>{" "}
+                    zu.
+                  </p>
+                </form>
+              </Form>
+            </div>
           </div>
         </div>
       </div>
