@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const navItems = [
-  { label: "Über uns", href: "#about" },
-  { label: "Branchenlösungen", href: "#solutions" },
-  { label: "Produkte", href: "#products", highlight: true },
-  { label: "Ratgeber", href: "#guides" },
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Branchenlösungen", href: "/branchenloesungen" },
+  { label: "Produkte", href: "/produkte", highlight: true },
+  { label: "Ratgeber", href: "/ratgeber" },
   { label: "Kontakt", href: "/kontakt" },
 ];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,24 +35,26 @@ export function Header() {
       <div className="container-hygiscout">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="text-heading-lg tracking-tight text-primary font-semibold">
+          <Link to="/" className="text-heading-lg tracking-tight text-primary font-semibold">
             HYGISCOUT
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <ul className="hidden lg:flex items-center gap-10">
             {navItems.map((item) => (
               <li key={item.label}>
-                <a
-                  href={item.href}
+                <Link
+                  to={item.href}
                   className={`text-body-md transition-colors duration-200 ${
-                    item.highlight
+                    location.pathname === item.href
+                      ? "text-primary font-medium"
+                      : item.highlight
                       ? "text-primary font-medium hover:text-primary/80"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -82,17 +86,19 @@ export function Header() {
             <ul className="flex flex-col py-6 px-6 gap-4">
               {navItems.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className={`block py-2 text-body-lg ${
-                      item.highlight
+                      location.pathname === item.href
+                        ? "text-primary font-medium"
+                        : item.highlight
                         ? "text-primary font-medium"
                         : "text-foreground"
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
               <li className="pt-4">
