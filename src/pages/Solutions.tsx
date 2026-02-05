@@ -1,53 +1,9 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Building2, Hotel, UtensilsCrossed, Factory, Hospital, GraduationCap, ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const industries = [
-  {
-    icon: Hotel,
-    title: "Hotellerie",
-    description: "Professionelle Hygienelösungen für Hotels und Unterkünfte aller Grössen.",
-    features: ["Zimmerreinigung", "Wäschehygiene", "Gästebereich", "Wellness & Spa"],
-    color: "from-blue-500/20 to-blue-600/10",
-  },
-  {
-    icon: UtensilsCrossed,
-    title: "Gastronomie",
-    description: "HACCP-konforme Produkte für Restaurants, Cafés und Catering.",
-    features: ["Küchenhygiene", "Geschirrspülung", "Oberflächenreinigung", "Händedesinfektion"],
-    color: "from-orange-500/20 to-orange-600/10",
-  },
-  {
-    icon: Hospital,
-    title: "Gesundheitswesen",
-    description: "Medizinische Hygienestandards für Kliniken und Praxen.",
-    features: ["Desinfektion", "Sterilisation", "Schutzausrüstung", "Abfallentsorgung"],
-    color: "from-green-500/20 to-green-600/10",
-  },
-  {
-    icon: Building2,
-    title: "Büro & Verwaltung",
-    description: "Saubere Arbeitsumgebungen für produktive Mitarbeiter.",
-    features: ["Sanitärbereiche", "Gemeinschaftsräume", "Lufthygiene", "Bodenpflege"],
-    color: "from-purple-500/20 to-purple-600/10",
-  },
-  {
-    icon: Factory,
-    title: "Industrie & Produktion",
-    description: "Robuste Lösungen für Produktionsstätten und Lagerhallen.",
-    features: ["Industriereiniger", "Entfetter", "Bodenbeschichtung", "Spezialreinigung"],
-    color: "from-gray-500/20 to-gray-600/10",
-  },
-  {
-    icon: GraduationCap,
-    title: "Bildung & Kinderbetreuung",
-    description: "Sichere und kindgerechte Hygieneprodukte für Schulen und Kitas.",
-    features: ["Hautschonung", "Allergenfrei", "Spielzeugpflege", "Sanitärhygiene"],
-    color: "from-pink-500/20 to-pink-600/10",
-  },
-];
+import { industries } from "@/data/industries";
 
 const Solutions = () => {
   return (
@@ -66,7 +22,7 @@ const Solutions = () => {
                 <span className="text-primary block mt-2">für Ihre Branche</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Jede Branche hat ihre eigenen Anforderungen. Wir bieten spezialisierte 
+                Jede Branche hat ihre eigenen Anforderungen. Wir bieten spezialisierte
                 Hygienelösungen, die perfekt auf Ihr Geschäftsfeld abgestimmt sind.
               </p>
             </div>
@@ -78,17 +34,27 @@ const Solutions = () => {
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {industries.map((industry, index) => (
-                <div
-                  key={industry.title}
+                <Link
+                  key={industry.slug}
+                  to={`/branchenloesungen/${industry.slug}`}
                   className="group bg-card rounded-3xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className={`bg-gradient-to-br ${industry.color} p-8`}>
-                    <div className="w-16 h-16 bg-background/80 backdrop-blur rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                      <industry.icon className="w-8 h-8 text-primary" />
+                  <div className={`bg-gradient-to-br ${industry.color} p-8 relative overflow-hidden`}>
+                    <div className="absolute inset-0 opacity-30">
+                      <img
+                        src={industry.image}
+                        alt=""
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground mb-3">{industry.title}</h3>
-                    <p className="text-muted-foreground">{industry.description}</p>
+                    <div className="relative z-10">
+                      <div className="w-16 h-16 bg-background/80 backdrop-blur rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <industry.icon className="w-8 h-8 text-primary" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-foreground mb-3">{industry.title}</h3>
+                      <p className="text-muted-foreground">{industry.description}</p>
+                    </div>
                   </div>
                   <div className="p-8">
                     <ul className="space-y-3 mb-6">
@@ -104,7 +70,7 @@ const Solutions = () => {
                       <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -118,11 +84,15 @@ const Solutions = () => {
                 Ihre Branche nicht dabei?
               </h2>
               <p className="text-xl text-primary-foreground/80 mb-8">
-                Wir entwickeln individuelle Lösungen für jede Anforderung. 
+                Wir entwickeln individuelle Lösungen für jede Anforderung.
                 Kontaktieren Sie uns für eine persönliche Beratung.
               </p>
               <Link to="/kontakt">
-                <Button size="lg" variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                >
                   Kostenlose Beratung anfragen
                 </Button>
               </Link>
