@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { CartDrawer } from "@/components/CartDrawer";
 
 const navItems = [
   { label: "Über uns", href: "/ueber-uns" },
@@ -59,8 +60,9 @@ export function Header() {
             ))}
           </ul>
 
-          {/* CTA Button */}
-          <div className="hidden lg:flex items-center">
+          {/* CTA Button + Cart */}
+          <div className="hidden lg:flex items-center gap-4">
+            <CartDrawer />
             <Link to="/kontakt">
               <Button variant="default" size="default">
                 Kontakt aufnehmen
@@ -68,18 +70,21 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6 text-foreground" />
-            ) : (
-              <Menu className="h-6 w-6 text-foreground" />
-            )}
-          </button>
+          {/* Mobile Cart + Menu Button */}
+          <div className="lg:hidden flex items-center gap-2">
+            <CartDrawer />
+            <button
+              className="p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6 text-foreground" />
+              ) : (
+                <Menu className="h-6 w-6 text-foreground" />
+              )}
+            </button>
+          </div>
         </nav>
 
         {/* Mobile Menu */}
