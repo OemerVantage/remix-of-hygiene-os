@@ -10,9 +10,11 @@ import { AdminRoute } from "@/components/AdminRoute";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Solutions from "./pages/Solutions";
+import IndustryDetail from "./pages/IndustryDetail";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Guides from "./pages/Guides";
+import GuideDetail from "./pages/GuideDetail";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -31,9 +33,11 @@ function AppContent() {
       <Route path="/" element={<Index />} />
       <Route path="/ueber-uns" element={<About />} />
       <Route path="/branchenloesungen" element={<Solutions />} />
+      <Route path="/branchenloesungen/:handle" element={<IndustryDetail />} />
       <Route path="/produkte" element={<Products />} />
       <Route path="/produkt/:handle" element={<ProductDetail />} />
       <Route path="/ratgeber" element={<Guides />} />
+      <Route path="/ratgeber/:handle" element={<GuideDetail />} />
       <Route path="/kontakt" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registrieren" element={<Register />} />
