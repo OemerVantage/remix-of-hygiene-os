@@ -8,6 +8,7 @@ import { ShoppingCart, Loader2, ArrowLeft, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, ShopifyProduct } from "@/lib/shopify";
 import { toast } from "sonner";
+import { ProductDescription } from "@/components/ProductDescription";
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -155,7 +156,7 @@ const ProductDetail = () => {
               </div>
 
               {product.description && (
-                <p className="text-muted-foreground">{product.description}</p>
+                <ProductDescription description={product.description} />
               )}
 
               {/* Variants */}
