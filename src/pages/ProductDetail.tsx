@@ -150,6 +150,11 @@ const ProductDetail = () => {
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
+                {selectedVariant?.sku && (
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Artikelnummer: {selectedVariant.sku}
+                  </p>
+                )}
                 <p className="text-2xl font-bold text-primary">
                   {selectedVariant ? parseFloat(selectedVariant.price.amount).toFixed(2) : parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}
                 </p>
