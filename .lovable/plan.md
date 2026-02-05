@@ -1,65 +1,108 @@
 
-# Plan: Verpackung-Feld hinzufuegen
+# Plan: Globale Suche und Produktfilter
 
 ## Ziel
-Das Feld "Verpackung" (z.B. "6 Stueck/Karton") zu den Versandinformationen auf der Produktdetailseite hinzufuegen.
+Erweiterte Suchfunktion auf der Produktseite, die nach Artikelnummer (SKU), Titel, Beschreibung und Tags sucht. Zusaetzlich Filteroptionen fuer Produkttyp, Hersteller und Preis.
 
-## Shopify Admin Setup
+---
 
-Zuerst musst du das Metafield in Shopify anlegen:
+## Funktionsumfang
 
-1. Gehe zu **Einstellungen** → **Benutzerdefinierte Daten** → **Produkte**
-2. Klicke auf **Definition hinzufuegen**
-3. Trage folgende Werte ein:
-   - **Name**: `Verpackung`
-   - **Namespace und Schluessel**: `custom.packaging`
-   - **Typ**: Einzeiliger Text
-4. Speichern
+### Globale Suche
+- Suche nach **Produktname**
+- Suche nach **Artikelnummer (SKU)** aller Varianten
+- Suche nach **Beschreibung**
+- Suche nach **Tags** (z.B. "autocut", "hygiene")
 
-Danach kannst du bei jedem Produkt unter "Metafelder" den Wert eintragen, z.B. "6 Stueck/Karton".
+### Filter
+- **Produkttyp** (z.B. Handtuchrollenspender, Handtuchspender, Schaumseifenspender)
+- **Hersteller/Marke** (Vendor, z.B. Celtex, CLIVIA)
+- **Preisbereich** (Min/Max Slider oder Eingabefelder)
+- Filter zuruecksetzen Button
+
+### UX/Design
+- Desktop: Filter-Sidebar links neben Produktraster
+- Mobile: Filter-Button oeffnet Sheet von links
+- Aktive Filter als Badges anzeigen
+- Anzahl gefundene Produkte anzeigen
 
 ---
 
 ## Technische Umsetzung
 
-### 1. Shopify API Query erweitern
+### 1. Neue Komponente: ProductFilters
 
-**Datei:** `src/lib/shopify.ts`
+**Neue Datei:** `src/components/ProductFilters.tsx`
 
-Fuege das neue Metafield zur Abfrage hinzu:
+Enthaelt:
+- Suchfeld mit Debounce (300ms)
+- Collapsible-Sektionen fuer jeden Filtertyp
+- Checkbox-Liste fuer Produkttyp und Hersteller
+- Preis-Slider oder Min/Max Inputs
+- Reset-Button
+
+### 2. Products Page erweitern
+
+**Datei:** `src/pages/Products.tsx`
+
+Aenderungen:
+- State fuer Filter hinzufuegen (productTypes, vendors, priceRange)
+- Filterlogik erweitern um SKU-Suche in allen Varianten
+- Layout aendern: Sidebar + Grid (Desktop) / Sheet + Grid (Mobile)
+- Dynamische Extraktion der verfuegbaren Filteroptionen aus Produktdaten
+
+### 3. Erweiterte Suchlogik
+
+Die Suche durchsucht:
 
 ```text
-METAFIELD_IDENTIFIERS (Zeile ~105):
-+ {namespace: "custom", key: "packaging"}
-```
-
-### 2. Label-Mapping hinzufuegen
-
-**Datei:** `src/components/ProductDescription.tsx`
-
-Fuege das Label zum `SHIPPING_LABELS` Mapping hinzu:
-
-```text
-SHIPPING_LABELS (Zeile ~17):
-  unit_content: "Inhalt/Verkaufseinheit",
-+ packaging: "Verpackung",
-  units_per_pallet: "VE/PAL",
+Produkt
+├── title (Produktname)
+├── description (Beschreibung)
+├── productType (Produkttyp)
+├── vendor (Hersteller)
+├── tags (Schlagwoerter)
+└── variants[]
+    └── sku (Artikelnummer pro Variante)
 ```
 
 ---
 
-## Ergebnis
-
-Nach der Implementierung wird die Versandinformationen-Tabelle so aussehen:
+## Neues Layout (Desktop)
 
 ```text
-+---------------------------+------------------------+
-| Versandinformationen                               |
-+---------------------------+------------------------+
-| Inhalt/Verkaufseinheit    | 1                      |
-| Verpackung                | 6 Stueck/Karton        |
-| VE/PAL                    | 12 Karton(s)/Palette   |
-+---------------------------+------------------------+
+┌────────────────────────────────────────────────────────────┐
+│  Header                                                     │
+├────────────────────────────────────────────────────────────┤
+│  Hero: "Unsere Produkte" + Suchfeld                        │
+├──────────────┬─────────────────────────────────────────────┤
+│              │                                              │
+│   Filter     │   Produktraster                             │
+│   Sidebar    │   (3-4 Spalten)                             │
+│              │                                              │
+│  - Typ       │   [Card] [Card] [Card] [Card]               │
+│  - Marke     │   [Card] [Card] [Card] [Card]               │
+│  - Preis     │   ...                                        │
+│              │                                              │
+│  [Reset]     │   "12 Produkte gefunden"                    │
+│              │                                              │
+└──────────────┴─────────────────────────────────────────────┘
+```
+
+## Neues Layout (Mobile)
+
+```text
+┌────────────────────────────────────────────────┐
+│  Header                                         │
+├────────────────────────────────────────────────┤
+│  "Unsere Produkte"                             │
+│  [Suchfeld                              ]      │
+│  [Filter-Button]  "12 Produkte"                │
+├────────────────────────────────────────────────┤
+│  [Card]  [Card]                                │
+│  [Card]  [Card]                                │
+│  ...                                           │
+└────────────────────────────────────────────────┘
 ```
 
 ---
@@ -68,5 +111,23 @@ Nach der Implementierung wird die Versandinformationen-Tabelle so aussehen:
 
 | Datei | Aenderung |
 |-------|-----------|
-| `src/lib/shopify.ts` | Metafield `packaging` zur Query hinzufuegen |
-| `src/components/ProductDescription.tsx` | Label `packaging: "Verpackung"` hinzufuegen |
+| `src/components/ProductFilters.tsx` | **Neu** - Filter-Komponente mit Suche, Typ, Marke, Preis |
+| `src/pages/Products.tsx` | Layout mit Sidebar, erweiterte Suchlogik inkl. SKU |
+| `src/lib/shopify.ts` | ggf. Tags-Feld zur Query hinzufuegen (falls nicht vorhanden) |
+
+---
+
+## Beispiel Filterlogik
+
+Die erweiterte Suche prueft:
+
+```text
+Suchbegriff "C92660" findet:
+→ Produkt "celtex autocut Handtuchrollenspender"
+  (weil Variante "Schwarz" SKU = "C92660" hat)
+
+Suchbegriff "autocut" findet:
+→ Produkt "celtex autocut Handtuchrollenspender"
+  (weil "autocut" im Titel und in den Tags ist)
+```
+
