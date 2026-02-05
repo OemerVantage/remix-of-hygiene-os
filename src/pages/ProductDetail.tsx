@@ -131,6 +131,7 @@ const ProductDetail = () => {
                 <ProductDescription 
                   description={product.description} 
                   metafields={product.metafields}
+                  selectedOptions={selectedVariant?.selectedOptions}
                 />
               )}
 
