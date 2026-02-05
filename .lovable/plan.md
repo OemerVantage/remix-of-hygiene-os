@@ -1,39 +1,52 @@
 
 
-# Produkt mit Farbvarianten hinzufügen
+# Produktbeschreibung schön strukturieren
 
-## Produkt-Details
+## Problem
 
-| Eigenschaft | Wert |
-|-------------|------|
-| **Titel** | celtex® L Falthandtuchspender |
-| **Hersteller** | celtex |
-| **Kategorie** | Handtuchspender |
-| **Abmessungen** | 275 mm x 360 mm x 125 mm (B x H x T) |
-| **Material** | Kunststoff |
+Die Produktbeschreibung wird als einfacher Textblock angezeigt, obwohl die Informationen strukturiert sind (Beschreibung, Produkteigenschaften, Versandinformationen).
 
-## Varianten
+## Lösung
 
-| Farbe | Artikelnummer | Bild |
-|-------|---------------|------|
-| Weiß | C92120 | user-uploads://image-3.png |
-| Schwarz | C92100 | user-uploads://image-4.png |
+Die Produktdetailseite wird überarbeitet, um die Beschreibung in separate, visuell ansprechende Abschnitte aufzuteilen:
 
-## Umsetzung
+### Neues Layout
 
-Das Produkt wird mit der Shopify API erstellt:
+```
++----------------------------------+
+|  Beschreibung                    |
+|  (Fließtext mit Überschrift)     |
++----------------------------------+
 
-1. **Option "Farbe"** mit Werten "Weiß" und "Schwarz"
-2. **Zwei Varianten** mit unterschiedlichen SKUs
-3. **Beide Produktbilder** werden hochgeladen
++----------------------------------+
+|  Produkteigenschaften            |
+|  +------------+----------------+ |
+|  | GTIN       | 4029068C92120  | |
+|  | Abmessungen| 275x360x125mm  | |
+|  | Material   | Kunststoff     | |
+|  | Farbe      | weiß/schwarz   | |
+|  +------------+----------------+ |
++----------------------------------+
 
-Die Produktdetailseite zeigt dann automatisch eine Farbauswahl an, da das Produkt mehrere Varianten hat.
++----------------------------------+
+|  Versandinformationen            |
+|  +------------+----------------+ |
+|  | Inhalt/VE  | 1              | |
+|  | VE/Palette | 60 Stück       | |
+|  +------------+----------------+ |
++----------------------------------+
+```
 
-## Beschreibung
+### Technische Umsetzung
 
-Enthält alle Produkteigenschaften:
-- GTIN, Abmessungen, Systemgruppe
-- Geeignete Handtuchtypen (ZZ-Falz, Lagenfalz, Interfold)
-- Kapazität (400-800 Blatt)
-- Versandinformationen
+**Datei: `src/pages/ProductDetail.tsx`**
+
+1. Funktion erstellen, die den Beschreibungstext parst und in Abschnitte aufteilt
+2. Abschnitte mit Cards und Tabellen darstellen
+3. Icons für bessere Visualisierung (Package, Info, Truck)
+
+**Parsing-Logik:**
+- Sucht nach Schlüsselwörtern wie "Produkteigenschaften", "Versandinformationen"
+- Extrahiert Key-Value-Paare aus dem Text
+- Zeigt strukturierte Daten in einer übersichtlichen Tabelle
 
