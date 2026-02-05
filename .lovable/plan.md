@@ -1,52 +1,41 @@
 
 
-# Produktbeschreibung schön strukturieren
+# Parser-Fix für Produktbeschreibung
 
 ## Problem
 
-Die Produktbeschreibung wird als einfacher Textblock angezeigt, obwohl die Informationen strukturiert sind (Beschreibung, Produkteigenschaften, Versandinformationen).
+Der aktuelle Parser erkennt das Shopify-Beschreibungsformat nicht:
+- Sektionen sind mit `**Fett**` markiert (z.B. `**Produkteigenschaften**`)
+- Zeilen beginnen mit `•` Bullet Points
+- Format: `• Abmessungen: 275 mm x 360 mm`
 
 ## Lösung
 
-Die Produktdetailseite wird überarbeitet, um die Beschreibung in separate, visuell ansprechende Abschnitte aufzuteilen:
+Die `parseProductDescription` Funktion wird angepasst:
 
-### Neues Layout
+### Änderungen in `src/components/ProductDescription.tsx`
 
-```
-+----------------------------------+
-|  Beschreibung                    |
-|  (Fließtext mit Überschrift)     |
-+----------------------------------+
+1. **Regex für Sektionsüberschriften anpassen** - `**Produkteigenschaften**` und `**Versandinformationen**` erkennen
 
-+----------------------------------+
-|  Produkteigenschaften            |
-|  +------------+----------------+ |
-|  | GTIN       | 4029068C92120  | |
-|  | Abmessungen| 275x360x125mm  | |
-|  | Material   | Kunststoff     | |
-|  | Farbe      | weiß/schwarz   | |
-|  +------------+----------------+ |
-+----------------------------------+
+2. **Bullet Points entfernen** - `•` am Zeilenanfang strippen bevor Key-Value geparst wird
 
-+----------------------------------+
-|  Versandinformationen            |
-|  +------------+----------------+ |
-|  | Inhalt/VE  | 1              | |
-|  | VE/Palette | 60 Stück       | |
-|  +------------+----------------+ |
-+----------------------------------+
+3. **Markdown-Sternchen ignorieren** - `**` aus dem Text entfernen
+
+### Neue Parser-Logik
+
+```javascript
+// Regex erkennt beide Formate
+text.split(/\*{0,2}Produkteigenschaften\*{0,2}[:\s]*/i)
+
+// Bullet Points entfernen
+line.replace(/^[•\-\*]\s*/, '')
 ```
 
-### Technische Umsetzung
+### Ergebnis
 
-**Datei: `src/pages/ProductDetail.tsx`**
-
-1. Funktion erstellen, die den Beschreibungstext parst und in Abschnitte aufteilt
-2. Abschnitte mit Cards und Tabellen darstellen
-3. Icons für bessere Visualisierung (Package, Info, Truck)
-
-**Parsing-Logik:**
-- Sucht nach Schlüsselwörtern wie "Produkteigenschaften", "Versandinformationen"
-- Extrahiert Key-Value-Paare aus dem Text
-- Zeigt strukturierte Daten in einer übersichtlichen Tabelle
+| Tab | Inhalt |
+|-----|--------|
+| Beschreibung | Der celtex® L Falthandtuchspender ist abschließbar... |
+| Eigenschaften | Abmessungen, Material, Kapazität als Tabelle |
+| Versand | Inhalt/VE, VE/Palette als Tabelle |
 
