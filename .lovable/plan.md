@@ -1,30 +1,25 @@
 
-# Plan: Shopify Produktverwaltung einrichten
 
-## Übersicht
-Du bekommst die Möglichkeit, Produkte aus deinem Shopify-Store zu verwalten und diese auf der Produkte-Seite anzuzeigen.
+# Plan: Shopify API-Key speichern und Integration starten
 
----
+## Schritt 1: API-Key sicher speichern
+- Speichere `SHOPIFY_ADMIN_API_TOKEN` als verschlüsseltes Secret
+- Speichere `SHOPIFY_STORE_DOMAIN` (dein Store: `1prwxp-fi.myshopify.com`)
 
-## Was wird gebaut
+## Schritt 2: Edge Function für Shopify-Zugriff
+Da der Admin API Key nicht im Frontend verwendet werden darf, erstelle ich eine Edge Function die:
+- Den API-Key sicher auf dem Server verwendet
+- Produkte vom Shopify Store abruft
+- Daten an das Frontend weitergibt
 
-### 1. Shopify-Integration wiederherstellen
-- Neue `src/lib/shopify.ts` Datei mit Shopify Storefront API Konfiguration
-- GraphQL Queries für Produktabruf
-
-### 2. Produkte-Seite mit Shop-Anzeige
-- Produktliste mit Bildern, Namen und Preisen
-- Kategoriefilter und Suchfunktion
+## Schritt 3: Produkte-Seite implementieren
+- Produktliste mit Bildern, Namen, Preisen
 - Responsive Grid-Layout
+- Kategoriefilter und Suche
 
-### 3. Produktdetail-Seite
-- Einzelansicht mit großen Bildern
-- Varianten-Auswahl (Größe, Farbe etc.)
-- Beschreibung und Preis
-
-### 4. Warenkorb-Funktionalität
+## Schritt 4: Warenkorb und Checkout
 - Warenkorb-Store mit Zustand
-- Warenkorb-Drawer Komponente
+- CartDrawer Komponente
 - Weiterleitung zum Shopify Checkout
 
 ---
@@ -33,66 +28,23 @@ Du bekommst die Möglichkeit, Produkte aus deinem Shopify-Store zu verwalten und
 
 | Datei | Beschreibung |
 |-------|--------------|
-| `src/lib/shopify.ts` | Shopify API-Client und Queries |
-| `src/stores/cartStore.ts` | Warenkorb-Zustand mit Zustand |
+| `supabase/functions/shopify-products/index.ts` | Edge Function für Produktabruf |
+| `src/stores/cartStore.ts` | Warenkorb-Zustand |
 | `src/components/CartDrawer.tsx` | Warenkorb-Seitenleiste |
-| `src/components/ProductCard.tsx` | Produktkarte für Grid |
-| `src/pages/ProductDetail.tsx` | Produktdetail-Ansicht |
-
----
+| `src/components/ProductCard.tsx` | Produktkarte |
+| `src/pages/ProductDetail.tsx` | Produktdetail-Seite |
 
 ## Dateien die geändert werden
 
 | Datei | Änderung |
 |-------|----------|
-| `src/pages/Products.tsx` | Platzhalter durch echte Produktliste ersetzen |
-| `src/components/Header.tsx` | Warenkorb-Icon hinzufügen |
-| `src/App.tsx` | Route für Produktdetails hinzufügen |
+| `src/pages/Products.tsx` | Produktliste statt Platzhalter |
+| `src/components/Header.tsx` | Warenkorb-Icon |
+| `src/App.tsx` | Produktdetail-Route |
 
 ---
 
-## Technische Details
+## Sicherheit
+- API-Key wird NUR in der Edge Function verwendet (Server-seitig)
+- Frontend erhält nur die Produktdaten, niemals den API-Key
 
-### Shopify Storefront API
-```text
-┌─────────────────┐      ┌──────────────────┐
-│  Lovable App    │─────▶│ Shopify Store    │
-│  (Frontend)     │◀─────│ (1prwxp-fi)      │
-└─────────────────┘      └──────────────────┘
-         │
-         ▼
-  GraphQL Queries:
-  - products(first: 20)
-  - product(handle: "...")
-  - cart mutations
-```
-
-### Warenkorb-Flow
-```text
-Produkt ansehen → In Warenkorb → Drawer öffnet → Checkout bei Shopify
-```
-
-### Komponenten-Struktur
-```text
-Products.tsx
-├── ProductCard.tsx (für jedes Produkt)
-└── Filter/Suche
-
-ProductDetail.tsx
-├── Bildgalerie
-├── Varianten-Auswahl
-└── "In den Warenkorb" Button
-
-Header.tsx
-└── CartDrawer.tsx
-    ├── Warenkorb-Items
-    ├── Gesamtsumme
-    └── "Zur Kasse" Button
-```
-
----
-
-## Ergebnis
-- Vollständige Shop-Integration mit deinem Shopify-Store
-- Kunden können Produkte durchstöbern und kaufen
-- Checkout läuft sicher über Shopify
