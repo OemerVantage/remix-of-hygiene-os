@@ -1,98 +1,72 @@
 
-# Plan: Bestseller-Section auf der Startseite
+# Plan: Verpackung-Feld hinzufuegen
 
 ## Ziel
-Eine neue "Bestseller"-Section auf der Startseite hinzufuegen, die Produkte anzeigt, welche in Shopify mit dem Tag "bestseller" markiert sind. So kannst du im Shopify-Admin einfach steuern, welche Produkte als Bestseller erscheinen.
+Das Feld "Verpackung" (z.B. "6 Stueck/Karton") zu den Versandinformationen auf der Produktdetailseite hinzufuegen.
 
-## Wie es funktioniert
+## Shopify Admin Setup
 
-### Steuerung ueber Shopify Admin
-1. Gehe zu deinem Shopify Admin unter "Produkte"
-2. Waehle ein Produkt aus, das als Bestseller erscheinen soll
-3. Fuege im Feld "Tags" den Tag `bestseller` hinzu
-4. Speichern - fertig! Das Produkt erscheint nun in der Bestseller-Section
+Zuerst musst du das Metafield in Shopify anlegen:
 
-```text
-Shopify Admin                      Webseite
-+------------------------+         +------------------------+
-| Produkt: Seifenspender |         | Bestseller             |
-| Tags: [bestseller]     |  --->   | +----+ +----+ +----+   |
-+------------------------+         | |Prod| |Prod| |Prod|   |
-                                   | +----+ +----+ +----+   |
-                                   +------------------------+
-```
+1. Gehe zu **Einstellungen** → **Benutzerdefinierte Daten** → **Produkte**
+2. Klicke auf **Definition hinzufuegen**
+3. Trage folgende Werte ein:
+   - **Name**: `Verpackung`
+   - **Namespace und Schluessel**: `custom.packaging`
+   - **Typ**: Einzeiliger Text
+4. Speichern
+
+Danach kannst du bei jedem Produkt unter "Metafelder" den Wert eintragen, z.B. "6 Stueck/Karton".
 
 ---
 
 ## Technische Umsetzung
 
-### 1. Neue Komponente: `BestsellerSection.tsx`
+### 1. Shopify API Query erweitern
 
-**Funktionen:**
-- Laedt Produkte von Shopify mit dem Query-Filter `tag:bestseller`
-- Zeigt maximal 4 Produkte in einem responsiven Grid an
-- Verwendet die bestehende `ProductCard`-Komponente
-- Loading-State mit Skeleton-Loader
-- Fallback-Anzeige, wenn keine Bestseller vorhanden sind
-- Link zur Produktuebersicht "Alle Produkte ansehen"
+**Datei:** `src/lib/shopify.ts`
 
-**Design:**
-- Konsistentes Design mit anderen Sections (GuidesSection, SolutionsSection)
-- Section-Titel: "Bestseller" mit Untertitel
-- Badge "Beliebt" oder Stern-Icon zur Hervorhebung
-- Hover-Effekte wie bei anderen Produktkarten
-
-### 2. Integration in Index.tsx
-
-Die Section wird nach der HeroSection eingefuegt:
+Fuege das neue Metafield zur Abfrage hinzu:
 
 ```text
-Startseite Layout:
-+----------------------+
-| Header               |
-+----------------------+
-| HeroSection          |
-+----------------------+
-| BestsellerSection    |  <-- NEU
-+----------------------+
-| SolutionsSection     |
-+----------------------+
-| ModulesSection       |
-+----------------------+
-| TrustSection         |
-+----------------------+
-| GuidesSection        |
-+----------------------+
-| CTASection           |
-+----------------------+
-| Footer               |
-+----------------------+
+METAFIELD_IDENTIFIERS (Zeile ~105):
++ {namespace: "custom", key: "packaging"}
 ```
 
-### 3. Shopify Query
+### 2. Label-Mapping hinzufuegen
 
-Nutzt die bestehende `PRODUCTS_QUERY` mit dem Filter:
-```javascript
-storefrontApiRequest(PRODUCTS_QUERY, { 
-  first: 4, 
-  query: "tag:bestseller" 
-})
+**Datei:** `src/components/ProductDescription.tsx`
+
+Fuege das Label zum `SHIPPING_LABELS` Mapping hinzu:
+
+```text
+SHIPPING_LABELS (Zeile ~17):
+  unit_content: "Inhalt/Verkaufseinheit",
++ packaging: "Verpackung",
+  units_per_pallet: "VE/PAL",
+```
+
+---
+
+## Ergebnis
+
+Nach der Implementierung wird die Versandinformationen-Tabelle so aussehen:
+
+```text
++---------------------------+------------------------+
+| Versandinformationen                               |
++---------------------------+------------------------+
+| Inhalt/Verkaufseinheit    | 1                      |
+| Verpackung                | 6 Stueck/Karton        |
+| VE/PAL                    | 12 Karton(s)/Palette   |
++---------------------------+------------------------+
 ```
 
 ---
 
 ## Dateien
 
-| Datei | Aktion |
-|-------|--------|
-| `src/components/BestsellerSection.tsx` | Neu erstellen |
-| `src/pages/Index.tsx` | BestsellerSection importieren und einbinden |
-
----
-
-## Vorteile dieser Loesung
-
-- **Einfache Verwaltung**: Tags hinzufuegen/entfernen im Shopify Admin
-- **Keine Datenbank noetig**: Alles ueber Shopify gesteuert
-- **Flexibel**: Beliebig viele Produkte koennen als Bestseller markiert werden
-- **Automatisch**: Aenderungen in Shopify werden sofort auf der Webseite sichtbar
+| Datei | Aenderung |
+|-------|-----------|
+| `src/lib/shopify.ts` | Metafield `packaging` zur Query hinzufuegen |
+| `src/components/ProductDescription.tsx` | Label `packaging: "Verpackung"` hinzufuegen |
