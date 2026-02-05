@@ -60,7 +60,7 @@ const About = () => {
                 <p className="text-muted-foreground mb-6 text-lg">
                   Wir glauben daran, dass professionelle Hygiene der Grundstein für 
                   ein gesundes Arbeitsumfeld ist. Unsere Mission ist es, Unternehmen 
-                  jeder Größe mit den besten Produkten und Lösungen auszustatten.
+                  jeder Grösse mit den besten Produkten und Lösungen auszustatten.
                 </p>
                 <p className="text-muted-foreground text-lg">
                   Mit einem erfahrenen Team und einem breiten Produktportfolio 

@@ -8,7 +8,7 @@ const guides = [
   {
     id: 1,
     title: "Der ultimative Leitfaden zur Händehygiene am Arbeitsplatz",
-    excerpt: "Erfahren Sie, wie Sie mit einfachen Maßnahmen die Händehygiene in Ihrem Unternehmen verbessern können.",
+    excerpt: "Erfahren Sie, wie Sie mit einfachen Massnahmen die Händehygiene in Ihrem Unternehmen verbessern können.",
     category: "Hygiene Basics",
     readTime: "8 min",
     image: "https://images.unsplash.com/photo-1584744982491-665216d95f8b?w=800&h=400&fit=crop",
@@ -215,7 +215,7 @@ const Guides = () => {
               <BookOpen className="w-12 h-12 mx-auto mb-6 opacity-80" />
               <h2 className="text-3xl font-bold mb-4">Bleiben Sie informiert</h2>
               <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-                Erhalten Sie regelmäßig neue Ratgeber, Tipps und exklusive Angebote 
+                Erhalten Sie regelmässig neue Ratgeber, Tipps und exklusive Angebote 
                 direkt in Ihr Postfach.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">

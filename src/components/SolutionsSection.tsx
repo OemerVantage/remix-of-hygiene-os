@@ -37,7 +37,7 @@ export function SolutionsSection() {
             Wählen Sie Ihre Umgebung
           </h2>
           <p className="mt-4 text-body-lg text-muted-foreground">
-            Maßgeschneiderte Hygienekonzepte für Ihre Branche
+            Massgeschneiderte Hygienekonzepte für Ihre Branche
           </p>
         </div>
 

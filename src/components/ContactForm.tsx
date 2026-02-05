@@ -47,17 +47,17 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Adresse",
-    content: "Musterstraße 123, 12345 Berlin",
+    content: "Musterstrasse 123, 8001 Zürich",
   },
   {
     icon: Phone,
     title: "Telefon",
-    content: "+49 (0) 123 456 789",
+    content: "+41 44 123 45 67",
   },
   {
     icon: Mail,
     title: "E-Mail",
-    content: "info@hygiscout.de",
+    content: "info@hygiscout.ch",
   },
   {
     icon: Clock,
@@ -199,7 +199,7 @@ const ContactForm = () => {
                           <FormControl>
                             <Input
                               type="email"
-                              placeholder="ihre@email.de"
+                              placeholder="ihre@email.ch"
                               className="h-12 rounded-xl border-border/50 bg-background/50 focus:border-primary focus:ring-primary/20 transition-all"
                               {...field}
                               disabled={isSubmitting}
@@ -222,7 +222,7 @@ const ContactForm = () => {
                         <FormControl>
                           <Input
                             type="tel"
-                            placeholder="+49 123 456789"
+                            placeholder="+41 44 123 45 67"
                             className="h-12 rounded-xl border-border/50 bg-background/50 focus:border-primary focus:ring-primary/20 transition-all"
                             {...field}
                             disabled={isSubmitting}
