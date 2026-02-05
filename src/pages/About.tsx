@@ -25,14 +25,6 @@ const values = [
   },
 ];
 
-const milestones = [
-  { year: "2015", title: "Gründung", description: "Start als kleines Familienunternehmen in Berlin" },
-  { year: "2017", title: "Expansion", description: "Erweiterung des Produktportfolios und deutschlandweiter Vertrieb" },
-  { year: "2019", title: "Zertifizierung", description: "ISO 9001 Zertifizierung für Qualitätsmanagement" },
-  { year: "2021", title: "Digital", description: "Launch des Online-Shops und digitaler Beratungsservices" },
-  { year: "2023", title: "Wachstum", description: "Über 1.000 zufriedene Kunden in ganz Europa" },
-];
-
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -129,44 +121,6 @@ const About = () => {
           </div>
         </section>
 
-        {/* Timeline Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Unsere Geschichte
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Von der Gründung bis heute – unser Weg zum Erfolg
-              </p>
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <div className="relative">
-                <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-border" />
-                {milestones.map((milestone, index) => (
-                  <div
-                    key={milestone.year}
-                    className={`relative flex items-center mb-12 last:mb-0 animate-fade-in ${
-                      index % 2 === 0 ? "justify-start" : "justify-end"
-                    }`}
-                    style={{ animationDelay: `${index * 150}ms` }}
-                  >
-                    <div
-                      className={`w-5/12 ${index % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}
-                    >
-                      <div className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-shadow">
-                        <span className="text-primary font-bold text-lg">{milestone.year}</span>
-                        <h3 className="text-xl font-bold text-foreground mt-2">{milestone.title}</h3>
-                        <p className="text-muted-foreground mt-2">{milestone.description}</p>
-                      </div>
-                    </div>
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </div>
