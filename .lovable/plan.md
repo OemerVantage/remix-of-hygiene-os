@@ -1,45 +1,72 @@
 
-
 ## Ziel
-Die Artikelnummer (SKU) des Produkts unter dem Titel anzeigen, wie in der Referenzabbildung gezeigt.
+Produkteigenschaften und Versandinformationen als separate, editierbare Felder in Shopify einrichten - nicht mehr im Beschreibungstext versteckt.
 
-## Problem
-Aktuell wird nur der Produkttitel und der Preis angezeigt. Die Artikelnummer fehlt komplett.
+## Aktuelle Situation (das Problem)
+- Alle Produkteigenschaften stecken im `description`-Feld als formatierter Text
+- Ein Parser extrahiert die Daten anhand von Textmustern ("Produkteigenschaften:", "Key: Value")
+- Fehleranfällig und mühsam zu pflegen
 
-## Lösung
-Shopify speichert die Artikelnummer (SKU) im `sku`-Feld jeder Produktvariante. Wir müssen:
+## Lösung: Shopify Metafields
+Shopify bietet "Metafields" - das sind benutzerdefinierte Felder, die du direkt im Admin bearbeiten kannst.
 
-1. **GraphQL-Queries erweitern** (`src/lib/shopify.ts`)
-   - Das `sku`-Feld zu den Varianten-Abfragen hinzufügen in:
-     - `PRODUCTS_QUERY` (Zeile 119-137)
-     - `PRODUCT_BY_HANDLE_QUERY` (Zeile 171-189)
-   
-2. **TypeScript-Typ erweitern** (`src/lib/shopify.ts`)
-   - `sku?: string;` zum `ShopifyProduct.node.variants.edges[].node` Typ hinzufügen
+### Was eingerichtet wird
 
-3. **Artikelnummer im UI anzeigen** (`src/pages/ProductDetail.tsx`)
-   - Unter dem Titel (nach Zeile 152) ein neues Element einfügen, das die SKU der aktuell ausgewählten Variante anzeigt:
-   ```jsx
-   {selectedVariant?.sku && (
-     <p className="text-sm text-muted-foreground">
-       Artikelnummer: {selectedVariant.sku}
-     </p>
-   )}
-   ```
+**1. Metafield-Definitionen in Shopify erstellen**
+Du musst im Shopify Admin unter Einstellungen → Benutzerdefinierte Daten → Produkte folgende Felder anlegen:
 
-## Technische Details
+| Feld | Namespace & Key | Typ |
+|------|-----------------|-----|
+| GTIN-Code (EAN) | `custom.gtin` | Text |
+| Abmessungen | `custom.dimensions` | Text |
+| Material | `custom.material` | Text |
+| Farbe | `custom.color` | Text |
+| Branchen | `custom.industries` | Text |
+| Inhalt/VE | `custom.unit_content` | Text |
+| VE/Palette | `custom.units_per_pallet` | Text |
 
-**Warum die SKU von der ausgewählten Variante?**
-- Jede Variante kann eine eigene SKU haben
-- Wenn der Benutzer eine Variante (z.B. "Schwarz") wählt, soll dessen SKU angezeigt werden
-- Die SKU ändert sich also mit der Variantenwahl
+**2. GraphQL-Queries erweitern** (`src/lib/shopify.ts`)
+- Metafields in `PRODUCTS_QUERY` und `PRODUCT_BY_HANDLE_QUERY` abfragen
+- TypeScript-Typen für Metafields hinzufügen
 
-**Fallback:**
-- Wenn die erste Variante keine SKU hat, wird die SKU nicht angezeigt (das ist OK, da SKUs optional sind)
+**3. ProductDescription-Komponente anpassen** (`src/components/ProductDescription.tsx`)
+- Metafields direkt verwenden statt Text-Parsing
+- Fallback auf altes Parsing für bestehende Produkte ohne Metafields
 
-## Dateien
+### Technische Änderungen
+
+**`src/lib/shopify.ts`**
+```graphql
+# Zu den Product-Queries hinzufügen:
+metafields(identifiers: [
+  {namespace: "custom", key: "gtin"},
+  {namespace: "custom", key: "dimensions"},
+  {namespace: "custom", key: "material"},
+  {namespace: "custom", key: "color"},
+  {namespace: "custom", key: "industries"},
+  {namespace: "custom", key: "unit_content"},
+  {namespace: "custom", key: "units_per_pallet"}
+]) {
+  key
+  value
+}
+```
+
+**`src/components/ProductDescription.tsx`**
+- Neue Props für `metafields`
+- Mapping von Metafield-Keys zu deutschen Labels
+- Fallback auf Text-Parsing wenn keine Metafields vorhanden
+
+### Einrichtung in Shopify Admin
+
+1. Gehe zu: **Einstellungen** → **Benutzerdefinierte Daten** → **Produkte**
+2. Klicke **Definition hinzufügen** für jedes Feld
+3. Danach erscheinen die Felder bei jedem Produkt unter "Metafields"
+
+### Dateien
+
 | Datei | Änderung |
 |-------|----------|
-| `src/lib/shopify.ts` | `sku` zur Varianten-Query in beiden Queries hinzufügen + TypeScript-Typ erweitern |
-| `src/pages/ProductDetail.tsx` | Unter dem Titel: `<p>Artikelnummer: {selectedVariant?.sku}</p>` anzeigen |
-
+| `src/lib/shopify.ts` | Metafields zur GraphQL-Query hinzufügen, TypeScript-Typen erweitern |
+| `src/components/ProductDescription.tsx` | Metafields direkt anzeigen, Fallback auf Parsing |
+| `src/pages/ProductDetail.tsx` | Metafields an ProductDescription übergeben |
