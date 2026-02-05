@@ -18,6 +18,7 @@ const PROPERTY_LABELS: Record<string, string> = {
 
 const SHIPPING_LABELS: Record<string, string> = {
   unit_content: "Inhalt/Verkaufseinheit",
+  packaging: "Verpackung",
   units_per_pallet: "VE/PAL",
 };
 
