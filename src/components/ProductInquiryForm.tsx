@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Send, MessageSquare } from "lucide-react";
+import { Loader2, Send, CheckCircle2, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Form,
   FormControl,
@@ -97,23 +98,31 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
 
   if (isSuccess) {
     return (
-      <section className="py-12 border-t bg-muted/30">
+      <section className="py-16 md:py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center py-8">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Send className="w-8 h-8 text-primary" />
+          <div className="max-w-2xl mx-auto">
+            <div className="relative bg-card rounded-3xl border shadow-xl p-8 md:p-12 overflow-hidden">
+              {/* Decorative blur */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
+              
+              <div className="relative text-center">
+                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 className="w-10 h-10 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3">Vielen Dank für Ihre Anfrage!</h3>
+                <p className="text-muted-foreground text-lg mb-8">
+                  Wir haben Ihre Nachricht erhalten und werden uns schnellstmöglich bei Ihnen melden.
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="rounded-xl"
+                  onClick={() => setIsSuccess(false)}
+                >
+                  Neue Anfrage stellen
+                </Button>
+              </div>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Vielen Dank für Ihre Anfrage!</h3>
-            <p className="text-muted-foreground">
-              Wir haben Ihre Nachricht erhalten und werden uns schnellstmöglich bei Ihnen melden.
-            </p>
-            <Button 
-              variant="outline" 
-              className="mt-6"
-              onClick={() => setIsSuccess(false)}
-            >
-              Neue Anfrage stellen
-            </Button>
           </div>
         </div>
       </section>
@@ -121,29 +130,88 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
   }
 
   return (
-    <section className="py-12 border-t bg-muted/30">
+    <section className="py-16 md:py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-3 mb-2">
-            <MessageSquare className="w-6 h-6 text-primary" />
-            <h2 className="text-2xl font-bold">Anfrage zu diesem Produkt</h2>
+          {/* Header */}
+          <div className="text-center mb-8">
+            <Badge variant="secondary" className="mb-4 px-4 py-1.5 text-sm font-medium">
+              Produktanfrage
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Fragen zu diesem Produkt?
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Wir beraten Sie gerne zu{" "}
+              <span className="font-semibold text-foreground">{productTitle}</span>
+            </p>
           </div>
-          <p className="text-muted-foreground mb-6">
-            Haben Sie Fragen zu <span className="font-medium text-foreground">{productTitle}</span>? 
-            Wir helfen Ihnen gerne weiter.
-          </p>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
+          {/* Form Card */}
+          <div className="relative bg-card rounded-3xl border shadow-xl p-6 md:p-10 overflow-hidden">
+            {/* Decorative blur */}
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
+            
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="relative space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Name <span className="text-primary">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="Ihr Name" 
+                            className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          E-Mail <span className="text-primary">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email" 
+                            placeholder="ihre@email.de" 
+                            className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name *</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Telefon <span className="text-muted-foreground font-normal">(optional)</span>
+                      </FormLabel>
                       <FormControl>
-                        <Input placeholder="Ihr Name" {...field} />
+                        <Input 
+                          type="tel" 
+                          placeholder="+49 123 456789" 
+                          className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -152,66 +220,53 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
 
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>E-Mail *</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Nachricht <span className="text-primary">*</span>
+                      </FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="ihre@email.de" {...field} />
+                        <Textarea
+                          placeholder="Ihre Anfrage..."
+                          className="min-h-[140px] rounded-xl border-border/60 focus:border-primary transition-colors resize-none"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telefon (optional)</FormLabel>
-                    <FormControl>
-                      <Input type="tel" placeholder="+49 123 456789" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <div className="pt-2">
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting} 
+                    size="lg"
+                    className="w-full sm:w-auto rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Wird gesendet...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Anfrage senden
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
 
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nachricht *</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Ihre Anfrage..."
-                        className="min-h-[120px] resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    Wird gesendet...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 mr-2" />
-                    Anfrage senden
-                  </>
-                )}
-              </Button>
-            </form>
-          </Form>
+          {/* Footer hint */}
+          <div className="flex items-center justify-center gap-2 mt-6 text-sm text-muted-foreground">
+            <Clock className="w-4 h-4" />
+            <span>Wir antworten in der Regel innerhalb von 24 Stunden</span>
+          </div>
         </div>
       </div>
     </section>
