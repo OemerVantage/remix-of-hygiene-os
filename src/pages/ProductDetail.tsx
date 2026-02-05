@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { ProductDescription } from "@/components/ProductDescription";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { RelatedProducts } from "@/components/RelatedProducts";
+import { ProductInquiryForm } from "@/components/ProductInquiryForm";
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -216,6 +217,12 @@ const ProductDetail = () => {
 
         {/* Related Products Section */}
         <RelatedProducts handles={relatedProductHandles} />
+
+        {/* Product Inquiry Form */}
+        <ProductInquiryForm 
+          productTitle={product.title} 
+          productSku={selectedVariant?.sku} 
+        />
       </main>
       <Footer />
     </div>
