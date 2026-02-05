@@ -169,7 +169,15 @@ const ProductDetail = () => {
                         key={variant.node.id}
                         variant={selectedVariantIndex === index ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setSelectedVariantIndex(index)}
+                        onClick={() => {
+                          setSelectedVariantIndex(index);
+                          // Wenn Variante eigenes Bild hat, zeige es
+                          const variantImage = variant.node.image;
+                          if (variantImage) {
+                            const imageIndex = images.findIndex(img => img.node.url === variantImage.url);
+                            if (imageIndex >= 0) setSelectedImage(imageIndex);
+                          }
+                        }}
                         disabled={!variant.node.availableForSale}
                       >
                         {variant.node.title}
