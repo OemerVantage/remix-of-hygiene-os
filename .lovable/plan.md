@@ -1,133 +1,52 @@
 
-# Plan: Globale Suche und Produktfilter
+# Plan: Produktbilder zentriert und vollständig anzeigen
 
-## Ziel
-Erweiterte Suchfunktion auf der Produktseite, die nach Artikelnummer (SKU), Titel, Beschreibung und Tags sucht. Zusaetzlich Filteroptionen fuer Produkttyp, Hersteller und Preis.
+## Problem
+Aktuell verwenden die Produktkarten `object-cover` für die Bilder. Das bewirkt:
+- Bilder werden beschnitten um den quadratischen Container zu füllen
+- Manche Produkte erscheinen "reingezoomt"
+- Das vollständige Produkt ist nicht immer sichtbar
 
----
+## Lösung
+Änderung von `object-cover` zu `object-contain` mit zusätzlichem Padding und weißem Hintergrund. Das entspricht dem gleichen Stil, der bereits auf der Produktdetailseite verwendet wird.
 
-## Funktionsumfang
+## Technische Änderung
 
-### Globale Suche
-- Suche nach **Produktname**
-- Suche nach **Artikelnummer (SKU)** aller Varianten
-- Suche nach **Beschreibung**
-- Suche nach **Tags** (z.B. "autocut", "hygiene")
+**Datei:** `src/components/ProductCard.tsx`
 
-### Filter
-- **Produkttyp** (z.B. Handtuchrollenspender, Handtuchspender, Schaumseifenspender)
-- **Hersteller/Marke** (Vendor, z.B. Celtex, CLIVIA)
-- **Preisbereich** (Min/Max Slider oder Eingabefelder)
-- Filter zuruecksetzen Button
+Änderung in der Bild-Komponente (Zeile 49-61):
 
-### UX/Design
-- Desktop: Filter-Sidebar links neben Produktraster
-- Mobile: Filter-Button oeffnet Sheet von links
-- Aktive Filter als Badges anzeigen
-- Anzahl gefundene Produkte anzeigen
-
----
-
-## Technische Umsetzung
-
-### 1. Neue Komponente: ProductFilters
-
-**Neue Datei:** `src/components/ProductFilters.tsx`
-
-Enthaelt:
-- Suchfeld mit Debounce (300ms)
-- Collapsible-Sektionen fuer jeden Filtertyp
-- Checkbox-Liste fuer Produkttyp und Hersteller
-- Preis-Slider oder Min/Max Inputs
-- Reset-Button
-
-### 2. Products Page erweitern
-
-**Datei:** `src/pages/Products.tsx`
-
-Aenderungen:
-- State fuer Filter hinzufuegen (productTypes, vendors, priceRange)
-- Filterlogik erweitern um SKU-Suche in allen Varianten
-- Layout aendern: Sidebar + Grid (Desktop) / Sheet + Grid (Mobile)
-- Dynamische Extraktion der verfuegbaren Filteroptionen aus Produktdaten
-
-### 3. Erweiterte Suchlogik
-
-Die Suche durchsucht:
-
-```text
-Produkt
-├── title (Produktname)
-├── description (Beschreibung)
-├── productType (Produkttyp)
-├── vendor (Hersteller)
-├── tags (Schlagwoerter)
-└── variants[]
-    └── sku (Artikelnummer pro Variante)
+**Vorher:**
+```
+<div className="aspect-square overflow-hidden bg-secondary/10">
+  <img 
+    src={image.url} 
+    alt={image.altText || node.title}
+    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+  />
 ```
 
----
-
-## Neues Layout (Desktop)
-
-```text
-┌────────────────────────────────────────────────────────────┐
-│  Header                                                     │
-├────────────────────────────────────────────────────────────┤
-│  Hero: "Unsere Produkte" + Suchfeld                        │
-├──────────────┬─────────────────────────────────────────────┤
-│              │                                              │
-│   Filter     │   Produktraster                             │
-│   Sidebar    │   (3-4 Spalten)                             │
-│              │                                              │
-│  - Typ       │   [Card] [Card] [Card] [Card]               │
-│  - Marke     │   [Card] [Card] [Card] [Card]               │
-│  - Preis     │   ...                                        │
-│              │                                              │
-│  [Reset]     │   "12 Produkte gefunden"                    │
-│              │                                              │
-└──────────────┴─────────────────────────────────────────────┘
+**Nachher:**
+```
+<div className="aspect-square overflow-hidden bg-white border-b border-border">
+  <img 
+    src={image.url} 
+    alt={image.altText || node.title}
+    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+  />
 ```
 
-## Neues Layout (Mobile)
+## Visuelle Verbesserungen
 
-```text
-┌────────────────────────────────────────────────┐
-│  Header                                         │
-├────────────────────────────────────────────────┤
-│  "Unsere Produkte"                             │
-│  [Suchfeld                              ]      │
-│  [Filter-Button]  "12 Produkte"                │
-├────────────────────────────────────────────────┤
-│  [Card]  [Card]                                │
-│  [Card]  [Card]                                │
-│  ...                                           │
-└────────────────────────────────────────────────┘
-```
+| Eigenschaft | Vorher | Nachher |
+|-------------|--------|---------|
+| Bild-Fitting | `object-cover` (beschnitten) | `object-contain` (vollständig) |
+| Hintergrund | `bg-secondary/10` (grau) | `bg-white` (weiß) |
+| Innenabstand | Keiner | `p-4` (16px) |
+| Trennung | Keine | `border-b border-border` |
 
----
-
-## Dateien
-
-| Datei | Aenderung |
-|-------|-----------|
-| `src/components/ProductFilters.tsx` | **Neu** - Filter-Komponente mit Suche, Typ, Marke, Preis |
-| `src/pages/Products.tsx` | Layout mit Sidebar, erweiterte Suchlogik inkl. SKU |
-| `src/lib/shopify.ts` | ggf. Tags-Feld zur Query hinzufuegen (falls nicht vorhanden) |
-
----
-
-## Beispiel Filterlogik
-
-Die erweiterte Suche prueft:
-
-```text
-Suchbegriff "C92660" findet:
-→ Produkt "celtex autocut Handtuchrollenspender"
-  (weil Variante "Schwarz" SKU = "C92660" hat)
-
-Suchbegriff "autocut" findet:
-→ Produkt "celtex autocut Handtuchrollenspender"
-  (weil "autocut" im Titel und in den Tags ist)
-```
-
+## Ergebnis
+- Alle Produktbilder werden vollständig und zentriert angezeigt
+- Einheitlicher weißer Hintergrund wie auf der Produktdetailseite
+- Subtile Linie trennt das Bild vom Textbereich
+- Hover-Zoom-Effekt bleibt erhalten
