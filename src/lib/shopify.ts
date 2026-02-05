@@ -113,7 +113,8 @@ export const METAFIELD_IDENTIFIERS = `
     {namespace: "custom", key: "suitable_for"},
     {namespace: "custom", key: "capacity"},
     {namespace: "custom", key: "lockable"},
-    {namespace: "custom", key: "view_window"}
+    {namespace: "custom", key: "view_window"},
+    {namespace: "custom", key: "related_products"}
   ]) {
     key
     value
