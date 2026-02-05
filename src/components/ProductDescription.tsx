@@ -157,9 +157,15 @@ function KeyValueSection({ title, icon, rows }: KeyValueSectionProps) {
   );
 }
 
+interface SelectedOption {
+  name: string;
+  value: string;
+}
+
 interface ProductDescriptionProps {
   description: string;
   metafields?: Array<ShopifyMetafield | null>;
+  selectedOptions?: SelectedOption[];
 }
 
 // Clean legacy technical text from description when metafields provide structured data
@@ -175,7 +181,7 @@ function cleanDescriptionText(text: string): string {
   return cleaned;
 }
 
-export function ProductDescription({ description, metafields }: ProductDescriptionProps) {
+export function ProductDescription({ description, metafields, selectedOptions }: ProductDescriptionProps) {
   // Try metafields first
   const metafieldData = parseMetafields(metafields);
   const hasMetafieldData = metafieldData.properties.length > 0 || metafieldData.shipping.length > 0;
@@ -184,6 +190,15 @@ export function ProductDescription({ description, metafields }: ProductDescripti
   const parsed = hasMetafieldData 
     ? { description, properties: metafieldData.properties, shipping: metafieldData.shipping }
     : parseProductDescription(description);
+
+  // Override color from selectedOptions if available
+  const colorOption = selectedOptions?.find(opt => opt.name.toLowerCase() === "farbe");
+  if (colorOption) {
+    const colorIndex = parsed.properties.findIndex(p => p.key === "Farbe");
+    if (colorIndex >= 0) {
+      parsed.properties[colorIndex] = { key: "Farbe", value: colorOption.value };
+    }
+  }
   
   const hasProperties = parsed.properties.length > 0;
   const hasShipping = parsed.shipping.length > 0;
