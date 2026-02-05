@@ -8,6 +8,7 @@ const PROPERTY_LABELS: Record<string, string> = {
   volume: "Volumen",
   layers: "Lagen",
   perforation: "Perforation",
+  falz: "Falz",
   dimensions: "Abmessungen",
   material: "Material",
   material_extra: "Material Extra",
