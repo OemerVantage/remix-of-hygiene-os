@@ -5,6 +5,9 @@ import { ShopifyMetafield } from "@/lib/shopify";
 const PROPERTY_LABELS: Record<string, string> = {
   gtin: "GTIN-Code (EAN)",
   sheet_size: "Abriss-/Tuchgrösse",
+  volume: "Volumen",
+  layers: "Lagen",
+  perforation: "Perforation",
   dimensions: "Abmessungen",
   material: "Material",
   material_extra: "Material Extra",
