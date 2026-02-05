@@ -243,7 +243,7 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
                         <FormControl>
                           <Input 
                             type="email" 
-                            placeholder="ihre@email.de" 
+                            placeholder="ihre@email.ch" 
                             className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
                             {...field} 
                           />
@@ -264,7 +264,7 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
                         <FormControl>
                           <Input 
                             type="tel" 
-                            placeholder="+49 123 456789" 
+                            placeholder="+41 44 123 45 67" 
                             className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
                             {...field} 
                           />
@@ -287,7 +287,7 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
                         </FormLabel>
                         <FormControl>
                           <Input 
-                            placeholder="12345" 
+                            placeholder="8001" 
                             className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
                             {...field} 
                           />

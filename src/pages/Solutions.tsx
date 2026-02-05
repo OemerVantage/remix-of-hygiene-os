@@ -8,7 +8,7 @@ const industries = [
   {
     icon: Hotel,
     title: "Hotellerie",
-    description: "Professionelle Hygienelösungen für Hotels und Unterkünfte aller Größen.",
+    description: "Professionelle Hygienelösungen für Hotels und Unterkünfte aller Grössen.",
     features: ["Zimmerreinigung", "Wäschehygiene", "Gästebereich", "Wellness & Spa"],
     color: "from-blue-500/20 to-blue-600/10",
   },
@@ -62,7 +62,7 @@ const Solutions = () => {
                 Branchenlösungen
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-                Maßgeschneiderte Lösungen
+                Massgeschneiderte Lösungen
                 <span className="text-primary block mt-2">für Ihre Branche</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

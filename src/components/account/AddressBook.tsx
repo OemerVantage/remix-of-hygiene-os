@@ -30,7 +30,7 @@ const emptyAddress: Omit<Address, "id"> = {
   street: "",
   postal_code: "",
   city: "",
-  country: "Deutschland",
+  country: "Schweiz",
   is_default: false,
 };
 
@@ -228,7 +228,7 @@ export function AddressBook() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="street">Straße & Hausnummer</Label>
+                  <Label htmlFor="street">Strasse & Hausnummer</Label>
                   <Input
                     id="street"
                     value={formData.street}
