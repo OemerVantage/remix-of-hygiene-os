@@ -104,6 +104,9 @@ export const METAFIELD_IDENTIFIERS = `
   metafields(identifiers: [
     {namespace: "custom", key: "gtin"},
     {namespace: "custom", key: "sheet_size"},
+    {namespace: "custom", key: "volume"},
+    {namespace: "custom", key: "layers"},
+    {namespace: "custom", key: "perforation"},
     {namespace: "custom", key: "dimensions"},
     {namespace: "custom", key: "material"},
     {namespace: "custom", key: "material_extra"},
