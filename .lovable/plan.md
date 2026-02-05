@@ -1,57 +1,16 @@
 
 
-# Shop-Implementierung mit Shopify Integration
+# Timeline-Sektion von About-Seite entfernen
 
-## Übersicht
-Komplette E-Commerce-Lösung mit Shopify-Anbindung, Warenkorb und Checkout.
+## Änderungen
 
----
+### Datei: `src/pages/About.tsx`
 
-## Neue Dateien
+**Entfernen:**
+1. **Timeline-Sektion (Zeilen 132-169)** - Die gesamte "Unsere Geschichte" Sektion mit der vertikalen Timeline und Milestone-Karten
+2. **milestones Array (Zeilen 28-34)** - Die Konstante ist nur für diese Sektion erforderlich und wird nicht mehr benötigt
 
-| Datei | Beschreibung |
-|-------|--------------|
-| `src/lib/shopify.ts` | Shopify Storefront API Client mit GraphQL |
-| `src/stores/cartStore.ts` | Zustand-Store für Warenkorb-Management |
-| `src/hooks/useCartSync.ts` | Hook zur Synchronisation nach Checkout |
-| `src/components/CartDrawer.tsx` | Warenkorb-Seitenleiste |
-| `src/components/ProductCard.tsx` | Produktkarte mit Kaufen-Button |
-| `src/pages/ProductDetail.tsx` | Produktdetail-Seite |
-
-## Geänderte Dateien
-
-| Datei | Änderung |
-|-------|----------|
-| `src/pages/Products.tsx` | Produkte von Shopify laden, Grid-Layout |
-| `src/components/Header.tsx` | Warenkorb-Icon mit Badge hinzufügen |
-| `src/App.tsx` | Produktdetail-Route + useCartSync Hook |
-
----
-
-## Features
-
-- Produktliste mit Suchfunktion
-- Produktdetailseite mit Bildergalerie und Variantenauswahl
-- Warenkorb mit Mengenänderung
-- Checkout über Shopify (öffnet in neuem Tab)
-- Automatische Synchronisation nach Checkout
-
----
-
-## Technische Details
-
-**Shopify API Setup:**
-- API Version: 2025-07
-- Storefront Token wird im Frontend verwendet (sicher)
-- GraphQL Queries für Produkte und Cart-Mutationen
-
-**Cart-System:**
-- Zustand mit localStorage-Persistenz
-- Echtzeit-Sync mit Shopify Cart API
-- Checkout-URL mit `channel=online_store` Parameter
-
-**Komponenten:**
-- Sheet-Komponente für CartDrawer (rechte Seite)
-- Responsive Grid für Produktliste (1-4 Spalten)
-- Loading-States und Error-Handling
+**Nach der Änderung:**
+- About-Seite enthält nur noch: Hero → Mission → Values
+- Kurzer, fokussierter Überblick ohne historische Details
 
