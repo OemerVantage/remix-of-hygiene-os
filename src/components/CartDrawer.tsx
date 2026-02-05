@@ -2,18 +2,25 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const { user, profile } = useAuth();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  
+  const isApproved = profile?.is_approved ?? false;
+  const canCheckout = !user || isApproved; // Allow checkout if not logged in (guest) or if approved
 
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 
   const handleCheckout = () => {
+    if (!canCheckout) return;
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       window.open(checkoutUrl, '_blank');
@@ -87,9 +94,43 @@ export const CartDrawer = () => {
                   <span className="text-lg font-semibold">Gesamt</span>
                   <span className="text-xl font-bold">{totalPrice.toFixed(2)} {items[0]?.price.currencyCode || 'EUR'}</span>
                 </div>
-                <Button onClick={handleCheckout} className="w-full" size="lg" disabled={items.length === 0 || isLoading || isSyncing}>
-                  {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ExternalLink className="w-4 h-4 mr-2" />Zur Kasse</>}
-                </Button>
+                
+                {/* Pending approval warning */}
+                {user && !isApproved && (
+                  <div className="flex items-center gap-2 p-3 rounded-md bg-warning/10 border border-warning/50 text-sm">
+                    <AlertCircle className="h-4 w-4 text-warning flex-shrink-0" />
+                    <span className="text-muted-foreground">
+                      Dein Konto wartet auf Freigabe. Bestellen ist erst nach Freigabe möglich.
+                    </span>
+                  </div>
+                )}
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="w-full">
+                      <Button 
+                        onClick={handleCheckout} 
+                        className="w-full" 
+                        size="lg" 
+                        disabled={items.length === 0 || isLoading || isSyncing || !canCheckout}
+                      >
+                        {isLoading || isSyncing ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <>
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Zur Kasse
+                          </>
+                        )}
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  {!canCheckout && (
+                    <TooltipContent>
+                      <p>Konto noch nicht freigegeben</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
               </div>
             </>
           )}

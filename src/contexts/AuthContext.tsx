@@ -10,6 +10,7 @@ interface Profile {
   phone: string | null;
   shopify_customer_id: string | null;
   shopify_customer_token: string | null;
+  is_approved: boolean;
   created_at: string;
   updated_at: string;
 }
