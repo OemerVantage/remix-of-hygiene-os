@@ -1,65 +1,98 @@
 
-# Plan: Schweizer Deutsch Anpassungen
+# Plan: Bestseller-Section auf der Startseite
 
 ## Ziel
-Alle deutschen Texte in der Anwendung auf Schweizer Schreibweise anpassen - kein "ß" (Eszett), sondern "ss", sowie Schweizer Kontaktdaten und Formate.
+Eine neue "Bestseller"-Section auf der Startseite hinzufuegen, die Produkte anzeigt, welche in Shopify mit dem Tag "bestseller" markiert sind. So kannst du im Shopify-Admin einfach steuern, welche Produkte als Bestseller erscheinen.
 
-## Betroffene Dateien
+## Wie es funktioniert
 
-### 1. `src/components/ProductInquiryForm.tsx`
-**Textanpassungen:**
-- "schnellstmöglich" → "schnellstmoeglich" ist falsch, "ö" bleibt! Nur "ß" wird ersetzt
-- Telefon-Placeholder: `+49 123 456789` → `+41 44 123 45 67`
-- E-Mail-Placeholder: `ihre@email.de` → `ihre@email.ch`
-- PLZ-Placeholder: `12345` → `8001`
+### Steuerung ueber Shopify Admin
+1. Gehe zu deinem Shopify Admin unter "Produkte"
+2. Waehle ein Produkt aus, das als Bestseller erscheinen soll
+3. Fuege im Feld "Tags" den Tag `bestseller` hinzu
+4. Speichern - fertig! Das Produkt erscheint nun in der Bestseller-Section
 
-### 2. `src/components/ContactForm.tsx`
-**Textanpassungen:**
-- "Musterstraße" → "Musterstrasse"
-- "Öffnungszeiten" → bleibt (ö ist ok in CH)
-- Telefonnummer: `+49 (0) 123 456 789` → `+41 44 123 45 67`
-- E-Mail: `info@hygiscout.de` → `info@hygiscout.ch`
-- "vollständiger Name" → "vollstaendiger" ist falsch → "vollständiger" bleibt!
-- Telefon-Placeholder: `+49 123 456789` → `+41 44 123 45 67`
-
-### 3. `src/components/account/AddressBook.tsx`
-**Textanpassungen:**
-- "Straße" → "Strasse"
-
-### 4. `src/pages/About.tsx`
-**Textanpassungen:**
-- "Größe" → "Grösse"
-
-### 5. `src/pages/Guides.tsx`
-**Textanpassungen:**
-- "Maßnahmen" → "Massnahmen"
-- "regelmäßig" → "regelmässig"
-
-### 6. `src/pages/Solutions.tsx`
-**Textanpassungen:**
-- "Größen" → "Grössen"
-- "Maßgeschneiderte" → "Massgeschneiderte"
-
-### 7. `src/components/SolutionsSection.tsx`
-**Textanpassungen:**
-- "Maßgeschneiderte" → "Massgeschneiderte"
+```text
+Shopify Admin                      Webseite
++------------------------+         +------------------------+
+| Produkt: Seifenspender |         | Bestseller             |
+| Tags: [bestseller]     |  --->   | +----+ +----+ +----+   |
++------------------------+         | |Prod| |Prod| |Prod|   |
+                                   | +----+ +----+ +----+   |
+                                   +------------------------+
+```
 
 ---
 
-## Zusammenfassung der Ersetzungen
+## Technische Umsetzung
 
-| Original | Schweizer Schreibweise |
-|----------|------------------------|
-| ß | ss |
-| Straße | Strasse |
-| Größe/Größen | Grösse/Grössen |
-| Maßnahmen | Massnahmen |
-| Maßgeschneidert | Massgeschneidert |
-| regelmäßig | regelmässig |
-| vollständig | vollständig (bleibt!) |
-| schnellstmöglich | schnellstmöglich (bleibt!) |
-| +49 | +41 |
-| .de | .ch |
-| 12345 (PLZ) | 8001 (4-stellig) |
+### 1. Neue Komponente: `BestsellerSection.tsx`
 
-**Wichtig:** Umlaute (ö, ä, ü) bleiben erhalten - nur das "ß" wird zu "ss"!
+**Funktionen:**
+- Laedt Produkte von Shopify mit dem Query-Filter `tag:bestseller`
+- Zeigt maximal 4 Produkte in einem responsiven Grid an
+- Verwendet die bestehende `ProductCard`-Komponente
+- Loading-State mit Skeleton-Loader
+- Fallback-Anzeige, wenn keine Bestseller vorhanden sind
+- Link zur Produktuebersicht "Alle Produkte ansehen"
+
+**Design:**
+- Konsistentes Design mit anderen Sections (GuidesSection, SolutionsSection)
+- Section-Titel: "Bestseller" mit Untertitel
+- Badge "Beliebt" oder Stern-Icon zur Hervorhebung
+- Hover-Effekte wie bei anderen Produktkarten
+
+### 2. Integration in Index.tsx
+
+Die Section wird nach der HeroSection eingefuegt:
+
+```text
+Startseite Layout:
++----------------------+
+| Header               |
++----------------------+
+| HeroSection          |
++----------------------+
+| BestsellerSection    |  <-- NEU
++----------------------+
+| SolutionsSection     |
++----------------------+
+| ModulesSection       |
++----------------------+
+| TrustSection         |
++----------------------+
+| GuidesSection        |
++----------------------+
+| CTASection           |
++----------------------+
+| Footer               |
++----------------------+
+```
+
+### 3. Shopify Query
+
+Nutzt die bestehende `PRODUCTS_QUERY` mit dem Filter:
+```javascript
+storefrontApiRequest(PRODUCTS_QUERY, { 
+  first: 4, 
+  query: "tag:bestseller" 
+})
+```
+
+---
+
+## Dateien
+
+| Datei | Aktion |
+|-------|--------|
+| `src/components/BestsellerSection.tsx` | Neu erstellen |
+| `src/pages/Index.tsx` | BestsellerSection importieren und einbinden |
+
+---
+
+## Vorteile dieser Loesung
+
+- **Einfache Verwaltung**: Tags hinzufuegen/entfernen im Shopify Admin
+- **Keine Datenbank noetig**: Alles ueber Shopify gesteuert
+- **Flexibel**: Beliebig viele Produkte koennen als Bestseller markiert werden
+- **Automatisch**: Aenderungen in Shopify werden sofort auf der Webseite sichtbar
