@@ -24,6 +24,12 @@ const inquirySchema = z.object({
     .trim()
     .min(1, { message: "Name ist erforderlich" })
     .max(100, { message: "Name darf maximal 100 Zeichen haben" }),
+  company: z
+    .string()
+    .trim()
+    .max(150, { message: "Firmenname darf maximal 150 Zeichen haben" })
+    .optional()
+    .or(z.literal("")),
   email: z
     .string()
     .trim()
@@ -33,6 +39,18 @@ const inquirySchema = z.object({
     .string()
     .trim()
     .max(30, { message: "Telefonnummer darf maximal 30 Zeichen haben" })
+    .optional()
+    .or(z.literal("")),
+  postalCode: z
+    .string()
+    .trim()
+    .max(10, { message: "PLZ darf maximal 10 Zeichen haben" })
+    .optional()
+    .or(z.literal("")),
+  city: z
+    .string()
+    .trim()
+    .max(100, { message: "Ort darf maximal 100 Zeichen haben" })
     .optional()
     .or(z.literal("")),
   message: z
@@ -57,8 +75,11 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
     resolver: zodResolver(inquirySchema),
     defaultValues: {
       name: "",
+      company: "",
       email: "",
       phone: "",
+      postalCode: "",
+      city: "",
       message: `Ich interessiere mich für: ${productTitle}${productSku ? ` (Art.-Nr.: ${productSku})` : ""}\n\n`,
     },
   });
@@ -71,11 +92,23 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
         ? `${productTitle} (${productSku})`
         : productTitle;
 
+      // Build contact info parts for the message
+      const contactParts: string[] = [];
+      if (data.company) contactParts.push(`Firma: ${data.company}`);
+      if (data.postalCode || data.city) {
+        contactParts.push(`Ort: ${[data.postalCode, data.city].filter(Boolean).join(" ")}`);
+      }
+
+      // Prepend contact info to message if available
+      const fullMessage = contactParts.length > 0
+        ? `${contactParts.join("\n")}\n\n${data.message}`
+        : data.message;
+
       const { error } = await supabase.from("contact_submissions").insert({
         name: data.name,
         email: data.email,
         phone: data.phone || null,
-        message: data.message,
+        message: fullMessage,
         product_reference: productReference,
       });
 
@@ -154,6 +187,7 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="relative space-y-5">
+                {/* Name and Company */}
                 <div className="grid sm:grid-cols-2 gap-5">
                   <FormField
                     control={form.control}
@@ -177,6 +211,29 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
 
                   <FormField
                     control={form.control}
+                    name="company"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Firma <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="Firmenname" 
+                            className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Email and Phone */}
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <FormField
+                    control={form.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -195,29 +252,73 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Telefon <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="tel" 
+                            placeholder="+49 123 456789" 
+                            className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">
-                        Telefon <span className="text-muted-foreground font-normal">(optional)</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="tel" 
-                          placeholder="+49 123 456789" 
-                          className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* PLZ and City */}
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <FormField
+                    control={form.control}
+                    name="postalCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          PLZ <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="12345" 
+                            className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Ort <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="Stadt" 
+                            className="h-12 rounded-xl border-border/60 focus:border-primary transition-colors"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Message */}
                 <FormField
                   control={form.control}
                   name="message"
