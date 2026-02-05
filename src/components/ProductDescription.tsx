@@ -8,6 +8,11 @@ const PROPERTY_LABELS: Record<string, string> = {
   material: "Material",
   color: "Farbe",
   industries: "Branchen",
+  system_group: "Systemgruppe",
+  suitable_for: "Geeignet für",
+  capacity: "Kapazität",
+  lockable: "Abschließbar",
+  view_window: "Sichtfenster",
 };
 
 const SHIPPING_LABELS: Record<string, string> = {

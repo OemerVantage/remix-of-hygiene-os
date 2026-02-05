@@ -108,7 +108,12 @@ export const METAFIELD_IDENTIFIERS = `
     {namespace: "custom", key: "color"},
     {namespace: "custom", key: "industries"},
     {namespace: "custom", key: "unit_content"},
-    {namespace: "custom", key: "units_per_pallet"}
+    {namespace: "custom", key: "units_per_pallet"},
+    {namespace: "custom", key: "system_group"},
+    {namespace: "custom", key: "suitable_for"},
+    {namespace: "custom", key: "capacity"},
+    {namespace: "custom", key: "lockable"},
+    {namespace: "custom", key: "view_window"}
   ]) {
     key
     value
