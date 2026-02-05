@@ -1,50 +1,57 @@
 
 
-# Plan: Shopify API-Key speichern und Integration starten
+# Shop-Implementierung mit Shopify Integration
 
-## Schritt 1: API-Key sicher speichern
-- Speichere `SHOPIFY_ADMIN_API_TOKEN` als verschlüsseltes Secret
-- Speichere `SHOPIFY_STORE_DOMAIN` (dein Store: `1prwxp-fi.myshopify.com`)
-
-## Schritt 2: Edge Function für Shopify-Zugriff
-Da der Admin API Key nicht im Frontend verwendet werden darf, erstelle ich eine Edge Function die:
-- Den API-Key sicher auf dem Server verwendet
-- Produkte vom Shopify Store abruft
-- Daten an das Frontend weitergibt
-
-## Schritt 3: Produkte-Seite implementieren
-- Produktliste mit Bildern, Namen, Preisen
-- Responsive Grid-Layout
-- Kategoriefilter und Suche
-
-## Schritt 4: Warenkorb und Checkout
-- Warenkorb-Store mit Zustand
-- CartDrawer Komponente
-- Weiterleitung zum Shopify Checkout
+## Übersicht
+Komplette E-Commerce-Lösung mit Shopify-Anbindung, Warenkorb und Checkout.
 
 ---
 
-## Dateien die erstellt werden
+## Neue Dateien
 
 | Datei | Beschreibung |
 |-------|--------------|
-| `supabase/functions/shopify-products/index.ts` | Edge Function für Produktabruf |
-| `src/stores/cartStore.ts` | Warenkorb-Zustand |
+| `src/lib/shopify.ts` | Shopify Storefront API Client mit GraphQL |
+| `src/stores/cartStore.ts` | Zustand-Store für Warenkorb-Management |
+| `src/hooks/useCartSync.ts` | Hook zur Synchronisation nach Checkout |
 | `src/components/CartDrawer.tsx` | Warenkorb-Seitenleiste |
-| `src/components/ProductCard.tsx` | Produktkarte |
+| `src/components/ProductCard.tsx` | Produktkarte mit Kaufen-Button |
 | `src/pages/ProductDetail.tsx` | Produktdetail-Seite |
 
-## Dateien die geändert werden
+## Geänderte Dateien
 
 | Datei | Änderung |
 |-------|----------|
-| `src/pages/Products.tsx` | Produktliste statt Platzhalter |
-| `src/components/Header.tsx` | Warenkorb-Icon |
-| `src/App.tsx` | Produktdetail-Route |
+| `src/pages/Products.tsx` | Produkte von Shopify laden, Grid-Layout |
+| `src/components/Header.tsx` | Warenkorb-Icon mit Badge hinzufügen |
+| `src/App.tsx` | Produktdetail-Route + useCartSync Hook |
 
 ---
 
-## Sicherheit
-- API-Key wird NUR in der Edge Function verwendet (Server-seitig)
-- Frontend erhält nur die Produktdaten, niemals den API-Key
+## Features
+
+- Produktliste mit Suchfunktion
+- Produktdetailseite mit Bildergalerie und Variantenauswahl
+- Warenkorb mit Mengenänderung
+- Checkout über Shopify (öffnet in neuem Tab)
+- Automatische Synchronisation nach Checkout
+
+---
+
+## Technische Details
+
+**Shopify API Setup:**
+- API Version: 2025-07
+- Storefront Token wird im Frontend verwendet (sicher)
+- GraphQL Queries für Produkte und Cart-Mutationen
+
+**Cart-System:**
+- Zustand mit localStorage-Persistenz
+- Echtzeit-Sync mit Shopify Cart API
+- Checkout-URL mit `channel=online_store` Parameter
+
+**Komponenten:**
+- Sheet-Komponente für CartDrawer (rechte Seite)
+- Responsive Grid für Produktliste (1-4 Spalten)
+- Loading-States und Error-Handling
 
