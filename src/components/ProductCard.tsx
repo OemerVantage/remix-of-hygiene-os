@@ -5,6 +5,7 @@ import { ShoppingCart, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { ShopifyProduct } from "@/lib/shopify";
 import { toast } from "sonner";
+import { WishlistButton } from "@/components/WishlistButton";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -41,7 +42,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link to={`/produkt/${node.handle}`}>
-      <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+      <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col relative">
+        <div className="absolute top-2 right-2 z-10">
+          <WishlistButton productHandle={node.handle} variantId={selectedVariant?.id} />
+        </div>
         <div className="aspect-square overflow-hidden bg-secondary/10">
           {image ? (
             <img 

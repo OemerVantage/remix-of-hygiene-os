@@ -358,3 +358,139 @@ export async function removeLineFromShopifyCart(cartId: string, lineId: string):
   }
   return { success: true };
 }
+
+// ========== CUSTOMER API ==========
+
+export interface ShopifyOrder {
+  id: string;
+  orderNumber: number;
+  processedAt: string;
+  totalPrice: { amount: string; currencyCode: string };
+  fulfillmentStatus: string | null;
+  statusUrl: string | null;
+  lineItems: {
+    edges: Array<{
+      node: {
+        title: string;
+        quantity: number;
+      };
+    }>;
+  };
+}
+
+const CUSTOMER_CREATE_MUTATION = `
+  mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer { id email }
+      customerUserErrors { code message field }
+    }
+  }
+`;
+
+const CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION = `
+  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken { accessToken expiresAt }
+      customerUserErrors { code message field }
+    }
+  }
+`;
+
+const CUSTOMER_ORDERS_QUERY = `
+  query customer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      email
+      firstName
+      lastName
+      orders(first: 20, sortKey: PROCESSED_AT, reverse: true) {
+        edges {
+          node {
+            id
+            orderNumber
+            processedAt
+            totalPrice { amount currencyCode }
+            fulfillmentStatus
+            statusUrl
+            lineItems(first: 10) {
+              edges {
+                node {
+                  title
+                  quantity
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function createShopifyCustomer(
+  email: string,
+  password: string
+): Promise<{ customerId: string | null; error: string | null }> {
+  try {
+    const data = await storefrontApiRequest(CUSTOMER_CREATE_MUTATION, {
+      input: { email, password },
+    });
+
+    const errors = data?.data?.customerCreate?.customerUserErrors || [];
+    if (errors.length > 0) {
+      // CUSTOMER_DISABLED or TAKEN means customer already exists, which is fine
+      if (errors.some((e: { code: string }) => e.code === "TAKEN" || e.code === "CUSTOMER_DISABLED")) {
+        return { customerId: null, error: null };
+      }
+      return { customerId: null, error: errors[0].message };
+    }
+
+    const customerId = data?.data?.customerCreate?.customer?.id || null;
+    return { customerId, error: null };
+  } catch (err) {
+    console.error("Error creating Shopify customer:", err);
+    return { customerId: null, error: (err as Error).message };
+  }
+}
+
+export async function getShopifyCustomerAccessToken(
+  email: string,
+  password: string
+): Promise<{ accessToken: string | null; expiresAt: string | null; error: string | null }> {
+  try {
+    const data = await storefrontApiRequest(CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION, {
+      input: { email, password },
+    });
+
+    const errors = data?.data?.customerAccessTokenCreate?.customerUserErrors || [];
+    if (errors.length > 0) {
+      return { accessToken: null, expiresAt: null, error: errors[0].message };
+    }
+
+    const token = data?.data?.customerAccessTokenCreate?.customerAccessToken;
+    return {
+      accessToken: token?.accessToken || null,
+      expiresAt: token?.expiresAt || null,
+      error: null,
+    };
+  } catch (err) {
+    console.error("Error getting Shopify customer access token:", err);
+    return { accessToken: null, expiresAt: null, error: (err as Error).message };
+  }
+}
+
+export async function getShopifyCustomerOrders(
+  customerAccessToken: string
+): Promise<ShopifyOrder[]> {
+  try {
+    const data = await storefrontApiRequest(CUSTOMER_ORDERS_QUERY, {
+      customerAccessToken,
+    });
+
+    const orders = data?.data?.customer?.orders?.edges || [];
+    return orders.map((edge: { node: ShopifyOrder }) => edge.node);
+  } catch (err) {
+    console.error("Error fetching Shopify customer orders:", err);
+    return [];
+  }
+}
