@@ -60,10 +60,10 @@ export default function Register() {
     // Create Shopify customer in background
     createShopifyCustomer(email, password).catch(console.error);
 
-    toast.success("Registrierung erfolgreich!", {
-      description: "Bitte überprüfe deine E-Mails, um dein Konto zu bestätigen.",
+    toast.success("Willkommen bei HYGISCOUT!", {
+      description: "Dein Konto wurde erfolgreich erstellt.",
     });
-    navigate("/login");
+    navigate("/konto");
   };
 
   return (
