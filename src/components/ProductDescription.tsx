@@ -18,9 +18,12 @@ function parseProductDescription(text: string): ParsedDescription {
 
   if (!text) return result;
 
-  // Split by section headers
-  const propertiesMatch = text.split(/Produkteigenschaften[:\s]*/i);
-  const shippingMatch = text.split(/Versandinformationen[:\s]*/i);
+  // Clean markdown bold markers for section detection
+  const cleanText = text.replace(/\*\*/g, '');
+
+  // Split by section headers (handles both plain and markdown-bolded headers)
+  const propertiesMatch = cleanText.split(/Produkteigenschaften[:\s]*/i);
+  const shippingMatch = cleanText.split(/Versandinformationen[:\s]*/i);
 
   // Extract main description (before "Produkteigenschaften")
   if (propertiesMatch.length > 1) {
@@ -28,7 +31,7 @@ function parseProductDescription(text: string): ParsedDescription {
   } else if (shippingMatch.length > 1) {
     result.description = shippingMatch[0].trim();
   } else {
-    result.description = text;
+    result.description = cleanText;
     return result;
   }
 
@@ -49,16 +52,22 @@ function parseProductDescription(text: string): ParsedDescription {
   // Parse key-value pairs (format: "Key: Value" or "Key - Value")
   const parseKeyValuePairs = (text: string): Array<{ key: string; value: string }> => {
     const pairs: Array<{ key: string; value: string }> = [];
-    const lines = text.split(/[,\n]/).map(l => l.trim()).filter(Boolean);
+    // Split by newlines or bullet points
+    const lines = text.split(/[\n]/).map(l => l.trim()).filter(Boolean);
     
-    for (const line of lines) {
+    for (let line of lines) {
+      // Remove bullet points and leading markers
+      line = line.replace(/^[•\-\*\s]+/, '').trim();
+      
+      if (!line) continue;
+      
       // Try "Key: Value" format first
       let match = line.match(/^([^:]+):\s*(.+)$/);
       if (match) {
         pairs.push({ key: match[1].trim(), value: match[2].trim() });
         continue;
       }
-      // Try "Key - Value" format
+      // Try "Key - Value" format (but not if key contains parentheses)
       match = line.match(/^([^-]+)-\s*(.+)$/);
       if (match && !match[1].includes("(")) {
         pairs.push({ key: match[1].trim(), value: match[2].trim() });
