@@ -1,62 +1,98 @@
 
-# Plan: Shopify-Code vollständig entfernen
+# Plan: Shopify Produktverwaltung einrichten
 
 ## Übersicht
-Da Shopify getrennt wurde, werden alle damit verbundenen Dateien, Komponenten und Referenzen aus dem Projekt entfernt. Die Produkte-Seite wird temporär durch eine Platzhalter-Seite ersetzt.
+Du bekommst die Möglichkeit, Produkte aus deinem Shopify-Store zu verwalten und diese auf der Produkte-Seite anzuzeigen.
 
 ---
 
-## Zu löschende Dateien
+## Was wird gebaut
 
-| Datei | Grund |
-|-------|-------|
-| `src/lib/shopify.ts` | Shopify API-Konfiguration und Queries |
-| `src/stores/cartStore.ts` | Warenkorb-Store mit Shopify-Abhängigkeiten |
-| `src/components/CartDrawer.tsx` | Warenkorb-Drawer Komponente |
-| `src/pages/ProductDetail.tsx` | Produktdetail-Seite |
+### 1. Shopify-Integration wiederherstellen
+- Neue `src/lib/shopify.ts` Datei mit Shopify Storefront API Konfiguration
+- GraphQL Queries für Produktabruf
 
----
+### 2. Produkte-Seite mit Shop-Anzeige
+- Produktliste mit Bildern, Namen und Preisen
+- Kategoriefilter und Suchfunktion
+- Responsive Grid-Layout
 
-## Zu ändernde Dateien
+### 3. Produktdetail-Seite
+- Einzelansicht mit großen Bildern
+- Varianten-Auswahl (Größe, Farbe etc.)
+- Beschreibung und Preis
 
-### 1. `src/App.tsx`
-- Route `/produkt/:handle` entfernen
-- ProductDetail Import entfernen
-
-### 2. `src/components/Header.tsx`
-- CartDrawer Import und Verwendung entfernen
-- Warenkorb-Button aus Desktop und Mobile Navigation entfernen
-
-### 3. `src/pages/Products.tsx`
-- Komplett neu schreiben als einfache Platzhalter-Seite
-- "Shop kommt bald" Nachricht anzeigen
+### 4. Warenkorb-Funktionalität
+- Warenkorb-Store mit Zustand
+- Warenkorb-Drawer Komponente
+- Weiterleitung zum Shopify Checkout
 
 ---
 
-## Ergebnis
-- Keine Shopify-Referenzen mehr im Code
-- Saubere Produkte-Seite bereit für zukünftige E-Commerce-Integration
-- Navigation funktioniert weiterhin
+## Dateien die erstellt werden
+
+| Datei | Beschreibung |
+|-------|--------------|
+| `src/lib/shopify.ts` | Shopify API-Client und Queries |
+| `src/stores/cartStore.ts` | Warenkorb-Zustand mit Zustand |
+| `src/components/CartDrawer.tsx` | Warenkorb-Seitenleiste |
+| `src/components/ProductCard.tsx` | Produktkarte für Grid |
+| `src/pages/ProductDetail.tsx` | Produktdetail-Ansicht |
+
+---
+
+## Dateien die geändert werden
+
+| Datei | Änderung |
+|-------|----------|
+| `src/pages/Products.tsx` | Platzhalter durch echte Produktliste ersetzen |
+| `src/components/Header.tsx` | Warenkorb-Icon hinzufügen |
+| `src/App.tsx` | Route für Produktdetails hinzufügen |
 
 ---
 
 ## Technische Details
 
-### Neue Products.tsx Struktur
+### Shopify Storefront API
 ```text
-┌─────────────────────────────────┐
-│           Header                │
-├─────────────────────────────────┤
-│                                 │
-│    "Shop kommt bald"            │
-│    Platzhalter-Nachricht        │
-│                                 │
-├─────────────────────────────────┤
-│           Footer                │
-└─────────────────────────────────┘
+┌─────────────────┐      ┌──────────────────┐
+│  Lovable App    │─────▶│ Shopify Store    │
+│  (Frontend)     │◀─────│ (1prwxp-fi)      │
+└─────────────────┘      └──────────────────┘
+         │
+         ▼
+  GraphQL Queries:
+  - products(first: 20)
+  - product(handle: "...")
+  - cart mutations
 ```
 
-### Header-Änderungen
-- `CartDrawer` Import entfernen
-- Warenkorb-Icon aus Desktop-Navigation entfernen
-- Warenkorb-Icon aus Mobile-Navigation entfernen
+### Warenkorb-Flow
+```text
+Produkt ansehen → In Warenkorb → Drawer öffnet → Checkout bei Shopify
+```
+
+### Komponenten-Struktur
+```text
+Products.tsx
+├── ProductCard.tsx (für jedes Produkt)
+└── Filter/Suche
+
+ProductDetail.tsx
+├── Bildgalerie
+├── Varianten-Auswahl
+└── "In den Warenkorb" Button
+
+Header.tsx
+└── CartDrawer.tsx
+    ├── Warenkorb-Items
+    ├── Gesamtsumme
+    └── "Zur Kasse" Button
+```
+
+---
+
+## Ergebnis
+- Vollständige Shop-Integration mit deinem Shopify-Store
+- Kunden können Produkte durchstöbern und kaufen
+- Checkout läuft sicher über Shopify
