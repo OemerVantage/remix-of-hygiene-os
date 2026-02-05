@@ -4,6 +4,7 @@ import { ShopifyMetafield } from "@/lib/shopify";
 // Mapping from metafield keys to German labels
 const PROPERTY_LABELS: Record<string, string> = {
   gtin: "GTIN-Code (EAN)",
+  sheet_size: "Abriss-/Tuchgrösse",
   dimensions: "Abmessungen",
   material: "Material",
   material_extra: "Material Extra",
