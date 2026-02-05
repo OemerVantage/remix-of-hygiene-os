@@ -36,6 +36,10 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Warning - Orange for pending states */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
     --border: 40 15% 90%;
     --input: 40 15% 90%;
     --ring: 214 72% 39%;
@@ -83,6 +87,10 @@
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
+
+    /* Warning - Orange for pending states */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
 
     --border: 220 20% 18%;
     --input: 220 20% 18%;
