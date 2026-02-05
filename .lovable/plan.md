@@ -1,82 +1,65 @@
 
-# Plan: Produktanfrage-Formular verschoenern
+# Plan: Schweizer Deutsch Anpassungen
 
 ## Ziel
-Das Produktanfrage-Formular am Ende der Produktdetailseite optisch aufwerten, sodass es zum Premium-Design des restlichen Shops passt - inspiriert vom Hauptkontaktformular, aber kompakter.
+Alle deutschen Texte in der Anwendung auf Schweizer Schreibweise anpassen - kein "ß" (Eszett), sondern "ss", sowie Schweizer Kontaktdaten und Formate.
 
-## Aenderungen an `ProductInquiryForm.tsx`
+## Betroffene Dateien
 
-### 1. Neue visuelle Elemente
+### 1. `src/components/ProductInquiryForm.tsx`
+**Textanpassungen:**
+- "schnellstmöglich" → "schnellstmoeglich" ist falsch, "ö" bleibt! Nur "ß" wird ersetzt
+- Telefon-Placeholder: `+49 123 456789` → `+41 44 123 45 67`
+- E-Mail-Placeholder: `ihre@email.de` → `ihre@email.ch`
+- PLZ-Placeholder: `12345` → `8001`
 
-**Karten-Design:**
-- Formular in einer abgerundeten Karte (`rounded-3xl`) mit Schatten und Border
-- Subtiler dekorativer Blur-Kreis in der Ecke
-- Mehr Padding und Luft zwischen den Elementen
+### 2. `src/components/ContactForm.tsx`
+**Textanpassungen:**
+- "Musterstraße" → "Musterstrasse"
+- "Öffnungszeiten" → bleibt (ö ist ok in CH)
+- Telefonnummer: `+49 (0) 123 456 789` → `+41 44 123 45 67`
+- E-Mail: `info@hygiscout.de` → `info@hygiscout.ch`
+- "vollständiger Name" → "vollstaendiger" ist falsch → "vollständiger" bleibt!
+- Telefon-Placeholder: `+49 123 456789` → `+41 44 123 45 67`
 
-**Titel-Bereich:**
-- Badge ueber dem Titel ("Produktanfrage")
-- Groesserer, prominenterer Titel
-- Bessere visuelle Hierarchie mit dem Produktnamen
+### 3. `src/components/account/AddressBook.tsx`
+**Textanpassungen:**
+- "Straße" → "Strasse"
 
-**Formularfelder:**
-- Groessere Eingabefelder (`h-12`) mit abgerundeten Ecken (`rounded-xl`)
-- Sanftere Border-Farben mit Fokus-Effekten
-- Sternchen in der Primaerfarbe fuer Pflichtfelder
+### 4. `src/pages/About.tsx`
+**Textanpassungen:**
+- "Größe" → "Grösse"
 
-**Button:**
-- Groesserer, prominenterer Senden-Button
-- Schatten-Effekt und Hover-Animation (`hover:-translate-y-0.5`)
+### 5. `src/pages/Guides.tsx`
+**Textanpassungen:**
+- "Maßnahmen" → "Massnahmen"
+- "regelmäßig" → "regelmässig"
 
-**Erfolgs-Ansicht:**
-- Groessere Success-Anzeige mit mehr visuellem Feedback
-- Animierter Uebergang
+### 6. `src/pages/Solutions.tsx`
+**Textanpassungen:**
+- "Größen" → "Grössen"
+- "Maßgeschneiderte" → "Massgeschneiderte"
 
-### 2. Layout-Verbesserungen
-
-```text
-Vorher:
-+----------------------------------+
-| [Icon] Anfrage zu diesem Produkt |
-| Haben Sie Fragen zu...           |
-| [Formular - schlicht]            |
-+----------------------------------+
-
-Nachher:
-+--------------------------------------+
-|  [Badge: Produktanfrage]             |
-|  Fragen zu diesem Produkt?           |
-|  Produktname hervorgehoben           |
-|                                      |
-|  +--------------------------------+  |
-|  | Karte mit Formular             |  |
-|  | - Groessere Inputs             |  |
-|  | - Moderne Styling              |  |
-|  | - Dekorative Elemente          |  |
-|  | - Prominenter Button           |  |
-|  +--------------------------------+  |
-|                                      |
-|  [Hinweis: Schnelle Antwort]         |
-+--------------------------------------+
-```
-
-### 3. Beibehaltene Funktionalitaet
-
-- Zod-Validierung bleibt identisch
-- Speicherung in `contact_submissions` mit `product_reference` bleibt
-- Vorausgefuellte Nachricht mit Produktname
-- Toast-Benachrichtigungen
-- Erfolgs-Ansicht mit "Neue Anfrage stellen" Button
+### 7. `src/components/SolutionsSection.tsx`
+**Textanpassungen:**
+- "Maßgeschneiderte" → "Massgeschneiderte"
 
 ---
 
-## Technische Details
+## Zusammenfassung der Ersetzungen
 
-**Geaenderte Datei:** `src/components/ProductInquiryForm.tsx`
+| Original | Schweizer Schreibweise |
+|----------|------------------------|
+| ß | ss |
+| Straße | Strasse |
+| Größe/Größen | Grösse/Grössen |
+| Maßnahmen | Massnahmen |
+| Maßgeschneidert | Massgeschneidert |
+| regelmäßig | regelmässig |
+| vollständig | vollständig (bleibt!) |
+| schnellstmöglich | schnellstmöglich (bleibt!) |
+| +49 | +41 |
+| .de | .ch |
+| 12345 (PLZ) | 8001 (4-stellig) |
 
-**Wichtige CSS-Klassen:**
-- `rounded-3xl` fuer abgerundete Karten
-- `shadow-lg`, `shadow-xl` fuer Schatten
-- `h-12 rounded-xl` fuer groessere Inputs
-- `hover:-translate-y-0.5` fuer Button-Hover
-- `bg-primary/10` fuer Badge-Hintergrund
-- Dekorative `blur-2xl` Elemente
+**Wichtig:** Umlaute (ö, ä, ü) bleiben erhalten - nur das "ß" wird zu "ss"!
