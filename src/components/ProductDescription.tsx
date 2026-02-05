@@ -162,6 +162,19 @@ interface ProductDescriptionProps {
   metafields?: Array<ShopifyMetafield | null>;
 }
 
+// Clean legacy technical text from description when metafields provide structured data
+function cleanDescriptionText(text: string): string {
+  if (!text) return "";
+  
+  // Remove sections that start with "Produkteigenschaften" or "Versandinformation"
+  let cleaned = text
+    .replace(/\*?\*?Produkteigenschaften\*?\*?[\s\S]*?(?=\*?\*?Versandinformation|\s*$)/gi, '')
+    .replace(/\*?\*?Versandinformation(?:en)?\*?\*?[\s\S]*/gi, '')
+    .trim();
+  
+  return cleaned;
+}
+
 export function ProductDescription({ description, metafields }: ProductDescriptionProps) {
   // Try metafields first
   const metafieldData = parseMetafields(metafields);
@@ -188,8 +201,10 @@ export function ProductDescription({ description, metafields }: ProductDescripti
     ? "md:grid-cols-2" 
     : "";
 
-  // For metafield data, show the raw description without parsing
-  const displayDescription = hasMetafieldData ? description : parsed.description;
+  // For metafield data, clean the description to remove legacy structured text
+  const displayDescription = hasMetafieldData 
+    ? cleanDescriptionText(description) 
+    : parsed.description;
 
   return (
     <div className="space-y-6">
