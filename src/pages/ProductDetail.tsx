@@ -161,7 +161,10 @@ const ProductDetail = () => {
               </div>
 
               {product.description && (
-                <ProductDescription description={product.description} />
+                <ProductDescription 
+                  description={product.description} 
+                  metafields={product.metafields}
+                />
               )}
 
               {/* Variants */}

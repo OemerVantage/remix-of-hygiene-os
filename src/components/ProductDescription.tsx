@@ -1,9 +1,46 @@
 import { Package, Truck } from "lucide-react";
+import { ShopifyMetafield } from "@/lib/shopify";
+
+// Mapping from metafield keys to German labels
+const PROPERTY_LABELS: Record<string, string> = {
+  gtin: "GTIN-Code (EAN)",
+  dimensions: "Abmessungen",
+  material: "Material",
+  color: "Farbe",
+  industries: "Branchen",
+};
+
+const SHIPPING_LABELS: Record<string, string> = {
+  unit_content: "Inhalt/Verkaufseinheit",
+  units_per_pallet: "VE/PAL",
+};
 
 interface ParsedDescription {
   description: string;
   properties: Array<{ key: string; value: string }>;
   shipping: Array<{ key: string; value: string }>;
+}
+
+function parseMetafields(metafields: Array<ShopifyMetafield | null> | undefined): {
+  properties: Array<{ key: string; value: string }>;
+  shipping: Array<{ key: string; value: string }>;
+} {
+  const properties: Array<{ key: string; value: string }> = [];
+  const shipping: Array<{ key: string; value: string }> = [];
+
+  if (!metafields) return { properties, shipping };
+
+  for (const field of metafields) {
+    if (!field || !field.value) continue;
+
+    if (PROPERTY_LABELS[field.key]) {
+      properties.push({ key: PROPERTY_LABELS[field.key], value: field.value });
+    } else if (SHIPPING_LABELS[field.key]) {
+      shipping.push({ key: SHIPPING_LABELS[field.key], value: field.value });
+    }
+  }
+
+  return { properties, shipping };
 }
 
 function parseProductDescription(text: string): ParsedDescription {
@@ -117,10 +154,18 @@ function KeyValueSection({ title, icon, rows }: KeyValueSectionProps) {
 
 interface ProductDescriptionProps {
   description: string;
+  metafields?: Array<ShopifyMetafield | null>;
 }
 
-export function ProductDescription({ description }: ProductDescriptionProps) {
-  const parsed = parseProductDescription(description);
+export function ProductDescription({ description, metafields }: ProductDescriptionProps) {
+  // Try metafields first
+  const metafieldData = parseMetafields(metafields);
+  const hasMetafieldData = metafieldData.properties.length > 0 || metafieldData.shipping.length > 0;
+
+  // Fallback to text parsing if no metafields
+  const parsed = hasMetafieldData 
+    ? { description, properties: metafieldData.properties, shipping: metafieldData.shipping }
+    : parseProductDescription(description);
   
   const hasProperties = parsed.properties.length > 0;
   const hasShipping = parsed.shipping.length > 0;
@@ -138,11 +183,14 @@ export function ProductDescription({ description }: ProductDescriptionProps) {
     ? "md:grid-cols-2" 
     : "";
 
+  // For metafield data, show the raw description without parsing
+  const displayDescription = hasMetafieldData ? description : parsed.description;
+
   return (
     <div className="space-y-6">
-      {parsed.description && (
+      {displayDescription && (
         <p className="text-muted-foreground leading-relaxed">
-          {parsed.description}
+          {displayDescription}
         </p>
       )}
       

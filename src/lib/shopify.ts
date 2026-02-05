@@ -5,6 +5,11 @@ const SHOPIFY_STORE_PERMANENT_DOMAIN = '1prwxp-fi.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 const SHOPIFY_STOREFRONT_TOKEN = '394f4c030b48aa5c0aa64e3817c8fd38';
 
+export interface ShopifyMetafield {
+  key: string;
+  value: string | null;
+}
+
 export interface ShopifyProduct {
   node: {
     id: string;
@@ -51,6 +56,7 @@ export interface ShopifyProduct {
       name: string;
       values: string[];
     }>;
+    metafields?: Array<ShopifyMetafield | null>;
   };
 }
 
@@ -93,6 +99,21 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 
   return data;
 }
+
+export const METAFIELD_IDENTIFIERS = `
+  metafields(identifiers: [
+    {namespace: "custom", key: "gtin"},
+    {namespace: "custom", key: "dimensions"},
+    {namespace: "custom", key: "material"},
+    {namespace: "custom", key: "color"},
+    {namespace: "custom", key: "industries"},
+    {namespace: "custom", key: "unit_content"},
+    {namespace: "custom", key: "units_per_pallet"}
+  ]) {
+    key
+    value
+  }
+`;
 
 export const PRODUCTS_QUERY = `
   query GetProducts($first: Int!, $query: String) {
@@ -143,6 +164,7 @@ export const PRODUCTS_QUERY = `
             name
             values
           }
+          ${METAFIELD_IDENTIFIERS}
         }
       }
     }
@@ -196,6 +218,7 @@ export const PRODUCT_BY_HANDLE_QUERY = `
         name
         values
       }
+      ${METAFIELD_IDENTIFIERS}
     }
   }
 `;
