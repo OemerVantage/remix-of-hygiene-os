@@ -1,72 +1,55 @@
 
+
 ## Ziel
-Produkteigenschaften und Versandinformationen als separate, editierbare Felder in Shopify einrichten - nicht mehr im Beschreibungstext versteckt.
+Erweiterte Produkteigenschaften in Shopify einrichten, sodass alle Felder aus deinem Screenshot editierbar sind.
 
-## Aktuelle Situation (das Problem)
-- Alle Produkteigenschaften stecken im `description`-Feld als formatierter Text
-- Ein Parser extrahiert die Daten anhand von Textmustern ("Produkteigenschaften:", "Key: Value")
-- Fehleranfällig und mühsam zu pflegen
+## Zusätzliche Metafields erstellen
 
-## Lösung: Shopify Metafields
-Shopify bietet "Metafields" - das sind benutzerdefinierte Felder, die du direkt im Admin bearbeiten kannst.
+Gehe wieder zu **Einstellungen → Benutzerdefinierte Daten → Produkte** und erstelle diese weiteren Felder:
 
-### Was eingerichtet wird
-
-**1. Metafield-Definitionen in Shopify erstellen**
-Du musst im Shopify Admin unter Einstellungen → Benutzerdefinierte Daten → Produkte folgende Felder anlegen:
-
-| Feld | Namespace & Key | Typ |
+| Name | Namespace & Key | Typ |
 |------|-----------------|-----|
-| GTIN-Code (EAN) | `custom.gtin` | Text |
-| Abmessungen | `custom.dimensions` | Text |
-| Material | `custom.material` | Text |
-| Farbe | `custom.color` | Text |
-| Branchen | `custom.industries` | Text |
-| Inhalt/VE | `custom.unit_content` | Text |
-| VE/Palette | `custom.units_per_pallet` | Text |
+| Systemgruppe | `custom.system_group` | Einzeiliger Text |
+| Geeignet für | `custom.suitable_for` | Einzeiliger Text |
+| Kapazität | `custom.capacity` | Einzeiliger Text |
+| Abschließbar | `custom.lockable` | Einzeiliger Text |
+| Sichtfenster | `custom.view_window` | Einzeiliger Text |
 
-**2. GraphQL-Queries erweitern** (`src/lib/shopify.ts`)
-- Metafields in `PRODUCTS_QUERY` und `PRODUCT_BY_HANDLE_QUERY` abfragen
-- TypeScript-Typen für Metafields hinzufügen
+**Wichtig:** Bei jedem Feld "Storefront-Zugriff" aktivieren!
 
-**3. ProductDescription-Komponente anpassen** (`src/components/ProductDescription.tsx`)
-- Metafields direkt verwenden statt Text-Parsing
-- Fallback auf altes Parsing für bestehende Produkte ohne Metafields
+## Code-Änderungen
 
-### Technische Änderungen
-
-**`src/lib/shopify.ts`**
+### `src/lib/shopify.ts`
+Neue Metafield-Keys zur GraphQL-Query hinzufügen:
 ```graphql
-# Zu den Product-Queries hinzufügen:
-metafields(identifiers: [
-  {namespace: "custom", key: "gtin"},
-  {namespace: "custom", key: "dimensions"},
-  {namespace: "custom", key: "material"},
-  {namespace: "custom", key: "color"},
-  {namespace: "custom", key: "industries"},
-  {namespace: "custom", key: "unit_content"},
-  {namespace: "custom", key: "units_per_pallet"}
-]) {
-  key
-  value
-}
+{namespace: "custom", key: "system_group"},
+{namespace: "custom", key: "suitable_for"},
+{namespace: "custom", key: "capacity"},
+{namespace: "custom", key: "lockable"},
+{namespace: "custom", key: "view_window"}
 ```
 
-**`src/components/ProductDescription.tsx`**
-- Neue Props für `metafields`
-- Mapping von Metafield-Keys zu deutschen Labels
-- Fallback auf Text-Parsing wenn keine Metafields vorhanden
+### `src/components/ProductDescription.tsx`
+Labels-Mapping erweitern:
+```typescript
+const PROPERTY_LABELS: Record<string, string> = {
+  gtin: "GTIN-Code (EAN)",
+  dimensions: "Abmessungen",
+  material: "Material",
+  color: "Farbe",
+  industries: "Branchen",
+  system_group: "Systemgruppe",
+  suitable_for: "Geeignet für",
+  capacity: "Kapazität",
+  lockable: "Abschließbar",
+  view_window: "Sichtfenster",
+};
+```
 
-### Einrichtung in Shopify Admin
-
-1. Gehe zu: **Einstellungen** → **Benutzerdefinierte Daten** → **Produkte**
-2. Klicke **Definition hinzufügen** für jedes Feld
-3. Danach erscheinen die Felder bei jedem Produkt unter "Metafields"
-
-### Dateien
+## Dateien
 
 | Datei | Änderung |
 |-------|----------|
-| `src/lib/shopify.ts` | Metafields zur GraphQL-Query hinzufügen, TypeScript-Typen erweitern |
-| `src/components/ProductDescription.tsx` | Metafields direkt anzeigen, Fallback auf Parsing |
-| `src/pages/ProductDetail.tsx` | Metafields an ProductDescription übergeben |
+| `src/lib/shopify.ts` | 5 neue Metafield-Keys zur Query |
+| `src/components/ProductDescription.tsx` | 5 neue Labels im Mapping |
+
