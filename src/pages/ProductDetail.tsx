@@ -10,6 +10,7 @@ import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, ShopifyProduct } from "@
 import { toast } from "sonner";
 import { ProductDescription } from "@/components/ProductDescription";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { RelatedProducts } from "@/components/RelatedProducts";
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -98,6 +99,13 @@ const ProductDetail = () => {
 
   const selectedVariant = product.variants.edges[selectedVariantIndex]?.node;
   const images = product.images.edges;
+
+  // Extract related product handles from metafield
+  const relatedProductHandles = (() => {
+    const metafield = product.metafields?.find(m => m?.key === "related_products");
+    if (!metafield?.value) return [];
+    return metafield.value.split(",").map(h => h.trim()).filter(Boolean);
+  })();
 
   return (
     <div className="min-h-screen bg-background">
@@ -205,6 +213,9 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+
+        {/* Related Products Section */}
+        <RelatedProducts handles={relatedProductHandles} />
       </main>
       <Footer />
     </div>
