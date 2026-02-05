@@ -46,12 +46,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <div className="absolute top-2 right-2 z-10">
           <WishlistButton productHandle={node.handle} variantId={selectedVariant?.id} />
         </div>
-        <div className="aspect-square overflow-hidden bg-secondary/10">
+        <div className="aspect-square overflow-hidden bg-white border-b border-border">
           {image ? (
             <img 
               src={image.url} 
               alt={image.altText || node.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">
