@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          city: string
+          company: string | null
+          country: string
+          created_at: string
+          first_name: string
+          id: string
+          is_default: boolean
+          label: string
+          last_name: string
+          postal_code: string
+          street: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city: string
+          company?: string | null
+          country?: string
+          created_at?: string
+          first_name: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          last_name: string
+          postal_code: string
+          street: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string
+          company?: string | null
+          country?: string
+          created_at?: string
+          first_name?: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          last_name?: string
+          postal_code?: string
+          street?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -38,6 +86,66 @@ export type Database = {
           message?: string
           name?: string
           phone?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string
+          id: string
+          phone: string | null
+          shopify_customer_id: string | null
+          shopify_customer_token: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email: string
+          id?: string
+          phone?: string | null
+          shopify_customer_id?: string | null
+          shopify_customer_token?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string
+          id?: string
+          phone?: string | null
+          shopify_customer_id?: string | null
+          shopify_customer_token?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wishlist_items: {
+        Row: {
+          created_at: string
+          id: string
+          product_handle: string
+          user_id: string
+          variant_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_handle: string
+          user_id: string
+          variant_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_handle?: string
+          user_id?: string
+          variant_id?: string | null
         }
         Relationships: []
       }

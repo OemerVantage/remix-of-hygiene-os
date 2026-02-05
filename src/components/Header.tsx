@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogIn } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { CartDrawer } from "@/components/CartDrawer";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { label: "Über uns", href: "/ueber-uns" },
@@ -16,6 +17,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, isLoading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,9 +62,27 @@ export function Header() {
             ))}
           </ul>
 
-          {/* CTA Button + Cart */}
+          {/* CTA Button + Cart + Account */}
           <div className="hidden lg:flex items-center gap-4">
             <CartDrawer />
+            
+            {!isLoading && (
+              user ? (
+                <Link to="/konto">
+                  <Button variant="outline" size="icon">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <Button variant="outline" className="gap-2">
+                    <LogIn className="h-4 w-4" />
+                    Anmelden
+                  </Button>
+                </Link>
+              )
+            )}
+            
             <Link to="/kontakt">
               <Button variant="default" size="default">
                 Kontakt aufnehmen
@@ -70,9 +90,16 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile Cart + Menu Button */}
+          {/* Mobile Cart + Account + Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
             <CartDrawer />
+            {!isLoading && user && (
+              <Link to="/konto">
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
             <button
               className="p-2"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -108,6 +135,17 @@ export function Header() {
                   </Link>
                 </li>
               ))}
+              {!isLoading && !user && (
+                <li>
+                  <Link
+                    to="/login"
+                    className="block py-2 text-body-lg text-primary font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Anmelden
+                  </Link>
+                </li>
+              )}
               <li className="pt-4">
                 <Link to="/kontakt" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="default" className="w-full">
