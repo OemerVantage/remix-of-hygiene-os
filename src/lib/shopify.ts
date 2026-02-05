@@ -107,6 +107,7 @@ export const METAFIELD_IDENTIFIERS = `
     {namespace: "custom", key: "volume"},
     {namespace: "custom", key: "layers"},
     {namespace: "custom", key: "perforation"},
+    {namespace: "custom", key: "falz"},
     {namespace: "custom", key: "dimensions"},
     {namespace: "custom", key: "material"},
     {namespace: "custom", key: "material_extra"},
