@@ -1,7 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info, Package, Truck } from "lucide-react";
+import { Package, Truck } from "lucide-react";
 
 interface ParsedDescription {
   description: string;
@@ -23,7 +20,7 @@ function parseProductDescription(text: string): ParsedDescription {
 
   // Split by section headers (handles both plain and markdown-bolded headers)
   const propertiesMatch = cleanText.split(/Produkteigenschaften[:\s]*/i);
-  const shippingMatch = cleanText.split(/Versandinformationen[:\s]*/i);
+  const shippingMatch = cleanText.split(/Versandinformation(?:en)?[:\s]*/i);
 
   // Extract main description (before "Produkteigenschaften")
   if (propertiesMatch.length > 1) {
@@ -39,7 +36,7 @@ function parseProductDescription(text: string): ParsedDescription {
   let propertiesText = "";
   if (propertiesMatch.length > 1) {
     const afterProperties = propertiesMatch[1];
-    const shippingSplitInProperties = afterProperties.split(/Versandinformationen[:\s]*/i);
+    const shippingSplitInProperties = afterProperties.split(/Versandinformation(?:en)?[:\s]*/i);
     propertiesText = shippingSplitInProperties[0];
   }
 
@@ -52,11 +49,11 @@ function parseProductDescription(text: string): ParsedDescription {
   // Parse key-value pairs (format: "Key: Value" or "Key - Value")
   const parseKeyValuePairs = (text: string): Array<{ key: string; value: string }> => {
     const pairs: Array<{ key: string; value: string }> = [];
-    // Split by newlines or bullet points
-    const lines = text.split(/[\n]/).map(l => l.trim()).filter(Boolean);
+    // Split by newlines OR bullet points
+    const lines = text.split(/\n|•\s*/g).map(l => l.trim()).filter(Boolean);
     
     for (let line of lines) {
-      // Remove bullet points and leading markers
+      // Remove bullet points, dashes, asterisks and leading markers
       line = line.replace(/^[•\-\*\s]+/, '').trim();
       
       if (!line) continue;
@@ -82,6 +79,42 @@ function parseProductDescription(text: string): ParsedDescription {
   return result;
 }
 
+interface KeyValueSectionProps {
+  title: string;
+  icon: React.ReactNode;
+  rows: Array<{ key: string; value: string }>;
+}
+
+function KeyValueSection({ title, icon, rows }: KeyValueSectionProps) {
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="border rounded-md overflow-hidden">
+      <div className="bg-muted/80 px-4 py-3 flex items-center gap-2">
+        {icon}
+        <h3 className="font-semibold text-sm">{title}</h3>
+      </div>
+      <table className="w-full text-sm">
+        <tbody>
+          {rows.map((row, index) => (
+            <tr 
+              key={index} 
+              className={index % 2 === 0 ? "bg-muted/30" : "bg-background"}
+            >
+              <td className="px-4 py-2.5 w-[45%] md:w-1/3 text-muted-foreground font-medium border-r border-border/50">
+                {row.key}
+              </td>
+              <td className="px-4 py-2.5">
+                {row.value}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 interface ProductDescriptionProps {
   description: string;
 }
@@ -89,7 +122,9 @@ interface ProductDescriptionProps {
 export function ProductDescription({ description }: ProductDescriptionProps) {
   const parsed = parseProductDescription(description);
   
-  const hasStructuredData = parsed.properties.length > 0 || parsed.shipping.length > 0;
+  const hasProperties = parsed.properties.length > 0;
+  const hasShipping = parsed.shipping.length > 0;
+  const hasStructuredData = hasProperties || hasShipping;
 
   if (!hasStructuredData) {
     // Fallback to simple text display
@@ -98,92 +133,31 @@ export function ProductDescription({ description }: ProductDescriptionProps) {
     );
   }
 
+  // Determine grid columns based on available data
+  const gridCols = hasProperties && hasShipping 
+    ? "md:grid-cols-2" 
+    : "";
+
   return (
-    <Tabs defaultValue="description" className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="description" className="flex items-center gap-2">
-          <Info className="w-4 h-4" />
-          <span className="hidden sm:inline">Beschreibung</span>
-        </TabsTrigger>
-        <TabsTrigger value="properties" className="flex items-center gap-2">
-          <Package className="w-4 h-4" />
-          <span className="hidden sm:inline">Eigenschaften</span>
-        </TabsTrigger>
-        <TabsTrigger value="shipping" className="flex items-center gap-2">
-          <Truck className="w-4 h-4" />
-          <span className="hidden sm:inline">Versand</span>
-        </TabsTrigger>
-      </TabsList>
+    <div className="space-y-6">
+      {parsed.description && (
+        <p className="text-muted-foreground leading-relaxed">
+          {parsed.description}
+        </p>
+      )}
       
-      <TabsContent value="description" className="mt-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Info className="w-5 h-5 text-primary" />
-              Beschreibung
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground leading-relaxed">
-              {parsed.description || "Keine Beschreibung verfügbar."}
-            </p>
-          </CardContent>
-        </Card>
-      </TabsContent>
-      
-      <TabsContent value="properties" className="mt-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Package className="w-5 h-5 text-primary" />
-              Produkteigenschaften
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {parsed.properties.length > 0 ? (
-              <Table>
-                <TableBody>
-                  {parsed.properties.map((prop, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium w-1/3">{prop.key}</TableCell>
-                      <TableCell>{prop.value}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <p className="text-muted-foreground">Keine Produkteigenschaften verfügbar.</p>
-            )}
-          </CardContent>
-        </Card>
-      </TabsContent>
-      
-      <TabsContent value="shipping" className="mt-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Truck className="w-5 h-5 text-primary" />
-              Versandinformationen
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {parsed.shipping.length > 0 ? (
-              <Table>
-                <TableBody>
-                  {parsed.shipping.map((info, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium w-1/3">{info.key}</TableCell>
-                      <TableCell>{info.value}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <p className="text-muted-foreground">Keine Versandinformationen verfügbar.</p>
-            )}
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
+      <div className={`grid gap-6 ${gridCols}`}>
+        <KeyValueSection 
+          title="Produkteigenschaften" 
+          icon={<Package className="w-4 h-4 text-primary" />}
+          rows={parsed.properties} 
+        />
+        <KeyValueSection 
+          title="Versandinformationen" 
+          icon={<Truck className="w-4 h-4 text-primary" />}
+          rows={parsed.shipping} 
+        />
+      </div>
+    </div>
   );
 }
