@@ -1,55 +1,16 @@
 
+Da du nun alle Metafields in Shopify angelegt und den Storefront-Zugriff aktiviert hast, ist die technische Einrichtung abgeschlossen. 
 
-## Ziel
-Erweiterte Produkteigenschaften in Shopify einrichten, sodass alle Felder aus deinem Screenshot editierbar sind.
+Ich werde noch eine kleine Optimierung am Code vornehmen, damit doppelte Informationen automatisch vermieden werden: Falls du die technischen Daten noch im normalen Beschreibungstext in Shopify stehen hast, wird die Website diese nun intelligent ausblenden und stattdessen nur die neuen, sauberen Tabellen anzeigen.
 
-## Zusätzliche Metafields erstellen
+Hier ist der nächste Schritt:
 
-Gehe wieder zu **Einstellungen → Benutzerdefinierte Daten → Produkte** und erstelle diese weiteren Felder:
+1. **Daten in Shopify pflegen**: Gehe in deinen Shopify-Admin zu einem Produkt (z. B. dem Celtex Handtuchspender) und trage unten bei den Metafields Testwerte ein (z. B. Material: Kunststoff, Farbe: Weiß).
+2. **Vorschau prüfen**: Lade die Produktseite hier im Browser neu. Du solltest nun die Tabellen "Produkteigenschaften" und "Versandinformationen" mit deinen echten Daten sehen.
 
-| Name | Namespace & Key | Typ |
-|------|-----------------|-----|
-| Systemgruppe | `custom.system_group` | Einzeiliger Text |
-| Geeignet für | `custom.suitable_for` | Einzeiliger Text |
-| Kapazität | `custom.capacity` | Einzeiliger Text |
-| Abschließbar | `custom.lockable` | Einzeiliger Text |
-| Sichtfenster | `custom.view_window` | Einzeiliger Text |
+### Technische Optimierung
+Ich passe die `ProductDescription.tsx` an, um sicherzustellen, dass alter "Tabellen-Text" aus der Beschreibung entfernt wird, wenn echte Metafields vorhanden sind. Dies verhindert, dass Informationen doppelt untereinander erscheinen.
 
-**Wichtig:** Bei jedem Feld "Storefront-Zugriff" aktivieren!
-
-## Code-Änderungen
-
-### `src/lib/shopify.ts`
-Neue Metafield-Keys zur GraphQL-Query hinzufügen:
-```graphql
-{namespace: "custom", key: "system_group"},
-{namespace: "custom", key: "suitable_for"},
-{namespace: "custom", key: "capacity"},
-{namespace: "custom", key: "lockable"},
-{namespace: "custom", key: "view_window"}
-```
-
-### `src/components/ProductDescription.tsx`
-Labels-Mapping erweitern:
-```typescript
-const PROPERTY_LABELS: Record<string, string> = {
-  gtin: "GTIN-Code (EAN)",
-  dimensions: "Abmessungen",
-  material: "Material",
-  color: "Farbe",
-  industries: "Branchen",
-  system_group: "Systemgruppe",
-  suitable_for: "Geeignet für",
-  capacity: "Kapazität",
-  lockable: "Abschließbar",
-  view_window: "Sichtfenster",
-};
-```
-
-## Dateien
-
-| Datei | Änderung |
-|-------|----------|
-| `src/lib/shopify.ts` | 5 neue Metafield-Keys zur Query |
-| `src/components/ProductDescription.tsx` | 5 neue Labels im Mapping |
+#### Dateien
+- `src/components/ProductDescription.tsx`: Logik zur Bereinigung des Beschreibungstextes verbessern.
 
