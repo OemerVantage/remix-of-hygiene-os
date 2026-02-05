@@ -105,6 +105,7 @@ export const METAFIELD_IDENTIFIERS = `
     {namespace: "custom", key: "gtin"},
     {namespace: "custom", key: "dimensions"},
     {namespace: "custom", key: "material"},
+    {namespace: "custom", key: "material_extra"},
     {namespace: "custom", key: "color"},
     {namespace: "custom", key: "industries"},
     {namespace: "custom", key: "unit_content"},

@@ -6,6 +6,7 @@ const PROPERTY_LABELS: Record<string, string> = {
   gtin: "GTIN-Code (EAN)",
   dimensions: "Abmessungen",
   material: "Material",
+  material_extra: "Material Extra",
   color: "Farbe",
   industries: "Branchen",
   system_group: "Systemgruppe",
