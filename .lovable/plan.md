@@ -1,69 +1,82 @@
 
-# Plan: Produkt-Anfrage Kontaktformular
+# Plan: Produktanfrage-Formular verschoenern
 
 ## Ziel
-Ein kompaktes Kontaktformular am Ende der Produktdetailseite hinzufuegen, das automatisch den Produktnamen in der Anfrage mit uebertraegt.
+Das Produktanfrage-Formular am Ende der Produktdetailseite optisch aufwerten, sodass es zum Premium-Design des restlichen Shops passt - inspiriert vom Hauptkontaktformular, aber kompakter.
 
-## Umsetzung
+## Aenderungen an `ProductInquiryForm.tsx`
 
-### 1. Neue Komponente erstellen: `ProductInquiryForm.tsx`
+### 1. Neue visuelle Elemente
 
-Eine schlankere Version des Kontaktformulars, speziell fuer Produktanfragen:
+**Karten-Design:**
+- Formular in einer abgerundeten Karte (`rounded-3xl`) mit Schatten und Border
+- Subtiler dekorativer Blur-Kreis in der Ecke
+- Mehr Padding und Luft zwischen den Elementen
 
-**Props:**
-- `productTitle`: Der Produktname wird automatisch in die Nachricht/Betreff eingebunden
-- `productSku`: Optional die Artikelnummer fuer Referenz
+**Titel-Bereich:**
+- Badge ueber dem Titel ("Produktanfrage")
+- Groesserer, prominenterer Titel
+- Bessere visuelle Hierarchie mit dem Produktnamen
 
 **Formularfelder:**
-- Name (Pflichtfeld)
-- E-Mail (Pflichtfeld)  
-- Telefon (optional)
-- Nachricht (Pflichtfeld, mit vorausgefuelltem Hinweis auf das Produkt)
+- Groessere Eingabefelder (`h-12`) mit abgerundeten Ecken (`rounded-xl`)
+- Sanftere Border-Farben mit Fokus-Effekten
+- Sternchen in der Primaerfarbe fuer Pflichtfelder
 
-**Design:**
-- Kompakt ohne Karte und Kontaktinfos
-- Passend zum bestehenden Produktseiten-Design
-- Titel: "Anfrage zu diesem Produkt"
-- Untertitel mit Produktname
+**Button:**
+- Groesserer, prominenterer Senden-Button
+- Schatten-Effekt und Hover-Animation (`hover:-translate-y-0.5`)
 
-### 2. ProductDetail.tsx anpassen
+**Erfolgs-Ansicht:**
+- Groessere Success-Anzeige mit mehr visuellem Feedback
+- Animierter Uebergang
 
-Das neue Formular nach der RelatedProducts-Sektion einfuegen:
+### 2. Layout-Verbesserungen
 
 ```text
-Position in der Seite:
-+---------------------------+
-| Header                    |
-+---------------------------+
-| Produktbilder | Infos     |
-+---------------------------+
-| Aehnliche Produkte        |
-+---------------------------+
-| Anfrage zu diesem Produkt | <-- NEU
-+---------------------------+
-| Footer                    |
-+---------------------------+
+Vorher:
++----------------------------------+
+| [Icon] Anfrage zu diesem Produkt |
+| Haben Sie Fragen zu...           |
+| [Formular - schlicht]            |
++----------------------------------+
+
+Nachher:
++--------------------------------------+
+|  [Badge: Produktanfrage]             |
+|  Fragen zu diesem Produkt?           |
+|  Produktname hervorgehoben           |
+|                                      |
+|  +--------------------------------+  |
+|  | Karte mit Formular             |  |
+|  | - Groessere Inputs             |  |
+|  | - Moderne Styling              |  |
+|  | - Dekorative Elemente          |  |
+|  | - Prominenter Button           |  |
+|  +--------------------------------+  |
+|                                      |
+|  [Hinweis: Schnelle Antwort]         |
++--------------------------------------+
 ```
 
-### 3. Datenbank-Integration
+### 3. Beibehaltene Funktionalitaet
 
-Das bestehende `contact_submissions`-Schema wird erweitert:
-- Neues Feld `product_reference` (optional) fuer Produktname/SKU
-- Ermoeglicht spaetere Filterung nach Produktanfragen im Admin
+- Zod-Validierung bleibt identisch
+- Speicherung in `contact_submissions` mit `product_reference` bleibt
+- Vorausgefuellte Nachricht mit Produktname
+- Toast-Benachrichtigungen
+- Erfolgs-Ansicht mit "Neue Anfrage stellen" Button
 
 ---
 
 ## Technische Details
 
-**Neue Datei:** `src/components/ProductInquiryForm.tsx`
-- Zod-Validierung wie beim bestehenden ContactForm
-- Speichert in `contact_submissions` mit Produktreferenz
-- Schlankes Design ohne dekorative Elemente
+**Geaenderte Datei:** `src/components/ProductInquiryForm.tsx`
 
-**Aenderungen an:** `src/pages/ProductDetail.tsx`
-- Import der neuen Komponente
-- Einbindung nach RelatedProducts mit Produkttitel und SKU als Props
-
-**Datenbank-Migration:**
-- `ALTER TABLE contact_submissions ADD COLUMN product_reference TEXT`
-- Keine Aenderung an bestehenden RLS-Policies noetig
+**Wichtige CSS-Klassen:**
+- `rounded-3xl` fuer abgerundete Karten
+- `shadow-lg`, `shadow-xl` fuer Schatten
+- `h-12 rounded-xl` fuer groessere Inputs
+- `hover:-translate-y-0.5` fuer Button-Hover
+- `bg-primary/10` fuer Badge-Hintergrund
+- Dekorative `blur-2xl` Elemente
