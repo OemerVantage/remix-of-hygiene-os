@@ -50,9 +50,9 @@ export const BestsellerSection = () => {
 
         {/* Products Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="space-y-4">
+              <div key={i} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] space-y-4">
                 <Skeleton className="aspect-square w-full rounded-lg" />
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-4 w-full" />
@@ -61,9 +61,11 @@ export const BestsellerSection = () => {
             ))}
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {products.map((product) => (
-              <ProductCard key={product.node.id} product={product} />
+              <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         ) : (
