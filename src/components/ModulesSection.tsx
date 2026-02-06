@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Box, Droplets, SprayCan, Brush } from "lucide-react";
 
 const modules = [
@@ -45,9 +46,9 @@ export function ModulesSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {modules.map((module, index) => (
-            <a
+            <Link
               key={module.title}
-              href="#shop"
+              to="/produkte"
               className="group relative overflow-hidden bg-card rounded-2xl p-8 hover-lift shadow-card border border-border/50"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${module.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -77,7 +78,7 @@ export function ModulesSection() {
                   </svg>
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
