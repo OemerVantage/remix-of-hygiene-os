@@ -1,44 +1,72 @@
 
-# Plan: Grid-Layout auf 5 Spalten zurücksetzen
+# Plan: Module-Karten zum Shop verlinken
 
 ## Problem
-Das Grid-Layout wurde von `lg:grid-cols-5` auf `lg:grid-cols-6` geändert, was die Kartengröße verändert hat.
+Die Module-Karten (Spender, Verbrauchsmaterial, Desinfektion, Reinigung) haben aktuell einen Anker-Link `href="#shop"`, der nirgendwo hinfuehrt. Sie sollen zur Produktseite navigieren.
 
-## Lösung
-Nur die Grid-Klasse zurückändern - die Verlinkung mit React Router und die industries-Daten bleiben erhalten.
-
----
-
-## Technische Änderung
-
-**Datei:** `src/components/SolutionsSection.tsx`
-
-### Zeile 17 ändern:
-
-**Aktuell:**
-```
-<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-```
-
-**Zurück zu:**
-```
-<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-```
+## Loesung
+Die `<a>`-Tags durch React Router `<Link>`-Komponenten ersetzen, die zur Produktseite `/produkte` navigieren. Das Layout und alle Styling-Klassen bleiben unverändert.
 
 ---
 
-## Hinweis
-Da die `industries`-Daten 6 Einträge enthalten (inklusive Hotellerie), wird bei 5 Spalten die 6. Karte in eine zweite Zeile umbrechen.
+## Technische Aenderung
+
+**Datei:** `src/components/ModulesSection.tsx`
+
+### 1. Import hinzufuegen (Zeile 1):
+```
+import { Link } from "react-router-dom";
+```
+
+### 2. Anchor-Tag in Link umwandeln (Zeile 48-52):
+
+**Vorher:**
+```
+<a
+  key={module.title}
+  href="#shop"
+  className="group relative overflow-hidden bg-card rounded-2xl p-8 hover-lift shadow-card border border-border/50"
+>
+```
+
+**Nachher:**
+```
+<Link
+  key={module.title}
+  to="/produkte"
+  className="group relative overflow-hidden bg-card rounded-2xl p-8 hover-lift shadow-card border border-border/50"
+>
+```
+
+### 3. Schliessendes Tag aendern (Zeile 80):
+
+**Vorher:**
+```
+</a>
+```
+
+**Nachher:**
+```
+</Link>
+```
 
 ---
 
-## Was bleibt erhalten
-- Verlinkung zu `/branchenloesungen/{slug}` via React Router
-- Alle 6 Branchen aus `industries` werden angezeigt
-- Icons, Titel und Beschreibungen
+## Ergebnis
+
+| Modul-Karte | Navigation |
+|-------------|------------|
+| Spender | `/produkte` |
+| Verbrauchsmaterial | `/produkte` |
+| Desinfektion | `/produkte` |
+| Reinigung | `/produkte` |
+
+Alle Modul-Karten fuehren bei Klick direkt zur Produkte-Seite. Das Layout, die Groesse und die Animations-Effekte bleiben erhalten.
+
+---
 
 ## Betroffene Datei
 
-| Datei | Änderung |
-|-------|----------|
-| `src/components/SolutionsSection.tsx` | Grid von `lg:grid-cols-6` zurück auf `lg:grid-cols-5` |
+| Datei | Aenderung |
+|-------|-----------|
+| `src/components/ModulesSection.tsx` | `Link` importieren, `<a href="#shop">` durch `<Link to="/produkte">` ersetzen |
