@@ -11,7 +11,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShopifyProduct } from "@/lib/shopify";
-import { cn } from "@/lib/utils";
 
 export interface FilterState {
   searchQuery: string;
@@ -103,7 +102,21 @@ export function ProductFilters({ products, filters, onFiltersChange, filteredCou
     onFiltersChange({ ...filters, priceRange: [value[0], value[1]] });
   };
 
-  const FilterContent = () => (
+  // JSX variables instead of component functions to preserve focus
+  const searchBarContent = (
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+      <Input
+        type="text"
+        placeholder="Suche nach Produkt, Artikelnummer..."
+        value={localSearch}
+        onChange={(e) => setLocalSearch(e.target.value)}
+        className="pl-10"
+      />
+    </div>
+  );
+
+  const filterContent = (
     <div className="space-y-6">
       {/* Product Type Filter */}
       {productTypes.length > 0 && (
@@ -197,66 +210,47 @@ export function ProductFilters({ products, filters, onFiltersChange, filteredCou
     </div>
   );
 
-  // Search bar component used in both layouts
-  const SearchBar = () => (
-    <div className="relative">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-      <Input
-        type="text"
-        placeholder="Suche nach Produkt, Artikelnummer..."
-        value={localSearch}
-        onChange={(e) => setLocalSearch(e.target.value)}
-        className="pl-10"
-      />
+  const activeFiltersContent = activeFilterCount > 0 ? (
+    <div className="flex flex-wrap gap-2 mt-4">
+      {filters.productTypes.map((type) => (
+        <Badge 
+          key={type} 
+          variant="secondary" 
+          className="cursor-pointer hover:bg-destructive/20"
+          onClick={() => toggleProductType(type)}
+        >
+          {type}
+          <X className="h-3 w-3 ml-1" />
+        </Badge>
+      ))}
+      {filters.vendors.map((vendor) => (
+        <Badge 
+          key={vendor} 
+          variant="secondary" 
+          className="cursor-pointer hover:bg-destructive/20"
+          onClick={() => toggleVendor(vendor)}
+        >
+          {vendor}
+          <X className="h-3 w-3 ml-1" />
+        </Badge>
+      ))}
+      {(filters.priceRange[0] > priceRange[0] || filters.priceRange[1] < priceRange[1]) && (
+        <Badge 
+          variant="secondary" 
+          className="cursor-pointer hover:bg-destructive/20"
+          onClick={() => onFiltersChange({ ...filters, priceRange: priceRange })}
+        >
+          CHF {filters.priceRange[0]} - {filters.priceRange[1]}
+          <X className="h-3 w-3 ml-1" />
+        </Badge>
+      )}
     </div>
-  );
-
-  // Active filter badges
-  const ActiveFilters = () => {
-    if (activeFilterCount === 0) return null;
-
-    return (
-      <div className="flex flex-wrap gap-2 mt-4">
-        {filters.productTypes.map((type) => (
-          <Badge 
-            key={type} 
-            variant="secondary" 
-            className="cursor-pointer hover:bg-destructive/20"
-            onClick={() => toggleProductType(type)}
-          >
-            {type}
-            <X className="h-3 w-3 ml-1" />
-          </Badge>
-        ))}
-        {filters.vendors.map((vendor) => (
-          <Badge 
-            key={vendor} 
-            variant="secondary" 
-            className="cursor-pointer hover:bg-destructive/20"
-            onClick={() => toggleVendor(vendor)}
-          >
-            {vendor}
-            <X className="h-3 w-3 ml-1" />
-          </Badge>
-        ))}
-        {(filters.priceRange[0] > priceRange[0] || filters.priceRange[1] < priceRange[1]) && (
-          <Badge 
-            variant="secondary" 
-            className="cursor-pointer hover:bg-destructive/20"
-            onClick={() => onFiltersChange({ ...filters, priceRange: priceRange })}
-          >
-            CHF {filters.priceRange[0]} - {filters.priceRange[1]}
-            <X className="h-3 w-3 ml-1" />
-          </Badge>
-        )}
-      </div>
-    );
-  };
+  ) : null;
 
   if (isMobile) {
     return (
       <div className="space-y-4">
-        <SearchBar />
+        {searchBarContent}
         <div className="flex items-center justify-between">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -275,7 +269,7 @@ export function ProductFilters({ products, filters, onFiltersChange, filteredCou
                 <SheetTitle>Filter</SheetTitle>
               </SheetHeader>
               <div className="mt-6">
-                <FilterContent />
+                {filterContent}
               </div>
             </SheetContent>
           </Sheet>
@@ -283,17 +277,17 @@ export function ProductFilters({ products, filters, onFiltersChange, filteredCou
             {filteredCount} {filteredCount === 1 ? "Produkt" : "Produkte"}
           </span>
         </div>
-        <ActiveFilters />
+        {activeFiltersContent}
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <SearchBar />
-      <ActiveFilters />
+      {searchBarContent}
+      {activeFiltersContent}
       <div className="border-t pt-6">
-        <FilterContent />
+        {filterContent}
       </div>
     </div>
   );
