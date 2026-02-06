@@ -1,72 +1,66 @@
 
-# Plan: Module-Karten zum Shop verlinken
+# Plan: Navbar-Reihenfolge anpassen
 
-## Problem
-Die Module-Karten (Spender, Verbrauchsmaterial, Desinfektion, Reinigung) haben aktuell einen Anker-Link `href="#shop"`, der nirgendwo hinfuehrt. Sie sollen zur Produktseite navigieren.
+## Aktuelle Reihenfolge
+1. Über uns
+2. Branchenlösungen
+3. Produkte
+4. Ratgeber
+5. Kontakt
 
-## Loesung
-Die `<a>`-Tags durch React Router `<Link>`-Komponenten ersetzen, die zur Produktseite `/produkte` navigieren. Das Layout und alle Styling-Klassen bleiben unverändert.
+## Neue Reihenfolge (wie gewünscht)
+1. Branchenlösungen
+2. Produkte
+3. Ratgeber
+4. Über uns
+5. Kontakt
 
 ---
 
-## Technische Aenderung
+## Technische Änderung
 
-**Datei:** `src/components/ModulesSection.tsx`
+**Datei:** `src/components/Header.tsx`
 
-### 1. Import hinzufuegen (Zeile 1):
-```
-import { Link } from "react-router-dom";
-```
-
-### 2. Anchor-Tag in Link umwandeln (Zeile 48-52):
+### Zeilen 9-15 ändern:
 
 **Vorher:**
-```
-<a
-  key={module.title}
-  href="#shop"
-  className="group relative overflow-hidden bg-card rounded-2xl p-8 hover-lift shadow-card border border-border/50"
->
+```tsx
+const navItems = [
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Branchenlösungen", href: "/branchenloesungen" },
+  { label: "Produkte", href: "/produkte", highlight: true },
+  { label: "Ratgeber", href: "/ratgeber" },
+  { label: "Kontakt", href: "/kontakt" },
+];
 ```
 
 **Nachher:**
-```
-<Link
-  key={module.title}
-  to="/produkte"
-  className="group relative overflow-hidden bg-card rounded-2xl p-8 hover-lift shadow-card border border-border/50"
->
-```
-
-### 3. Schliessendes Tag aendern (Zeile 80):
-
-**Vorher:**
-```
-</a>
-```
-
-**Nachher:**
-```
-</Link>
+```tsx
+const navItems = [
+  { label: "Branchenlösungen", href: "/branchenloesungen" },
+  { label: "Produkte", href: "/produkte", highlight: true },
+  { label: "Ratgeber", href: "/ratgeber" },
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Kontakt", href: "/kontakt" },
+];
 ```
 
 ---
 
 ## Ergebnis
 
-| Modul-Karte | Navigation |
-|-------------|------------|
-| Spender | `/produkte` |
-| Verbrauchsmaterial | `/produkte` |
-| Desinfektion | `/produkte` |
-| Reinigung | `/produkte` |
+Die Navigation zeigt nun die Links in der gewünschten Reihenfolge - sowohl auf Desktop als auch im Mobile-Menü.
 
-Alle Modul-Karten fuehren bei Klick direkt zur Produkte-Seite. Das Layout, die Groesse und die Animations-Effekte bleiben erhalten.
-
----
+| Position | Menüpunkt |
+|----------|-----------|
+| 1 | Branchenlösungen |
+| 2 | Produkte (hervorgehoben) |
+| 3 | Ratgeber |
+| 4 | Über uns |
+| 5 | Kontakt |
 
 ## Betroffene Datei
 
-| Datei | Aenderung |
-|-------|-----------|
-| `src/components/ModulesSection.tsx` | `Link` importieren, `<a href="#shop">` durch `<Link to="/produkte">` ersetzen |
+| Datei | Änderung |
+|-------|----------|
+| `src/components/Header.tsx` | Reihenfolge im `navItems`-Array anpassen |
