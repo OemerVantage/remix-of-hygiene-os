@@ -9,7 +9,9 @@ import { Loader2, Save } from "lucide-react";
 
 export function ProfileSettings() {
   const { profile, updateProfile } = useAuth();
-  const [displayName, setDisplayName] = useState(profile?.display_name || "");
+  const [firstName, setFirstName] = useState(profile?.first_name || "");
+  const [lastName, setLastName] = useState(profile?.last_name || "");
+  const [company, setCompany] = useState(profile?.company || "");
   const [phone, setPhone] = useState(profile?.phone || "");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,9 +19,14 @@ export function ProfileSettings() {
     e.preventDefault();
     setIsLoading(true);
 
+    const displayName = `${firstName} ${lastName}`.trim() || null;
+
     const { error } = await updateProfile({
-      display_name: displayName || null,
+      first_name: firstName || null,
+      last_name: lastName || null,
+      company: company || null,
       phone: phone || null,
+      display_name: displayName,
     });
 
     if (error) {
@@ -57,14 +64,37 @@ export function ProfileSettings() {
             </p>
           </div>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">Vorname</Label>
+              <Input
+                id="firstName"
+                type="text"
+                placeholder="Max"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Nachname</Label>
+              <Input
+                id="lastName"
+                type="text"
+                placeholder="Mustermann"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
-            <Label htmlFor="displayName">Anzeigename</Label>
+            <Label htmlFor="company">Firma</Label>
             <Input
-              id="displayName"
+              id="company"
               type="text"
-              placeholder="Max Mustermann"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Firmenname (optional)"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
             />
           </div>
 
@@ -73,7 +103,7 @@ export function ProfileSettings() {
             <Input
               id="phone"
               type="tel"
-              placeholder="+49 123 456789"
+              placeholder="+41 79 123 45 67"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
