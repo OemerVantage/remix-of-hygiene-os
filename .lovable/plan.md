@@ -1,85 +1,44 @@
 
-
-# Plan: SolutionsSection mit Branchenlösungen verknüpfen
+# Plan: Grid-Layout auf 5 Spalten zurücksetzen
 
 ## Problem
-Die Karten in "Wählen Sie Ihre Umgebung" auf der Startseite haben aktuell nur Anker-Links (`#gastronomie`), die nirgendwo hinfuehren. Sie sollen stattdessen zu den Branchenlösungs-Detailseiten navigieren.
+Das Grid-Layout wurde von `lg:grid-cols-5` auf `lg:grid-cols-6` geändert, was die Kartengröße verändert hat.
 
-## Loesung
-Die `SolutionsSection` Komponente anpassen, um die `industries` Daten aus `src/data/industries.ts` zu verwenden und mit React Router Links zu den Detailseiten zu navigieren.
+## Lösung
+Nur die Grid-Klasse zurückändern - die Verlinkung mit React Router und die industries-Daten bleiben erhalten.
 
 ---
 
-## Technische Aenderungen
+## Technische Änderung
 
-### Datei: `src/components/SolutionsSection.tsx`
+**Datei:** `src/components/SolutionsSection.tsx`
 
-**1. Importe aendern:**
-- `industries` aus `@/data/industries` importieren
-- `Link` aus `react-router-dom` importieren
-- Lokale `solutions` Array entfernen
+### Zeile 17 ändern:
 
-**2. Mapping anpassen:**
-Die Karten sollen die `industries` Daten nutzen und zu `/branchenloesungen/{slug}` navigieren.
-
-### Vorher:
-```text
-import { UtensilsCrossed, ... } from "lucide-react";
-
-const solutions = [
-  { icon: UtensilsCrossed, title: "Gastronomie", ... },
-  ...
-];
-
-<a href={`#${solution.title.toLowerCase()}`}>
+**Aktuell:**
+```
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
 ```
 
-### Nachher:
-```text
-import { Link } from "react-router-dom";
-import { industries } from "@/data/industries";
-
-<Link to={`/branchenloesungen/${industry.slug}`}>
+**Zurück zu:**
+```
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
 ```
 
 ---
 
-## Mapping der Branchen
-
-| Startseite | Ziel-URL |
-|------------|----------|
-| Hotellerie | `/branchenloesungen/hotellerie` |
-| Gastronomie | `/branchenloesungen/gastronomie` |
-| Gesundheitswesen | `/branchenloesungen/gesundheitswesen` |
-| Buero & Verwaltung | `/branchenloesungen/buero-verwaltung` |
-| Industrie & Produktion | `/branchenloesungen/industrie-produktion` |
-| Bildung & Kinderbetreuung | `/branchenloesungen/bildung-kinderbetreuung` |
+## Hinweis
+Da die `industries`-Daten 6 Einträge enthalten (inklusive Hotellerie), wird bei 5 Spalten die 6. Karte in eine zweite Zeile umbrechen.
 
 ---
 
-## Visuelle Darstellung
-
-```text
-Startseite "Waehlen Sie Ihre Umgebung"
-┌──────────────────────────────────────────────────────┐
-│  [Hotellerie] [Gastro] [Gesundheit] [Buero] [Bildung]│
-│       ↓          ↓          ↓          ↓        ↓   │
-└──────────────────────────────────────────────────────┘
-                      Klick
-                        ↓
-┌──────────────────────────────────────────────────────┐
-│  /branchenloesungen/gastronomie                      │
-│  ┌────────────────────────────────────────────────┐  │
-│  │  Gastronomie Detailseite mit Hero, Features... │  │
-│  └────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────┘
-```
-
----
+## Was bleibt erhalten
+- Verlinkung zu `/branchenloesungen/{slug}` via React Router
+- Alle 6 Branchen aus `industries` werden angezeigt
+- Icons, Titel und Beschreibungen
 
 ## Betroffene Datei
 
-| Datei | Aenderung |
-|-------|-----------|
-| `src/components/SolutionsSection.tsx` | Industries-Daten verwenden, `<a>` durch `<Link>` ersetzen, Navigation zu Detailseiten |
-
+| Datei | Änderung |
+|-------|----------|
+| `src/components/SolutionsSection.tsx` | Grid von `lg:grid-cols-6` zurück auf `lg:grid-cols-5` |
