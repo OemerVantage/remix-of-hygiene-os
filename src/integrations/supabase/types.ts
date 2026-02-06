@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       addresses: {
         Row: {
+          address_type: string | null
           city: string
           company: string | null
           country: string
@@ -31,6 +32,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          address_type?: string | null
           city: string
           company?: string | null
           country?: string
@@ -46,6 +48,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          address_type?: string | null
           city?: string
           company?: string | null
           country?: string
@@ -94,11 +97,14 @@ export type Database = {
       }
       profiles: {
         Row: {
+          company: string | null
           created_at: string
           display_name: string | null
           email: string
+          first_name: string | null
           id: string
           is_approved: boolean
+          last_name: string | null
           phone: string | null
           shopify_customer_id: string | null
           shopify_customer_token: string | null
@@ -106,11 +112,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          company?: string | null
           created_at?: string
           display_name?: string | null
           email: string
+          first_name?: string | null
           id?: string
           is_approved?: boolean
+          last_name?: string | null
           phone?: string | null
           shopify_customer_id?: string | null
           shopify_customer_token?: string | null
@@ -118,11 +127,14 @@ export type Database = {
           user_id: string
         }
         Update: {
+          company?: string | null
           created_at?: string
           display_name?: string | null
           email?: string
+          first_name?: string | null
           id?: string
           is_approved?: boolean
+          last_name?: string | null
           phone?: string | null
           shopify_customer_id?: string | null
           shopify_customer_token?: string | null

@@ -7,6 +7,9 @@ interface Profile {
   user_id: string;
   email: string;
   display_name: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  company: string | null;
   phone: string | null;
   shopify_customer_id: string | null;
   shopify_customer_token: string | null;
