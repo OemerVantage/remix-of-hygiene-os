@@ -1,62 +1,85 @@
 
 
-# Plan: Bestseller-Produkte zentriert anzeigen
+# Plan: SolutionsSection mit Branchenlösungen verknüpfen
 
-## Ziel
-Bei weniger als 4 Produkten sollen diese zentriert angezeigt werden, nicht links im Grid.
-
-## Aktuelle Situation
-Das Grid nutzt `grid-cols-4` - bei weniger Produkten bleiben die Produkte links im Grid-Bereich.
+## Problem
+Die Karten in "Wählen Sie Ihre Umgebung" auf der Startseite haben aktuell nur Anker-Links (`#gastronomie`), die nirgendwo hinfuehren. Sie sollen stattdessen zu den Branchenlösungs-Detailseiten navigieren.
 
 ## Loesung
-Von Grid zu Flexbox wechseln mit `justify-center` - so werden Produkte immer zentriert, unabhaengig von der Anzahl.
+Die `SolutionsSection` Komponente anpassen, um die `industries` Daten aus `src/data/industries.ts` zu verwenden und mit React Router Links zu den Detailseiten zu navigieren.
 
-## Technische Aenderung
+---
 
-**Datei:** `src/components/BestsellerSection.tsx`
+## Technische Aenderungen
 
-### Vorher (Zeile 64):
+### Datei: `src/components/SolutionsSection.tsx`
+
+**1. Importe aendern:**
+- `industries` aus `@/data/industries` importieren
+- `Link` aus `react-router-dom` importieren
+- Lokale `solutions` Array entfernen
+
+**2. Mapping anpassen:**
+Die Karten sollen die `industries` Daten nutzen und zu `/branchenloesungen/{slug}` navigieren.
+
+### Vorher:
 ```text
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-  {products.map((product) => (
-    <ProductCard key={product.node.id} product={product} />
-  ))}
-</div>
+import { UtensilsCrossed, ... } from "lucide-react";
+
+const solutions = [
+  { icon: UtensilsCrossed, title: "Gastronomie", ... },
+  ...
+];
+
+<a href={`#${solution.title.toLowerCase()}`}>
 ```
 
 ### Nachher:
 ```text
-<div className="flex flex-wrap justify-center gap-6">
-  {products.map((product) => (
-    <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
-      <ProductCard product={product} />
-    </div>
-  ))}
-</div>
+import { Link } from "react-router-dom";
+import { industries } from "@/data/industries";
+
+<Link to={`/branchenloesungen/${industry.slug}`}>
 ```
+
+---
+
+## Mapping der Branchen
+
+| Startseite | Ziel-URL |
+|------------|----------|
+| Hotellerie | `/branchenloesungen/hotellerie` |
+| Gastronomie | `/branchenloesungen/gastronomie` |
+| Gesundheitswesen | `/branchenloesungen/gesundheitswesen` |
+| Buero & Verwaltung | `/branchenloesungen/buero-verwaltung` |
+| Industrie & Produktion | `/branchenloesungen/industrie-produktion` |
+| Bildung & Kinderbetreuung | `/branchenloesungen/bildung-kinderbetreuung` |
+
+---
 
 ## Visuelle Darstellung
 
 ```text
-Mit 4 Produkten:
-┌─────────────────────────────────────────────────┐
-│  [Produkt 1] [Produkt 2] [Produkt 3] [Produkt 4]│
-└─────────────────────────────────────────────────┘
-
-Mit 2 Produkten (zentriert):
-┌─────────────────────────────────────────────────┐
-│          [Produkt 1] [Produkt 2]                │
-└─────────────────────────────────────────────────┘
-
-Mit 1 Produkt (zentriert):
-┌─────────────────────────────────────────────────┐
-│                  [Produkt 1]                    │
-└─────────────────────────────────────────────────┘
+Startseite "Waehlen Sie Ihre Umgebung"
+┌──────────────────────────────────────────────────────┐
+│  [Hotellerie] [Gastro] [Gesundheit] [Buero] [Bildung]│
+│       ↓          ↓          ↓          ↓        ↓   │
+└──────────────────────────────────────────────────────┘
+                      Klick
+                        ↓
+┌──────────────────────────────────────────────────────┐
+│  /branchenloesungen/gastronomie                      │
+│  ┌────────────────────────────────────────────────┐  │
+│  │  Gastronomie Detailseite mit Hero, Features... │  │
+│  └────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘
 ```
+
+---
 
 ## Betroffene Datei
 
 | Datei | Aenderung |
 |-------|-----------|
-| `src/components/BestsellerSection.tsx` | Grid durch Flexbox mit `justify-center` ersetzen (Zeile 64 und Skeleton-Bereich) |
+| `src/components/SolutionsSection.tsx` | Industries-Daten verwenden, `<a>` durch `<Link>` ersetzen, Navigation zu Detailseiten |
 
