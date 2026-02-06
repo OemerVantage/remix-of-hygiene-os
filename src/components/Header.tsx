@@ -7,10 +7,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import logo from "@/assets/logo.png";
 
 const navItems = [
-  { label: "Über uns", href: "/ueber-uns" },
   { label: "Branchenlösungen", href: "/branchenloesungen" },
   { label: "Produkte", href: "/produkte", highlight: true },
   { label: "Ratgeber", href: "/ratgeber" },
+  { label: "Über uns", href: "/ueber-uns" },
   { label: "Kontakt", href: "/kontakt" },
 ];
 
