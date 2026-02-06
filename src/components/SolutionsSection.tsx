@@ -15,7 +15,9 @@ export function SolutionsSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-          {industries.map((industry, index) => (
+          {industries
+            .filter((industry) => industry.slug !== "bildung-kinderbetreuung")
+            .map((industry, index) => (
             <Link
               key={industry.slug}
               to={`/branchenloesungen/${industry.slug}`}
