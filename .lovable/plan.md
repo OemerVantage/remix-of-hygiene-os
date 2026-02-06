@@ -1,52 +1,69 @@
 
-# Plan: Produktbilder zentriert und vollständig anzeigen
+# Plan: Suchfeld-Fokus-Problem beheben
 
 ## Problem
-Aktuell verwenden die Produktkarten `object-cover` für die Bilder. Das bewirkt:
-- Bilder werden beschnitten um den quadratischen Container zu füllen
-- Manche Produkte erscheinen "reingezoomt"
-- Das vollständige Produkt ist nicht immer sichtbar
+Bei jeder Eingabe einer Ziffer/Buchstabe verliert das Suchfeld den Fokus. Der Benutzer muss erneut in das Feld klicken.
 
-## Lösung
-Änderung von `object-cover` zu `object-contain` mit zusätzlichem Padding und weißem Hintergrund. Das entspricht dem gleichen Stil, der bereits auf der Produktdetailseite verwendet wird.
+## Ursache
+In `ProductFilters.tsx` sind `SearchBar` und `FilterContent` als Funktionen innerhalb der Komponente definiert:
 
-## Technische Änderung
-
-**Datei:** `src/components/ProductCard.tsx`
-
-Änderung in der Bild-Komponente (Zeile 49-61):
-
-**Vorher:**
-```
-<div className="aspect-square overflow-hidden bg-secondary/10">
-  <img 
-    src={image.url} 
-    alt={image.altText || node.title}
-    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-  />
+```text
+const SearchBar = () => (...)    // Zeile 201
+const FilterContent = () => (...) // Zeile 106
 ```
 
-**Nachher:**
+Bei jedem State-Update (z.B. `setLocalSearch`) wird die gesamte `ProductFilters`-Komponente neu gerendert. Dabei werden `SearchBar` und `FilterContent` als **neue Funktionen** erstellt. React erkennt diese als neue Komponenten und mountet sie komplett neu - der Fokus geht verloren.
+
+## Loesung
+Die inneren Funktionen durch direktes JSX ersetzen. Statt einer Funktion, die JSX zurueckgibt, wird das JSX direkt in den Return eingebettet.
+
+## Technische Aenderung
+
+**Datei:** `src/components/ProductFilters.tsx`
+
+1. **SearchBar-Funktion entfernen** (Zeile 200-212) und das JSX direkt verwenden
+2. **FilterContent-Funktion entfernen** (Zeile 106-198) und das JSX direkt einbetten
+3. **ActiveFilters-Funktion entfernen** (Zeile 214-254) und das JSX direkt einbetten
+
+### Vorher (vereinfacht):
+
+```text
+const SearchBar = () => (
+  <div className="relative">
+    <Input value={localSearch} onChange={...} />
+  </div>
+);
+
+return (
+  <div>
+    <SearchBar />
+  </div>
+);
 ```
-<div className="aspect-square overflow-hidden bg-white border-b border-border">
-  <img 
-    src={image.url} 
-    alt={image.altText || node.title}
-    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-  />
+
+### Nachher (vereinfacht):
+
+```text
+const searchBarContent = (
+  <div className="relative">
+    <Input value={localSearch} onChange={...} />
+  </div>
+);
+
+return (
+  <div>
+    {searchBarContent}
+  </div>
+);
 ```
 
-## Visuelle Verbesserungen
+## Warum funktioniert das?
+- JSX-Variablen werden bei Re-Renders nicht als "neue Komponenten" behandelt
+- React erkennt, dass es sich um das gleiche Input-Element handelt
+- Der Fokus bleibt erhalten
 
-| Eigenschaft | Vorher | Nachher |
-|-------------|--------|---------|
-| Bild-Fitting | `object-cover` (beschnitten) | `object-contain` (vollständig) |
-| Hintergrund | `bg-secondary/10` (grau) | `bg-white` (weiß) |
-| Innenabstand | Keiner | `p-4` (16px) |
-| Trennung | Keine | `border-b border-border` |
+## Betroffene Datei
 
-## Ergebnis
-- Alle Produktbilder werden vollständig und zentriert angezeigt
-- Einheitlicher weißer Hintergrund wie auf der Produktdetailseite
-- Subtile Linie trennt das Bild vom Textbereich
-- Hover-Zoom-Effekt bleibt erhalten
+| Datei | Aenderung |
+|-------|-----------|
+| `src/components/ProductFilters.tsx` | Innere Funktionskomponenten durch JSX-Variablen ersetzen |
