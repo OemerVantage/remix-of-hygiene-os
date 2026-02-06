@@ -1,3 +1,5 @@
+import logo from "@/assets/logo.png";
+
 const footerLinks = {
   unternehmen: [
     { label: "Über uns", href: "#about" },
@@ -31,9 +33,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <span className="text-heading-lg text-background font-semibold">
-              HYGISCOUT
-            </span>
+            <img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
             <p className="mt-4 text-body-sm text-background/60">
               Ihr Betriebssystem für professionelle Hygiene
             </p>
@@ -116,7 +116,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-body-sm text-background/40">
-            © 2024 Hygiscout. Alle Rechte vorbehalten.
+            © 2024 HygiSwiss AG. Alle Rechte vorbehalten.
           </p>
           <div className="flex gap-6">
             <a

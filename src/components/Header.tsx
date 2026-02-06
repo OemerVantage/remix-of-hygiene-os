@@ -4,6 +4,7 @@ import { Menu, X, User, LogIn } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { CartDrawer } from "@/components/CartDrawer";
 import { useAuth } from "@/contexts/AuthContext";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { label: "Über uns", href: "/ueber-uns" },
@@ -38,8 +39,8 @@ export function Header() {
       <div className="container-hygiscout">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="text-heading-lg tracking-tight text-primary font-semibold">
-            HYGISCOUT
+          <Link to="/">
+            <img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
