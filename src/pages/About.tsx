@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Users, Target, Award, Heart, Leaf, Recycle, Package, BadgeCheck } from "lucide-react";
+import { Users, Target, Award, Heart, Leaf, Recycle, Package, BadgeCheck, User, Building, Clock } from "lucide-react";
 
 const values = [
   {
@@ -48,6 +48,14 @@ const sustainabilityPoints = [
   },
 ];
 
+const timelineEvents = [
+  { year: "2004", title: "Gründung", description: "Gründung des Unternehmens als Familienbetrieb mit Fokus auf Hygieneprodukte." },
+  { year: "2008", title: "Wachstum", description: "Erweiterung des Sortiments und Aufbau eines schweizweiten Kundenstamms." },
+  { year: "2014", title: "Expansion", description: "Über 500 Produkte im Portfolio und Partnerschaften mit führenden Herstellern." },
+  { year: "2020", title: "Digitalisierung", description: "Launch des Online-Shops und digitaler Bestellprozesse für unsere Kunden." },
+  { year: "Heute", title: "Marktführer", description: "Über 1.000 zufriedene Kunden vertrauen auf unsere Hygienelösungen." },
+];
+
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -65,7 +73,7 @@ const About = () => {
                 <span className="text-primary block mt-2">Hygiene & Sauberkeit</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Seit über 8 Jahren sind wir Ihr zuverlässiger Partner für professionelle 
+                Seit über 20 Jahren sind wir Ihr zuverlässiger Partner für professionelle 
                 Hygienelösungen. Qualität, Innovation und Kundenzufriedenheit stehen bei uns an erster Stelle.
               </p>
             </div>
@@ -98,7 +106,7 @@ const About = () => {
                     <p className="text-muted-foreground">Zufriedene Kunden</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-4xl font-bold text-primary mb-2">8+</p>
+                    <p className="text-4xl font-bold text-primary mb-2">20+</p>
                     <p className="text-muted-foreground">Jahre Erfahrung</p>
                   </div>
                   <div className="text-center">
@@ -109,6 +117,91 @@ const About = () => {
                     <p className="text-4xl font-bold text-primary mb-2">24h</p>
                     <p className="text-muted-foreground">Lieferzeit</p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Timeline Section */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16 animate-fade-in">
+                <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+                  Seit über 20 Jahren
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                  Unsere Geschichte
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  Von der Gründung bis heute – ein Weg geprägt von Wachstum und Vertrauen.
+                </p>
+              </div>
+
+              <div className="relative">
+                {/* Timeline line */}
+                <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-px" />
+
+                <div className="space-y-12">
+                  {timelineEvents.map((event, index) => (
+                    <div
+                      key={event.year}
+                      className={`relative flex items-start gap-6 md:gap-12 animate-fade-in ${
+                        index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                      }`}
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      {/* Dot */}
+                      <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background -translate-x-1/2 z-10 mt-1" />
+
+                      {/* Content */}
+                      <div className={`ml-14 md:ml-0 md:w-[calc(50%-3rem)] ${index % 2 === 0 ? "md:text-right" : ""}`}>
+                        <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold mb-2">
+                          {event.year}
+                        </span>
+                        <h3 className="text-xl font-bold text-foreground mb-1">{event.title}</h3>
+                        <p className="text-muted-foreground">{event.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Geschäftsführer Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-card rounded-3xl border border-border p-10 md:p-14 flex flex-col md:flex-row items-center gap-10">
+                {/* Silhouette */}
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center shrink-0">
+                  <User className="w-16 h-16 md:w-20 md:h-20 text-primary/50" />
+                </div>
+
+                <div>
+                  <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+                    Geschäftsführung
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                    Geführt mit Erfahrung & Leidenschaft
+                  </h2>
+                  <div className="space-y-3 text-muted-foreground text-lg">
+                    <div className="flex items-center gap-3">
+                      <Clock className="w-5 h-5 text-primary shrink-0" />
+                      <span>Über 34 Jahre Berufserfahrung in der Hygienebranche</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Building className="w-5 h-5 text-primary shrink-0" />
+                      <span>Familienbetrieb mit persönlicher Betreuung</span>
+                    </div>
+                  </div>
+                  <p className="mt-6 text-muted-foreground">
+                    Unser Unternehmen wird mit Herzblut und jahrzehntelanger Branchenkenntnis geführt. 
+                    Als Familienbetrieb stehen wir für persönliche Beratung und langfristige Kundenbeziehungen.
+                  </p>
                 </div>
               </div>
             </div>
@@ -178,7 +271,6 @@ const About = () => {
             </div>
           </div>
         </section>
-
       </main>
       <Footer />
     </div>
