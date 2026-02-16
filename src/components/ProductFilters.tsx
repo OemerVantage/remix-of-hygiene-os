@@ -2,19 +2,22 @@ import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
-const CATEGORIES = [
-  "Handtuchrollenspender",
-  "Handtuchspender",
-  "Toilettenpapierspender",
-  "Seifenspender",
-  "Handtuchrollen",
-  "Falthandtücher",
-  "Toilettenpapier",
-  "Handseife",
-  "Toilettenhygiene",
+const FILTER_GROUPS = [
+  {
+    label: "Spendertyp",
+    items: ["Handtuchrollenspender", "Handtuchspender", "Toilettenpapierspender", "Seifenspender"],
+  },
+  {
+    label: "Verbrauchsmaterial",
+    items: ["Handtuchrollen", "Falthandtücher", "Toilettenpapier", "Handseife"],
+  },
+  {
+    label: "Sonstiges",
+    items: ["Toilettenhygiene"],
+  },
 ];
 
 export interface FilterState {
@@ -29,7 +32,6 @@ interface ProductFiltersProps {
 }
 
 export function ProductFilters({ filters, onFiltersChange, filteredCount }: ProductFiltersProps) {
-  const isMobile = useIsMobile();
   const [localSearch, setLocalSearch] = useState(filters.searchQuery);
 
   useEffect(() => {
@@ -60,47 +62,51 @@ export function ProductFilters({ filters, onFiltersChange, filteredCount }: Prod
   const hasActiveFilters = filters.searchQuery || filters.categories.length > 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
         <Input
           type="text"
-          placeholder="Suche nach Produkt, Artikelnummer..."
+          placeholder="Produkt suchen..."
           value={localSearch}
           onChange={(e) => setLocalSearch(e.target.value)}
-          className="pl-10"
+          className="pl-9 text-sm"
         />
       </div>
 
-      {/* Category Chips */}
-      <div className="flex flex-wrap gap-2">
-        {CATEGORIES.map((category) => {
-          const isActive = filters.categories.includes(category);
-          return (
-            <button
-              key={category}
-              onClick={() => toggleCategory(category)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border ${
-                isActive
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
-              }`}
-            >
-              {category}
-            </button>
-          );
-        })}
-      </div>
+      {/* Grouped Categories */}
+      {FILTER_GROUPS.map((group) => (
+        <div key={group.label} className="space-y-2">
+          <h4 className="text-sm font-semibold text-foreground">{group.label}</h4>
+          <div className="space-y-1.5">
+            {group.items.map((item) => {
+              const isActive = filters.categories.includes(item);
+              return (
+                <label
+                  key={item}
+                  className="flex items-center gap-2 cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Checkbox
+                    checked={isActive}
+                    onCheckedChange={() => toggleCategory(item)}
+                  />
+                  {item}
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      ))}
 
-      {/* Active filters & count */}
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">
+      {/* Count & Reset */}
+      <div className="pt-2 border-t border-border space-y-2">
+        <span className="text-xs text-muted-foreground block">
           {filteredCount} {filteredCount === 1 ? "Produkt" : "Produkte"} gefunden
         </span>
         {hasActiveFilters && (
-          <Button variant="ghost" size="sm" onClick={handleReset}>
-            <X className="h-4 w-4 mr-1" />
+          <Button variant="ghost" size="sm" onClick={handleReset} className="w-full justify-start text-xs">
+            <X className="h-3 w-3 mr-1" />
             Zurücksetzen
           </Button>
         )}

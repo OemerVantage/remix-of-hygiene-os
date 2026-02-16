@@ -92,43 +92,49 @@ const Products = () => {
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : (
-              <div className="space-y-8">
-                {/* Filters */}
-                <ProductFilters
-                  filters={filters}
-                  onFiltersChange={setFilters}
-                  filteredCount={filteredProducts.length}
-                />
+            <div className="flex flex-col md:flex-row gap-8">
+                {/* Sidebar Filters */}
+                <aside className="w-full md:w-60 shrink-0">
+                  <div className="md:sticky md:top-24 bg-card rounded-lg border border-border p-4">
+                    <ProductFilters
+                      filters={filters}
+                      onFiltersChange={setFilters}
+                      filteredCount={filteredProducts.length}
+                    />
+                  </div>
+                </aside>
 
                 {/* Products Grid */}
-                {filteredProducts.length === 0 ? (
-                  <div className="text-center py-16">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Package className="w-10 h-10 text-primary" />
+                <div className="flex-1">
+                  {filteredProducts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Package className="w-10 h-10 text-primary" />
+                      </div>
+                      {products.length === 0 ? (
+                        <>
+                          <h2 className="text-2xl font-bold mb-2">Keine Produkte verfügbar</h2>
+                          <p className="text-muted-foreground">
+                            Es sind noch keine Produkte im Shop hinterlegt.
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <h2 className="text-2xl font-bold mb-2">Keine Ergebnisse</h2>
+                          <p className="text-muted-foreground">
+                            Keine Produkte gefunden für die ausgewählten Filter
+                          </p>
+                        </>
+                      )}
                     </div>
-                    {products.length === 0 ? (
-                      <>
-                        <h2 className="text-2xl font-bold mb-2">Keine Produkte verfügbar</h2>
-                        <p className="text-muted-foreground">
-                          Es sind noch keine Produkte im Shop hinterlegt.
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <h2 className="text-2xl font-bold mb-2">Keine Ergebnisse</h2>
-                        <p className="text-muted-foreground">
-                          Keine Produkte gefunden für die ausgewählten Filter
-                        </p>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {filteredProducts.map((product) => (
-                      <ProductCard key={product.node.id} product={product} />
-                    ))}
-                  </div>
-                )}
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredProducts.map((product) => (
+                        <ProductCard key={product.node.id} product={product} />
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
