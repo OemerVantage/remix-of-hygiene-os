@@ -1,31 +1,20 @@
 
+# Plan: Logo mit transparentem Hintergrund ersetzen
 
-# Plan: "Gratis Spendersystem" Sektion nach oben verschieben
+## Uebersicht
+Das hochgeladene Logo (mit transparentem Hintergrund) wird als neue Logo-Datei ins Projekt kopiert und ersetzt das bisherige Logo ueberall.
 
-## Aenderung
+## Schritte
 
-**Datei:** `src/pages/Index.tsx`
+1. **Logo-Datei kopieren**: Das hochgeladene Bild (`ChatGPT_Image_17._Feb._2026_10_51_00.png`) wird nach `src/assets/logo.png` kopiert und ersetzt die bestehende Datei.
 
-Die Reihenfolge der Sektionen auf der Startseite wird angepasst:
+2. **Keine Code-Aenderungen noetig**: Sowohl `Header.tsx` als auch `Footer.tsx` importieren bereits `@/assets/logo.png` -- durch das Ersetzen der Datei wird das neue Logo automatisch ueberall angezeigt.
 
-**Aktuelle Reihenfolge:**
-1. HeroSection
-2. BestsellerSection
-3. SolutionsSection
-4. FreeDispenserSection
-5. ModulesSection
-6. ...
+## Betroffene Stellen
+- **Header** (Navigation oben): `src/components/Header.tsx` -- importiert `@/assets/logo.png`
+- **Footer** (Fusszeile): `src/components/Footer.tsx` -- importiert `@/assets/logo.png`
 
-**Neue Reihenfolge:**
-1. HeroSection
-2. FreeDispenserSection
-3. BestsellerSection
-4. SolutionsSection
-5. ModulesSection
-6. ...
-
-## Zusammenfassung
-- **1 Datei** betroffen (`src/pages/Index.tsx`)
-- Nur die Reihenfolge der Komponenten aendert sich
-- Keine inhaltlichen oder strukturellen Aenderungen
-
+## Technische Details
+- 1 Datei wird ersetzt: `src/assets/logo.png`
+- Keine Code-Aenderungen erforderlich
+- Das Favicon (`public/favicon.png`) bleibt unveraendert -- soll das auch aktualisiert werden?
