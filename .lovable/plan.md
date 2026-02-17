@@ -1,31 +1,24 @@
 
 
-# Plan: Geschaeftsfuehrer-Sektion neu gestalten
+# Plan: Geschaeftsfuehrung-Sektion nach oben verschieben
 
 ## Uebersicht
-Die aktuelle Geschaeftsfuehrer-Sektion mit Karten-Layout und Avatar-Silhouette wird zu einer offenen "Vorstellung"-Sektion umgebaut -- im gleichen Stil wie die anderen Sektionen auf der Ueber-uns-Seite (z.B. "Unsere Mission" oder "Unsere Geschichte").
+Die "Geschaeftsfuehrung"-Sektion wird von ihrer aktuellen Position (zwischen "Unsere Geschichte" und "Unsere Werte") nach oben verschoben -- direkt vor die "Unsere Geschichte"-Sektion.
 
-## Aktuell vs. Neu
+## Neue Reihenfolge der Sektionen
 
-| Aktuell | Neu |
-|---------|-----|
-| Abgerundete Karte mit Rahmen | Offenes Layout ohne Karte, wie die anderen Sektionen |
-| Avatar-Silhouette (Kreis mit User-Icon) | Kein Avatar, kein Icon |
-| Horizontal: Bild links, Text rechts | Zentrierter Aufbau mit Badge, Ueberschrift, Beschreibung |
-| Einzelne Karte | Sektions-Layout wie "Unsere Mission" |
-
-## Neues Layout
-
-Aufbau (zentriert, wie die anderen Sektionen):
-
-1. Badge: "Geschaeftsfuehrung" (wie bei den anderen Sektionen)
-2. Ueberschrift: "Gefuehrt mit Erfahrung & Leidenschaft"
-3. Beschreibungstext mit den Kerninfos (34 Jahre Erfahrung, Familienbetrieb, persoenliche Betreuung)
-4. Optional: Die zwei Info-Punkte (Berufserfahrung, Familienbetrieb) als einfache Text-Zeilen oder dezente Highlight-Boxen
+1. Hero
+2. Unsere Mission
+3. **Geschaeftsfuehrung** (hierhin verschoben)
+4. Unsere Geschichte
+5. Unsere Werte
+6. Nachhaltigkeit
 
 ## Betroffene Datei
 
 | Datei | Aenderung |
 |-------|-----------|
-| `src/pages/About.tsx` | Geschaeftsfuehrer-Sektion: Karten-Layout und Avatar entfernen, offenes Sektions-Layout wie die restlichen Bereiche |
+| `src/pages/About.tsx` | Den Geschaeftsfuehrung-Abschnitt (Zeilen 174-199) ausschneiden und vor der Timeline-Sektion (vor Zeile 118) einfuegen |
+
+Keine inhaltlichen Aenderungen -- nur die Position im Code aendert sich.
 
