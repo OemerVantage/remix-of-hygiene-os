@@ -37,10 +37,10 @@ export function Header() {
       }`}
     >
       <div className="container-hygiswiss">
-        <nav className="flex items-center justify-between h-20">
+        <nav className="flex items-center justify-between h-28">
           {/* Logo */}
           <Link to="/">
-            <img src={logo} alt="HygiSwiss AG" className="h-20 w-auto" />
+            <img src={logo} alt="HygiSwiss AG" className="h-28 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -117,7 +117,7 @@ export function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-0 right-0 bg-card shadow-lg border-t border-border">
+          <div className="lg:hidden absolute top-28 left-0 right-0 bg-card shadow-lg border-t border-border">
             <ul className="flex flex-col py-6 px-6 gap-4">
               {navItems.map((item) => (
                 <li key={item.label}>
