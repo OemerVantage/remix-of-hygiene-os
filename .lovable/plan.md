@@ -1,20 +1,17 @@
 
-# Plan: Logo mit transparentem Hintergrund ersetzen
+
+# Plan: Favicon mit neuem Logo aktualisieren
 
 ## Uebersicht
-Das hochgeladene Logo (mit transparentem Hintergrund) wird als neue Logo-Datei ins Projekt kopiert und ersetzt das bisherige Logo ueberall.
+Das Favicon (`public/favicon.png`) wird durch das neue Logo mit transparentem Hintergrund ersetzt.
 
 ## Schritte
 
-1. **Logo-Datei kopieren**: Das hochgeladene Bild (`ChatGPT_Image_17._Feb._2026_10_51_00.png`) wird nach `src/assets/logo.png` kopiert und ersetzt die bestehende Datei.
+1. **Favicon-Datei ersetzen**: Das hochgeladene Logo (`ChatGPT_Image_17._Feb._2026_10_51_00.png`) wird nach `public/favicon.png` kopiert und ersetzt das bisherige Favicon.
 
-2. **Keine Code-Aenderungen noetig**: Sowohl `Header.tsx` als auch `Footer.tsx` importieren bereits `@/assets/logo.png` -- durch das Ersetzen der Datei wird das neue Logo automatisch ueberall angezeigt.
+2. **Keine Code-Aenderungen noetig**: Die `index.html` verweist bereits auf `/favicon.png` -- durch das Ersetzen der Datei wird das neue Icon automatisch im Browser-Tab angezeigt.
 
-## Betroffene Stellen
-- **Header** (Navigation oben): `src/components/Header.tsx` -- importiert `@/assets/logo.png`
-- **Footer** (Fusszeile): `src/components/Footer.tsx` -- importiert `@/assets/logo.png`
-
-## Technische Details
-- 1 Datei wird ersetzt: `src/assets/logo.png`
+## Zusammenfassung
+- **1 Datei** wird ersetzt: `public/favicon.png`
 - Keine Code-Aenderungen erforderlich
-- Das Favicon (`public/favicon.png`) bleibt unveraendert -- soll das auch aktualisiert werden?
+
