@@ -1,35 +1,18 @@
 
 
-# Plan: Logo groesser machen
+# Plan: Logo deutlich vergroessern
 
 ## Aenderung
 
-**Datei:** `src/components/Header.tsx`
+Das Logo im Header und Footer wird von `h-14` (56px) auf `h-20` (80px) vergroessert, um der Referenz auf dem Foto zu entsprechen.
 
-Die Logo-Groesse wird von `h-10` auf `h-14` erhoert (Zeile 46):
+**Datei:** `src/components/Header.tsx` (Zeile 43)
+- `className="h-14 w-auto"` wird zu `className="h-20 w-auto"`
 
-```
-// Vorher
-<img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
-
-// Nachher
-<img src={logo} alt="HygiSwiss AG" className="h-14 w-auto" />
-```
-
-**Datei:** `src/components/Footer.tsx`
-
-Auch im Footer wird das Logo von `h-10` auf `h-14` vergroessert (Zeile 43):
-
-```
-// Vorher
-<img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
-
-// Nachher
-<img src={logo} alt="HygiSwiss AG" className="h-14 w-auto" />
-```
+**Datei:** `src/components/Footer.tsx` (Zeile 36)
+- `className="h-14 w-auto"` wird zu `className="h-20 w-auto"`
 
 ## Zusammenfassung
-- **2 Dateien** betroffen: `Header.tsx` und `Footer.tsx`
-- Logo-Hoehe von 40px (`h-10`) auf 56px (`h-14`) erhoet
-- Breite passt sich automatisch an (`w-auto`)
+- **2 Dateien** betroffen
+- Logo-Hoehe von 56px (`h-14`) auf 80px (`h-20`) erhoeht
 
