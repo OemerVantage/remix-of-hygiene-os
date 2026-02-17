@@ -15,7 +15,7 @@ export default function Account() {
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <main className="flex-1 pt-32 pb-16">
-          <div className="container-hygiscout">
+          <div className="container-hygiswiss">
             <h1 className="text-heading-xl font-bold mb-8">Mein Konto</h1>
             
             <Tabs defaultValue="overview" className="space-y-6">

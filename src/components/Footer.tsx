@@ -29,7 +29,7 @@ const footerLinks = {
 export function Footer() {
   return (
     <footer className="bg-foreground text-background/80">
-      <div className="container-hygiscout section-padding">
+      <div className="container-hygiswiss section-padding">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">

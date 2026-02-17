@@ -21,7 +21,7 @@ const guides = [
 export function GuidesSection() {
   return (
     <section id="guides" className="section-padding">
-      <div className="container-hygiscout">
+      <div className="container-hygiswiss">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
             <span className="text-body-sm font-medium text-primary uppercase tracking-wider">

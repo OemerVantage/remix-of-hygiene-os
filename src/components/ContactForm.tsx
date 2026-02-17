@@ -57,7 +57,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "E-Mail",
-    content: "info@hygiscout.ch",
+    content: "info@hygiswiss.ch",
   },
   {
     icon: Clock,

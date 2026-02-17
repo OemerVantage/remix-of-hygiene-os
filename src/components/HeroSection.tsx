@@ -15,7 +15,7 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="container-hygiscout relative z-20">
+      <div className="container-hygiswiss relative z-20">
         <div className="max-w-2xl">
           <h1 className="text-display-md md:text-display-lg text-foreground animate-fade-in-up">
             Professionelle Hygiene
@@ -24,7 +24,7 @@ export function HeroSection() {
           </h1>
           
           <p className="mt-6 text-body-lg text-muted-foreground max-w-xl animate-fade-in-delay-1">
-            Hygiscout ist Ihr Betriebssystem für professionelle Hygiene. 
+            Hygiswiss ist Ihr Betriebssystem für professionelle Hygiene. 
             Effiziente Lösungen für jede Branche – von Spendern bis zur Desinfektion.
           </p>
 

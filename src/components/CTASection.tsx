@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 export function CTASection() {
   return (
     <section id="contact" className="section-padding bg-primary">
-      <div className="container-hygiscout text-center">
+      <div className="container-hygiswiss text-center">
         <h2 className="text-display-sm md:text-display-md text-primary-foreground max-w-2xl mx-auto">
           Persönliche Hygieneberatung erhalten
         </h2>

@@ -21,10 +21,10 @@ const trustPoints = [
 export function TrustSection() {
   return (
     <section className="section-padding bg-secondary">
-      <div className="container-hygiscout">
+      <div className="container-hygiswiss">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-display-sm md:text-display-md text-foreground">
-            Warum Hygiscout
+            Warum Hygiswiss
           </h2>
         </div>
 
