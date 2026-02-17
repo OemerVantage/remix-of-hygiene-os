@@ -36,7 +36,7 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="container-hygiscout">
+      <div className="container-hygiswiss">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/">

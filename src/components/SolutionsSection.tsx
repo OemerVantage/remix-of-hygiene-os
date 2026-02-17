@@ -4,7 +4,7 @@ import { industries } from "@/data/industries";
 export function SolutionsSection() {
   return (
     <section id="solutions" className="section-padding bg-secondary">
-      <div className="container-hygiscout">
+      <div className="container-hygiswiss">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-display-sm md:text-display-md text-foreground">
             Wählen Sie Ihre Umgebung

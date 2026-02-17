@@ -31,7 +31,7 @@ const modules = [
 export function ModulesSection() {
   return (
     <section id="products" className="section-padding">
-      <div className="container-hygiscout">
+      <div className="container-hygiswiss">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-body-sm font-medium text-primary uppercase tracking-wider">
             Hygiene OS
