@@ -1,17 +1,35 @@
 
 
-# Plan: Favicon mit neuem Logo aktualisieren
+# Plan: Logo groesser machen
 
-## Uebersicht
-Das Favicon (`public/favicon.png`) wird durch das neue Logo mit transparentem Hintergrund ersetzt.
+## Aenderung
 
-## Schritte
+**Datei:** `src/components/Header.tsx`
 
-1. **Favicon-Datei ersetzen**: Das hochgeladene Logo (`ChatGPT_Image_17._Feb._2026_10_51_00.png`) wird nach `public/favicon.png` kopiert und ersetzt das bisherige Favicon.
+Die Logo-Groesse wird von `h-10` auf `h-14` erhoert (Zeile 46):
 
-2. **Keine Code-Aenderungen noetig**: Die `index.html` verweist bereits auf `/favicon.png` -- durch das Ersetzen der Datei wird das neue Icon automatisch im Browser-Tab angezeigt.
+```
+// Vorher
+<img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
+
+// Nachher
+<img src={logo} alt="HygiSwiss AG" className="h-14 w-auto" />
+```
+
+**Datei:** `src/components/Footer.tsx`
+
+Auch im Footer wird das Logo von `h-10` auf `h-14` vergroessert (Zeile 43):
+
+```
+// Vorher
+<img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
+
+// Nachher
+<img src={logo} alt="HygiSwiss AG" className="h-14 w-auto" />
+```
 
 ## Zusammenfassung
-- **1 Datei** wird ersetzt: `public/favicon.png`
-- Keine Code-Aenderungen erforderlich
+- **2 Dateien** betroffen: `Header.tsx` und `Footer.tsx`
+- Logo-Hoehe von 40px (`h-10`) auf 56px (`h-14`) erhoet
+- Breite passt sich automatisch an (`w-auto`)
 
