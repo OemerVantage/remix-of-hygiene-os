@@ -1,38 +1,29 @@
 
 
-# Plan: "Hygiscout" durch "Hygiswiss" ersetzen
+# Plan: Hero-Text anpassen
 
 ## Uebersicht
-Alle Vorkommen von "Hygiscout" (in allen Schreibweisen) werden durch "Hygiswiss" ersetzt. Das betrifft sichtbare Texte, CSS-Klassen/Kommentare und eine E-Mail-Adresse.
+Der Beschreibungstext in der Hero-Sektion wird angepasst: "Desinfektion" wird entfernt, "Seit 2006" wird eingebaut, und die Formulierung passt zum tatsaechlichen Angebot (Spendersysteme und Verbrauchsmaterial).
 
-## Betroffene Dateien und Aenderungen
+## Aenderung
 
-| Datei | Was wird geaendert |
-|-------|-------------------|
-| `src/components/HeroSection.tsx` | "Hygiscout ist Ihr Betriebssystem..." -> "Hygiswiss ist Ihr Betriebssystem..." |
-| `src/components/TrustSection.tsx` | "Warum Hygiscout" -> "Warum Hygiswiss" |
-| `src/pages/Register.tsx` | "Willkommen bei HYGISCOUT!" -> "Willkommen bei HYGISWISS!" |
-| `src/components/ContactForm.tsx` | "info@hygiscout.ch" -> "info@hygiswiss.ch" |
-| `src/index.css` | CSS-Kommentare: "Hygiscout Design System" -> "Hygiswiss Design System", "Custom Hygiscout Tokens" -> "Custom Hygiswiss Tokens" |
+**Datei:** `src/components/HeroSection.tsx`
 
-## CSS-Klasse `container-hygiscout`
+**Aktueller Text:**
+> Hygiswiss ist Ihr Betriebssystem fuer professionelle Hygiene. Effiziente Loesungen fuer jede Branche -- von Spendern bis zur Desinfektion.
 
-Die CSS-Klasse `.container-hygiscout` wird in `.container-hygiswiss` umbenannt. Das betrifft:
+**Neuer Text:**
+> Seit 2006 Ihr Partner fuer professionelle Hygiene. Effiziente Spendersysteme und Verbrauchsmaterial fuer jede Branche.
 
-| Datei | Anzahl Stellen |
-|-------|---------------|
-| `src/index.css` | 1 (Klassendefinition) |
-| `src/components/Header.tsx` | 1 |
-| `src/components/HeroSection.tsx` | 1 |
-| `src/components/SolutionsSection.tsx` | 1 |
-| `src/components/ModulesSection.tsx` | 1 |
-| `src/components/TrustSection.tsx` | 1 |
-| `src/components/GuidesSection.tsx` | 1 |
-| `src/components/CTASection.tsx` | 1 |
-| `src/components/Footer.tsx` | 1 |
-| `src/pages/Account.tsx` | 1 |
+## Warum dieser Text
+- "Seit 2006" schafft Vertrauen durch Erfahrung
+- "Partner" statt "Betriebssystem" -- persoenlicher und nahbarer
+- "Spendersysteme und Verbrauchsmaterial" -- beschreibt das tatsaechliche Angebot korrekt
+- Keine Erwaehnung von Desinfektion oder Reinigung
+- Kurz und fliessend
 
 ## Zusammenfassung
-- **12 Dateien** betroffen
-- Alle sichtbaren Texte, Kommentare und die CSS-Klasse werden konsistent auf "Hygiswiss" umgestellt
-- Keine funktionalen Aenderungen -- nur Namensaenderungen
+- **1 Datei** betroffen
+- Nur eine Textzeile aendert sich
+- Keine strukturellen Aenderungen
+
