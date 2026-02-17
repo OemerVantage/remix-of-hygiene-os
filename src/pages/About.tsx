@@ -123,6 +123,35 @@ const About = () => {
           </div>
         </section>
 
+        {/* Geschäftsführer Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center animate-fade-in">
+              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+                Geschäftsführung
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                Geführt mit Erfahrung & Leidenschaft
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+                Unser Unternehmen wird mit Herzblut und über 34 Jahren Branchenkenntnis geführt. 
+                Als Familienbetrieb stehen wir für persönliche Beratung und langfristige Kundenbeziehungen – 
+                mit dem Anspruch, für jeden Kunden die beste Lösung zu finden.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-6 text-muted-foreground">
+                <div className="flex items-center justify-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <span>Über 34 Jahre Berufserfahrung</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <Building className="w-5 h-5 text-primary" />
+                  <span>Familienbetrieb mit persönlicher Betreuung</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Timeline Section */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
@@ -165,35 +194,6 @@ const About = () => {
                       </div>
                     </div>
                   ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Geschäftsführer Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center animate-fade-in">
-              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-                Geschäftsführung
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Geführt mit Erfahrung & Leidenschaft
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-                Unser Unternehmen wird mit Herzblut und über 34 Jahren Branchenkenntnis geführt. 
-                Als Familienbetrieb stehen wir für persönliche Beratung und langfristige Kundenbeziehungen – 
-                mit dem Anspruch, für jeden Kunden die beste Lösung zu finden.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-6 text-muted-foreground">
-                <div className="flex items-center justify-center gap-2">
-                  <Clock className="w-5 h-5 text-primary" />
-                  <span>Über 34 Jahre Berufserfahrung</span>
-                </div>
-                <div className="flex items-center justify-center gap-2">
-                  <Building className="w-5 h-5 text-primary" />
-                  <span>Familienbetrieb mit persönlicher Betreuung</span>
                 </div>
               </div>
             </div>
