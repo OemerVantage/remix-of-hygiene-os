@@ -33,7 +33,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <img src={logo} alt="HygiSwiss AG" className="h-10 w-auto" />
+            <img src={logo} alt="HygiSwiss AG" className="h-14 w-auto" />
             <p className="mt-4 text-body-sm text-background/60">
               Ihr Betriebssystem für professionelle Hygiene
             </p>
