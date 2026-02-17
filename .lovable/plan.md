@@ -1,24 +1,38 @@
 
 
-# Plan: Geschaeftsfuehrung-Sektion nach oben verschieben
+# Plan: "Hygiscout" durch "Hygiswiss" ersetzen
 
 ## Uebersicht
-Die "Geschaeftsfuehrung"-Sektion wird von ihrer aktuellen Position (zwischen "Unsere Geschichte" und "Unsere Werte") nach oben verschoben -- direkt vor die "Unsere Geschichte"-Sektion.
+Alle Vorkommen von "Hygiscout" (in allen Schreibweisen) werden durch "Hygiswiss" ersetzt. Das betrifft sichtbare Texte, CSS-Klassen/Kommentare und eine E-Mail-Adresse.
 
-## Neue Reihenfolge der Sektionen
+## Betroffene Dateien und Aenderungen
 
-1. Hero
-2. Unsere Mission
-3. **Geschaeftsfuehrung** (hierhin verschoben)
-4. Unsere Geschichte
-5. Unsere Werte
-6. Nachhaltigkeit
+| Datei | Was wird geaendert |
+|-------|-------------------|
+| `src/components/HeroSection.tsx` | "Hygiscout ist Ihr Betriebssystem..." -> "Hygiswiss ist Ihr Betriebssystem..." |
+| `src/components/TrustSection.tsx` | "Warum Hygiscout" -> "Warum Hygiswiss" |
+| `src/pages/Register.tsx` | "Willkommen bei HYGISCOUT!" -> "Willkommen bei HYGISWISS!" |
+| `src/components/ContactForm.tsx` | "info@hygiscout.ch" -> "info@hygiswiss.ch" |
+| `src/index.css` | CSS-Kommentare: "Hygiscout Design System" -> "Hygiswiss Design System", "Custom Hygiscout Tokens" -> "Custom Hygiswiss Tokens" |
 
-## Betroffene Datei
+## CSS-Klasse `container-hygiscout`
 
-| Datei | Aenderung |
-|-------|-----------|
-| `src/pages/About.tsx` | Den Geschaeftsfuehrung-Abschnitt (Zeilen 174-199) ausschneiden und vor der Timeline-Sektion (vor Zeile 118) einfuegen |
+Die CSS-Klasse `.container-hygiscout` wird in `.container-hygiswiss` umbenannt. Das betrifft:
 
-Keine inhaltlichen Aenderungen -- nur die Position im Code aendert sich.
+| Datei | Anzahl Stellen |
+|-------|---------------|
+| `src/index.css` | 1 (Klassendefinition) |
+| `src/components/Header.tsx` | 1 |
+| `src/components/HeroSection.tsx` | 1 |
+| `src/components/SolutionsSection.tsx` | 1 |
+| `src/components/ModulesSection.tsx` | 1 |
+| `src/components/TrustSection.tsx` | 1 |
+| `src/components/GuidesSection.tsx` | 1 |
+| `src/components/CTASection.tsx` | 1 |
+| `src/components/Footer.tsx` | 1 |
+| `src/pages/Account.tsx` | 1 |
 
+## Zusammenfassung
+- **12 Dateien** betroffen
+- Alle sichtbaren Texte, Kommentare und die CSS-Klasse werden konsistent auf "Hygiswiss" umgestellt
+- Keine funktionalen Aenderungen -- nur Namensaenderungen
