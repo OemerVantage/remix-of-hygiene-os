@@ -1,70 +1,31 @@
 
+# Plan: Spendersystem-Bild rechts einfuegen
 
-# Plan: Filter als Sidebar mit gruppierten Kategorien
+## Uebersicht
+Das zuvor hochgeladene Spender-Bild wird rechts neben dem Text in der "Gratis Spendersystem"-Sektion platziert -- wie im Referenz-Screenshot gezeigt.
 
-## Übersicht
-Die aktuellen horizontalen Kategorie-Chips werden durch eine Sidebar-Filterleiste auf der linken Seite ersetzt -- so wie es vorher war. Die Kategorien werden in Gruppen organisiert.
+## Aenderungen
 
-## Kategoriegruppen
+### 1. Bild ins Projekt kopieren
+- `user-uploads://Gemini_Generated_Image_lrrt7vlrrt7vlrrt.png` nach `src/assets/dispenser-systems.png`
 
-| Gruppe | Kategorien |
-|--------|-----------|
-| Spendertyp | Handtuchrollenspender, Handtuchspender, Toilettenpapierspender, Seifenspender |
-| Verbrauchsmaterial | Handtuchrollen, Falthandtuecher, Toilettenpapier, Handseife |
-| *(ohne Gruppe)* | Toilettenhygiene |
+### 2. `src/components/FreeDispenserSection.tsx`
 
----
+Layout von zentriertem Einspalt-Layout zu Zwei-Spalten-Layout umbauen:
 
-## Technische Aenderungen
+- **Links (Text-Spalte)**: Badge, Ueberschrift, Beschreibung, CTA-Button -- Text bleibt zentriert wie im Screenshot
+- **Rechts (Bild-Spalte)**: Das Spender-Bild, vertikal zentriert
 
-### 1. `src/components/ProductFilters.tsx` -- Sidebar mit Gruppen
+Technisch:
+- `grid grid-cols-1 md:grid-cols-2` mit `items-center`
+- Text-Bereich bleibt `text-center`
+- Bild mit `import dispenserImage from "@/assets/dispenser-systems.png"` einbinden
+- Auf Mobile: Text oben, Bild unten (einspaltig)
+- Bild bekommt leichten Schatten/Transparenz-Effekt fuer den schwebenden Look
 
-- Flache `CATEGORIES`-Liste ersetzen durch gruppierte Struktur:
-```tsx
-const FILTER_GROUPS = [
-  {
-    label: "Spendertyp",
-    items: ["Handtuchrollenspender", "Handtuchspender", "Toilettenpapierspender", "Seifenspender"],
-  },
-  {
-    label: "Verbrauchsmaterial",
-    items: ["Handtuchrollen", "Falthandtuecher", "Toilettenpapier", "Handseife"],
-  },
-  {
-    label: "Sonstiges",
-    items: ["Toilettenhygiene"],
-  },
-];
-```
-
-- Layout aendern: vertikale Sidebar statt horizontale Chips
-- Jede Gruppe bekommt eine Ueberschrift und darunter Checkboxen (oder klickbare Items) fuer die einzelnen Kategorien
-- Suchleiste bleibt oben in der Sidebar
-- "Zuruecksetzen"-Button und Produktanzahl bleiben erhalten
-
-### 2. `src/pages/Products.tsx` -- Zwei-Spalten-Layout
-
-- Layout von einspaltig zu zweispaltig aendern: Filter-Sidebar links, Produkt-Grid rechts
-- Auf Mobile: Filter oberhalb des Grids (responsive)
-
-```
-Desktop:                    Mobile:
-+--------+-----------+      +----------------+
-| Filter | Produkte  |      | Filter         |
-| Bar    | Grid      |      +----------------+
-|        |           |      | Produkte Grid  |
-+--------+-----------+      +----------------+
-```
-
-- `FilterState` bleibt gleich (`searchQuery` + `categories: string[]`)
-- Filterlogik in `filteredProducts` bleibt unveraendert
-
----
-
-## Betroffene Dateien
+### Betroffene Dateien
 
 | Datei | Aenderung |
 |-------|-----------|
-| `src/components/ProductFilters.tsx` | Sidebar-Layout mit gruppierten Kategorien und Checkboxen |
-| `src/pages/Products.tsx` | Zwei-Spalten-Layout: Sidebar links, Grid rechts |
-
+| `src/assets/dispenser-systems.png` | Neues Bild (kopiert aus Upload) |
+| `src/components/FreeDispenserSection.tsx` | Zwei-Spalten-Layout: Text links, Bild rechts |
