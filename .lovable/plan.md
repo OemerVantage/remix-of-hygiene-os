@@ -1,20 +1,19 @@
 
 
-# Plan: Logo noch groesser machen
+# Plan: Favicon mit dem hochgeladenen Logo ersetzen
 
 ## Aenderung
 
-Das Logo im Header und Footer wird von `h-20` (80px) auf `h-28` (112px) vergroessert.
+Das hochgeladene Bild (`user-uploads://image-27.png`) wird als neues Favicon verwendet.
 
-**Datei:** `src/components/Header.tsx` (Zeile 43)
-- `className="h-20 w-auto"` wird zu `className="h-28 w-auto"`
-- Die Header-Navigation-Hoehe wird ebenfalls von `h-20` auf `h-28` angepasst (Zeile 40), damit das Logo nicht abgeschnitten wird.
+**Schritt 1:** Die Datei `user-uploads://image-27.png` wird nach `public/favicon.png` kopiert (ersetzt das bisherige Favicon).
 
-**Datei:** `src/components/Footer.tsx` (Zeile 36)
-- `className="h-20 w-auto"` wird zu `className="h-28 w-auto"`
+**Schritt 2:** Die Referenz in `index.html` (Zeile 19) bleibt unveraendert, da sie bereits auf `/favicon.png` zeigt:
+```html
+<link rel="icon" type="image/png" href="/favicon.png" />
+```
 
 ## Zusammenfassung
-- **2 Dateien** betroffen
-- Logo-Hoehe von 80px (`h-20`) auf 112px (`h-28`) erhoeht
-- Header-Hoehe entsprechend angepasst
+- **1 Datei** wird kopiert: das hochgeladene Logo ersetzt `public/favicon.png`
+- Keine Code-Aenderung noetig, da `index.html` bereits korrekt konfiguriert ist
 
