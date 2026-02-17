@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Users, Target, Award, Heart, Leaf, Recycle, Package, BadgeCheck, User, Building, Clock } from "lucide-react";
+import { Users, Target, Award, Heart, Leaf, Recycle, Package, BadgeCheck, Building, Clock } from "lucide-react";
 
 const values = [
   {
@@ -174,34 +174,26 @@ const About = () => {
         {/* Geschäftsführer Section */}
         <section className="py-20">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-card rounded-3xl border border-border p-10 md:p-14 flex flex-col md:flex-row items-center gap-10">
-                {/* Silhouette */}
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center shrink-0">
-                  <User className="w-16 h-16 md:w-20 md:h-20 text-primary/50" />
+            <div className="max-w-4xl mx-auto text-center animate-fade-in">
+              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+                Geschäftsführung
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                Geführt mit Erfahrung & Leidenschaft
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+                Unser Unternehmen wird mit Herzblut und über 34 Jahren Branchenkenntnis geführt. 
+                Als Familienbetrieb stehen wir für persönliche Beratung und langfristige Kundenbeziehungen – 
+                mit dem Anspruch, für jeden Kunden die beste Lösung zu finden.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-6 text-muted-foreground">
+                <div className="flex items-center justify-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <span>Über 34 Jahre Berufserfahrung</span>
                 </div>
-
-                <div>
-                  <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-                    Geschäftsführung
-                  </span>
-                  <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                    Geführt mit Erfahrung & Leidenschaft
-                  </h2>
-                  <div className="space-y-3 text-muted-foreground text-lg">
-                    <div className="flex items-center gap-3">
-                      <Clock className="w-5 h-5 text-primary shrink-0" />
-                      <span>Über 34 Jahre Berufserfahrung in der Hygienebranche</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Building className="w-5 h-5 text-primary shrink-0" />
-                      <span>Familienbetrieb mit persönlicher Betreuung</span>
-                    </div>
-                  </div>
-                  <p className="mt-6 text-muted-foreground">
-                    Unser Unternehmen wird mit Herzblut und jahrzehntelanger Branchenkenntnis geführt. 
-                    Als Familienbetrieb stehen wir für persönliche Beratung und langfristige Kundenbeziehungen.
-                  </p>
+                <div className="flex items-center justify-center gap-2">
+                  <Building className="w-5 h-5 text-primary" />
+                  <span>Familienbetrieb mit persönlicher Betreuung</span>
                 </div>
               </div>
             </div>
