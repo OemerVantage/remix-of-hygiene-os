@@ -40,7 +40,7 @@ export function Header() {
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/">
-            <img src={logo} alt="HygiSwiss AG" className="h-14 w-auto" />
+            <img src={logo} alt="HygiSwiss AG" className="h-20 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
