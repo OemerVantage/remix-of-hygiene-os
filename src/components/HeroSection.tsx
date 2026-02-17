@@ -24,8 +24,8 @@ export function HeroSection() {
           </h1>
           
           <p className="mt-6 text-body-lg text-muted-foreground max-w-xl animate-fade-in-delay-1">
-            Hygiswiss ist Ihr Betriebssystem für professionelle Hygiene. 
-            Effiziente Lösungen für jede Branche – von Spendern bis zur Desinfektion.
+            Seit 2006 Ihr Partner für professionelle Hygiene. 
+            Effiziente Spendersysteme und Verbrauchsmaterial für jede Branche.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-in-delay-2">
