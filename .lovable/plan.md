@@ -1,29 +1,31 @@
 
 
-# Plan: Hero-Text anpassen
-
-## Uebersicht
-Der Beschreibungstext in der Hero-Sektion wird angepasst: "Desinfektion" wird entfernt, "Seit 2006" wird eingebaut, und die Formulierung passt zum tatsaechlichen Angebot (Spendersysteme und Verbrauchsmaterial).
+# Plan: "Gratis Spendersystem" Sektion nach oben verschieben
 
 ## Aenderung
 
-**Datei:** `src/components/HeroSection.tsx`
+**Datei:** `src/pages/Index.tsx`
 
-**Aktueller Text:**
-> Hygiswiss ist Ihr Betriebssystem fuer professionelle Hygiene. Effiziente Loesungen fuer jede Branche -- von Spendern bis zur Desinfektion.
+Die Reihenfolge der Sektionen auf der Startseite wird angepasst:
 
-**Neuer Text:**
-> Seit 2006 Ihr Partner fuer professionelle Hygiene. Effiziente Spendersysteme und Verbrauchsmaterial fuer jede Branche.
+**Aktuelle Reihenfolge:**
+1. HeroSection
+2. BestsellerSection
+3. SolutionsSection
+4. FreeDispenserSection
+5. ModulesSection
+6. ...
 
-## Warum dieser Text
-- "Seit 2006" schafft Vertrauen durch Erfahrung
-- "Partner" statt "Betriebssystem" -- persoenlicher und nahbarer
-- "Spendersysteme und Verbrauchsmaterial" -- beschreibt das tatsaechliche Angebot korrekt
-- Keine Erwaehnung von Desinfektion oder Reinigung
-- Kurz und fliessend
+**Neue Reihenfolge:**
+1. HeroSection
+2. FreeDispenserSection
+3. BestsellerSection
+4. SolutionsSection
+5. ModulesSection
+6. ...
 
 ## Zusammenfassung
-- **1 Datei** betroffen
-- Nur eine Textzeile aendert sich
-- Keine strukturellen Aenderungen
+- **1 Datei** betroffen (`src/pages/Index.tsx`)
+- Nur die Reihenfolge der Komponenten aendert sich
+- Keine inhaltlichen oder strukturellen Aenderungen
 
