@@ -59,9 +59,9 @@ const Solutions = () => {
                   <div className="p-8">
                     <ul className="space-y-3 mb-6">
                       {industry.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-3 text-foreground">
+                        <li key={feature.title} className="flex items-center gap-3 text-foreground">
                           <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                          {feature}
+                          {feature.title}
                         </li>
                       ))}
                     </ul>
