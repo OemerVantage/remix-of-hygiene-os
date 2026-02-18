@@ -98,7 +98,7 @@ export default function IndustryDetail() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   {industry.features.map((feature, idx) => (
                     <div
-                      key={feature}
+                      key={feature.title}
                       className="group bg-card rounded-2xl border border-border p-6 hover:shadow-lg hover:border-primary/30 transition-all duration-300"
                     >
                       <div className="flex items-start gap-4">
@@ -106,7 +106,8 @@ export default function IndustryDetail() {
                           <CheckCircle className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground">{feature}</h3>
+                          <h3 className="font-semibold text-foreground">{feature.title}</h3>
+                          <p className="text-sm text-muted-foreground mt-1">{feature.description}</p>
                         </div>
                       </div>
                     </div>
