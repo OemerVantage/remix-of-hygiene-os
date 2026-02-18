@@ -1,45 +1,85 @@
 
 
-# Plan: Branchendaten und Detailseite aktualisieren
+# Plan: Kurzbeschreibungen fuer Branchen-Kacheln hinzufuegen
 
 ## Uebersicht
-Die Texte, Beschreibungen und Kacheln der Branchenloesungen werden mit den neuen, auf Spendersysteme und Verbrauchsmaterialien ausgerichteten Inhalten ersetzt. Die Detailseite wird entsprechend angepasst.
+Jede Feature-Kachel auf den Branchen-Detailseiten erhaelt eine kurze Beschreibung unter dem Titel, um den Mehrwert besser zu vermitteln.
 
 ## Aenderungen
 
-### 1. Branchendaten aktualisieren (`src/data/industries.ts`)
+### 1. Datenstruktur erweitern (`src/data/industries.ts`)
 
-Alle 6 Branchen erhalten neue Texte:
+Das `features`-Array wird von `string[]` zu einem Array mit Objekten geaendert:
 
-| Branche | Neuer Subtitle | Neue Kacheln |
-|---|---|---|
-| Hotellerie | Professionelle Hygieneloesungen fuer Hotels und Unterkuenfte aller Groessen. | Handtuchspender, Seifenspender, Toilettenhygiene, Gaestebereiche |
-| Gastronomie | Hygienische Loesungen fuer Restaurants, Cafes und Catering. | Seifenspender, Handtuchrollenspender, Toilettenpapier, Personalbereich |
-| Gesundheitswesen | Zuverlaessige Hygieneprodukte fuer Praxen, Kliniken und Pflegeeinrichtungen. | Seifenspender, Handtuchspender, Toilettenhygiene, Verbrauchsmaterial |
-| Industrie & Produktion | Robuste Hygieneloesungen fuer Produktionsstaetten und Werkstaetten. | Handtuchrollenspender, Handseife, Toilettenpapier, Grossverbraucher-Loesungen |
-| Bildung & Kinderbetreuung | Kindgerechte Hygieneprodukte fuer Schulen und Kitas. | Seifenspender, Handtuchspender, Toilettenpapier, Sanitaerhygiene |
-| Buero & Verwaltung | Saubere Arbeitsumgebungen fuer produktive Mitarbeiter. | Seifenspender, Handtuchspender, Toilettenpapier, Sanitaerbereiche |
+```text
+Vorher:  features: string[]
+Nachher: features: { title: string; description: string }[]
+```
 
-Jede Branche erhaelt auch die neuen `longDescription`-Texte (2 Absaetze, fokussiert auf Spendersysteme und Verbrauchsmaterialien statt auf Reinigungschemie).
+Texte pro Branche:
+
+**Hotellerie:**
+| Kachel | Beschreibung |
+|---|---|
+| Handtuchspender | Elegante Spender fuer Zimmer, Lobby und Spa. |
+| Seifenspender | Hochwertige Seifenloesungen fuer jeden Gastebereich. |
+| Toilettenhygiene | Zuverlaessige Versorgung fuer alle Sanitaeranlagen. |
+| Gaestebereiche | Komplettausstattung fuer Wellness und oeffentliche Raeume. |
+
+**Gastronomie:**
+| Kachel | Beschreibung |
+|---|---|
+| Seifenspender | Hygienische Handpflege fuer Kueche und Gaeste-WC. |
+| Handtuchrollenspender | Schnelles Trocknen bei hohem Durchlauf. |
+| Toilettenpapier | Wirtschaftliche Loesungen fuer stark frequentierte WCs. |
+| Personalbereich | Saubere Umkleiden und Sozialraeume fuer Ihr Team. |
+
+**Gesundheitswesen:**
+| Kachel | Beschreibung |
+|---|---|
+| Seifenspender | Schonende Reinigung fuer haeufiges Haendewaschen. |
+| Handtuchspender | Beruehrungslose Trocknung fuer maximale Hygiene. |
+| Toilettenhygiene | Zuverlaessige Ausstattung fuer Patienten und Personal. |
+| Verbrauchsmaterial | Nachfuellungen und Zubehoer fuer den taeglichen Bedarf. |
+
+**Buero & Verwaltung:**
+| Kachel | Beschreibung |
+|---|---|
+| Seifenspender | Gepflegte Waschraeume fuer zufriedene Mitarbeitende. |
+| Handtuchspender | Praktische Loesungen fuer jeden Sanitaerbereich. |
+| Toilettenpapier | Zuverlaessige Versorgung ohne Wartungsaufwand. |
+| Sanitaerbereiche | Komplettloesungen fuer moderne Buerowelten. |
+
+**Industrie & Produktion:**
+| Kachel | Beschreibung |
+|---|---|
+| Handtuchrollenspender | Robuste Spender fuer stark beanspruchte Bereiche. |
+| Handseife | Effektive Reinigung bei Oel, Staub und Schmutz. |
+| Toilettenpapier | Grosspackungen fuer Bereiche mit hohem Verbrauch. |
+| Grossverbraucher-Loesungen | Wirtschaftliche Systeme fuer den Dauerbetrieb. |
+
+**Bildung & Kinderbetreuung:**
+| Kachel | Beschreibung |
+|---|---|
+| Seifenspender | Kinderfreundliche Spender, die zum Haendewaschen motivieren. |
+| Handtuchspender | Einfache Bedienung auch fuer kleine Haende. |
+| Toilettenpapier | Zuverlaessig und kindgerecht in jeder Kabine. |
+| Sanitaerhygiene | Saubere Sanitaerraeume fuer Schulen und Kitas. |
 
 ### 2. Detailseite anpassen (`src/pages/IndustryDetail.tsx`)
 
-- Den statischen Text "Spezialisierte Anwendung" unter den Kacheln entfernen -- die Kachel-Titel (z.B. "Handtuchspender") sprechen fuer sich selbst
-- Den Platzhalter-Produktbereich mit Emoji-Boxen entfernen und durch einen einfachen CTA-Button "Produkte entdecken" ersetzen
-- Den Abschnittstitel "Hygienestandards neu definiert" zu "Ueber diese Branche" aendern
-- Den Feature-Titel "Unsere Loesungen fuer die {Branche}" beibehalten
+Die Kacheln zeigen unter dem Titel (`h3`) die neue Beschreibung als `p`-Element in `text-sm text-muted-foreground` an.
 
-### 3. Branchensektion auf Startseite (`src/components/SolutionsSection.tsx`)
+### 3. Uebersichtsseite pruefen (`src/components/SolutionsSection.tsx`)
 
-- Den Filter fuer "bildung-kinderbetreuung" entfernen, damit alle 6 Branchen angezeigt werden
-- Das Grid von 5 Spalten auf 6 Spalten (bzw. 2x3 auf Mobile) anpassen
+Falls dort `features` referenziert wird, die Zugriffe auf das neue Objekt-Format anpassen.
 
 ## Technische Details
 
 **Betroffene Dateien:**
-- `src/data/industries.ts` -- Alle Texte, Descriptions und Features aktualisieren
-- `src/pages/IndustryDetail.tsx` -- Platzhalter-Produkte entfernen, Texte anpassen
-- `src/components/SolutionsSection.tsx` -- Filter entfernen, Grid auf 6 Spalten
+- `src/data/industries.ts` -- Interface und alle Feature-Daten aktualisieren
+- `src/pages/IndustryDetail.tsx` -- Beschreibung in Kacheln rendern
+- `src/components/SolutionsSection.tsx` -- Ggf. Zugriff anpassen
 
 **Keine neuen Abhaengigkeiten noetig.**
 
