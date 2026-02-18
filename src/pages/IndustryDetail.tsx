@@ -80,7 +80,7 @@ export default function IndustryDetail() {
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-1 h-8 bg-primary rounded-full" />
                   <span className="text-sm font-medium text-primary uppercase tracking-wide">
-                    Hygienestandards neu definiert
+                    Über diese Branche
                   </span>
                 </div>
 
@@ -106,8 +106,7 @@ export default function IndustryDetail() {
                           <CheckCircle className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground mb-1">{feature}</h3>
-                          <p className="text-sm text-muted-foreground">Spezialisierte Anwendung</p>
+                          <h3 className="font-semibold text-foreground">{feature}</h3>
                         </div>
                       </div>
                     </div>
@@ -115,53 +114,17 @@ export default function IndustryDetail() {
                 </div>
               </div>
 
-              {/* Product Recommendations Teaser */}
-              <div className="bg-muted/30 rounded-3xl p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground">Empfohlene Produkte</h3>
-                    <p className="text-muted-foreground">Bestseller für die {industry.title}</p>
-                  </div>
-                  <Link to="/produkte">
-                    <Button variant="ghost" className="group">
-                      Alle ansehen
-                      <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {[1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="bg-card rounded-2xl border border-border overflow-hidden group hover:shadow-lg transition-all duration-300"
-                    >
-                      <span className="absolute top-3 left-3 z-10 px-2 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-                        Bestseller
-                      </span>
-                      <div className="aspect-square relative overflow-hidden">
-                        <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                          <span className="text-4xl">📦</span>
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <div className="flex items-center gap-1 mb-2">
-                          {[...Array(5)].map((_, idx) => (
-                            <Star key={idx} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                          ))}
-                          <span className="text-xs text-muted-foreground ml-1">(24)</span>
-                        </div>
-                        <h4 className="font-semibold text-foreground mb-2">Profi-Hygienereiniger XL</h4>
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-primary">CHF 24.90</span>
-                          <Button size="sm" variant="outline" className="rounded-lg">
-                            <ShoppingBag className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              {/* CTA to Products */}
+              <div className="bg-muted/30 rounded-3xl p-8 text-center">
+                <h3 className="text-xl font-bold text-foreground mb-3">Passende Produkte entdecken</h3>
+                <p className="text-muted-foreground mb-6">
+                  Finden Sie die idealen Spendersysteme und Verbrauchsmaterialien für die {industry.title}.
+                </p>
+                <Link to="/produkte">
+                  <Button size="lg" className="rounded-xl">
+                    Produkte entdecken
+                  </Button>
+                </Link>
               </div>
             </div>
 

@@ -23,10 +23,10 @@ export const industries: Industry[] = [
     icon: Hotel,
     title: "Hotellerie",
     description: "Professionelle Hygienelösungen für Hotels und Unterkünfte aller Grössen.",
-    longDescription: `In der Hotellerie ist Sauberkeit nicht nur eine Notwendigkeit, sondern ein entscheidender Wettbewerbsfaktor. Gäste erwarten makellose Zimmer, frische Wäsche und gepflegte Wellnessbereiche.
+    longDescription: `In der Hotellerie entscheidet der erste Eindruck. Gepflegte Sanitärbereiche, gut befüllte Spender und frische Handtücher vermitteln Ihren Gästen Qualität und Wertschätzung — vom Zimmer bis zur Lobby.
 
-Unsere Lösungen helfen Ihnen dabei, diese hohen Standards effizient und kostengünstig zu erfüllen. Vom Housekeeping bis zur Küchenhygiene bieten wir Ihnen ein umfassendes Konzept, das auf die Bedürfnisse Ihrer Gäste und Mitarbeiter zugeschnitten ist.`,
-    features: ["Zimmerreinigung", "Wäschehygiene", "Gästebereich", "Wellness & Spa"],
+Mit unseren Spendersystemen und Verbrauchsmaterialien stellen Sie sicher, dass Ihre Gäste jederzeit bestens versorgt sind. Zuverlässig, hygienisch und wirtschaftlich — für einen reibungslosen Hotelbetrieb.`,
+    features: ["Handtuchspender", "Seifenspender", "Toilettenhygiene", "Gästebereiche"],
     image: hotelBg,
     color: "from-blue-500/20 to-blue-600/10",
   },
@@ -34,11 +34,11 @@ Unsere Lösungen helfen Ihnen dabei, diese hohen Standards effizient und kosteng
     slug: "gastronomie",
     icon: UtensilsCrossed,
     title: "Gastronomie",
-    description: "HACCP-konforme Produkte für Restaurants, Cafés und Catering.",
-    longDescription: `In der Gastronomie ist Hygiene das A und O. Die Einhaltung strenger HACCP-Richtlinien schützt nicht nur Ihre Gäste, sondern auch Ihren guten Ruf.
+    description: "Hygienische Lösungen für Restaurants, Cafés und Catering.",
+    longDescription: `In der Gastronomie ist Hygiene nicht verhandelbar. Ob Gäste-WC, Küche oder Personalbereich — saubere Hände und gepflegte Sanitäranlagen sind das Fundament für das Vertrauen Ihrer Gäste.
 
-Wir unterstützen Sie mit hochwirksamen Reinigungs- und Desinfektionsmitteln, die speziell für den Einsatz in Küchen und lebensmittelverarbeitenden Bereichen entwickelt wurden.`,
-    features: ["Küchenhygiene", "Geschirrspülung", "Oberflächenreinigung", "Händedesinfektion"],
+Unsere Spendersysteme sorgen dafür, dass Seife, Handtücher und Toilettenpapier immer verfügbar sind. Einfach zu befüllen, hygienisch im Betrieb und wirtschaftlich in der Nutzung.`,
+    features: ["Seifenspender", "Handtuchrollenspender", "Toilettenpapier", "Personalbereich"],
     image: gastronomyBg,
     color: "from-orange-500/20 to-orange-600/10",
   },
@@ -46,11 +46,11 @@ Wir unterstützen Sie mit hochwirksamen Reinigungs- und Desinfektionsmitteln, di
     slug: "gesundheitswesen",
     icon: Hospital,
     title: "Gesundheitswesen",
-    description: "Medizinische Hygienestandards für Kliniken und Praxen.",
-    longDescription: `Im Gesundheitswesen rettet Hygiene Leben. Wir bieten Ihnen zertifizierte Produkte für die Desinfektion und Reinigung in sensiblen Bereichen.
+    description: "Zuverlässige Hygieneprodukte für Praxen, Kliniken und Pflegeeinrichtungen.",
+    longDescription: `Im Gesundheitswesen gelten höchste Anforderungen an Sauberkeit und Infektionsprävention. Zuverlässige Spendersysteme und hochwertige Verbrauchsmaterialien sind dabei unverzichtbar.
 
-Unsere Lösungen erfüllen die höchsten medizinischen Standards und unterstützen Sie bei der Prävention von Infektionen in Kliniken, Pflegeheimen und Arztpraxen.`,
-    features: ["Desinfektion", "Sterilisation", "Schutzausrüstung", "Abfallentsorgung"],
+Unsere Produkte sind auf den Einsatz in sensiblen Umgebungen ausgelegt — von der Arztpraxis bis zum Pflegeheim. Einfache Handhabung und konstante Verfügbarkeit unterstützen Ihr Team im Alltag.`,
+    features: ["Seifenspender", "Handtuchspender", "Toilettenhygiene", "Verbrauchsmaterial"],
     image: healthcareBg,
     color: "from-green-500/20 to-green-600/10",
   },
@@ -59,10 +59,10 @@ Unsere Lösungen erfüllen die höchsten medizinischen Standards und unterstütz
     icon: Building2,
     title: "Büro & Verwaltung",
     description: "Saubere Arbeitsumgebungen für produktive Mitarbeiter.",
-    longDescription: `Ein sauberer Arbeitsplatz fördert nicht nur das Wohlbefinden, sondern auch die Produktivität Ihrer Mitarbeiter. Wir sorgen für glänzende Böden und hygienische Sanitärräume.
+    longDescription: `Gepflegte Sanitärbereiche sind kein Luxus, sondern Ausdruck von Wertschätzung gegenüber Ihren Mitarbeitenden. Gut ausgestattete WCs und Waschräume tragen direkt zum Wohlbefinden und zur Produktivität bei.
 
-Unsere Systeme für die Büroreinigung sind effizient und einfach in der Anwendung, damit sich Ihr Team auf das Wesentliche konzentrieren kann.`,
-    features: ["Sanitärbereiche", "Gemeinschaftsräume", "Lufthygiene", "Bodenpflege"],
+Mit unseren Spendersystemen bleiben Ihre Sanitärbereiche jederzeit sauber und gut bestückt — ohne grossen Wartungsaufwand für Ihr Facility-Team.`,
+    features: ["Seifenspender", "Handtuchspender", "Toilettenpapier", "Sanitärbereiche"],
     image: officeBg,
     color: "from-purple-500/20 to-purple-600/10",
   },
@@ -70,11 +70,11 @@ Unsere Systeme für die Büroreinigung sind effizient und einfach in der Anwendu
     slug: "industrie-produktion",
     icon: Factory,
     title: "Industrie & Produktion",
-    description: "Robuste Lösungen für Produktionsstätten und Lagerhallen.",
-    longDescription: `Wo gehobelt wird, fallen Späne – und Schmutz. Unsere Industriereiniger entfernen selbst hartnäckigste Verschmutzungen wie Öle, Fette und Russ.
+    description: "Robuste Hygienelösungen für Produktionsstätten und Werkstätten.",
+    longDescription: `In Produktion und Werkstatt braucht es robuste Lösungen. Mitarbeitende, die mit Öl, Staub oder Schmutz arbeiten, benötigen zuverlässige Handreinigungs- und Trocknungsmöglichkeiten direkt am Arbeitsplatz.
 
-Wir bieten robuste Lösungen für Werkstätten, Produktionshallen und Lagerbereiche, die den harten Anforderungen im Industriealltag gewachsen sind.`,
-    features: ["Industriereiniger", "Entfetter", "Bodenbeschichtung", "Spezialreinigung"],
+Unsere Spendersysteme sind auf den industriellen Einsatz ausgelegt — langlebig, einfach zu warten und mit hohem Fassungsvermögen für Bereiche mit starker Nutzung.`,
+    features: ["Handtuchrollenspender", "Handseife", "Toilettenpapier", "Grossverbraucher-Lösungen"],
     image: industryBg,
     color: "from-gray-500/20 to-gray-600/10",
   },
@@ -82,11 +82,11 @@ Wir bieten robuste Lösungen für Werkstätten, Produktionshallen und Lagerberei
     slug: "bildung-kinderbetreuung",
     icon: GraduationCap,
     title: "Bildung & Kinderbetreuung",
-    description: "Sichere und kindgerechte Hygieneprodukte für Schulen und Kitas.",
-    longDescription: `In Schulen und Kitas steht der Schutz der Kleinsten im Vordergrund. Unsere Produkte sind sicher in der Anwendung und oft speziell für empfindliche Haut geeignet.
+    description: "Kindgerechte Hygieneprodukte für Schulen und Kitas.",
+    longDescription: `In Schulen und Kitas ist regelmässiges Händewaschen der beste Schutz vor Krankheiten. Kindgerechte Spendersysteme motivieren die Kleinsten zur Handhygiene und machen sie zur Selbstverständlichkeit.
 
-Wir unterstützen Bildungseinrichtungen dabei, ein gesundes Lernumfeld zu schaffen und Hygiene spielerisch zu vermitteln.`,
-    features: ["Hautschonung", "Allergenfrei", "Spielzeugpflege", "Sanitärhygiene"],
+Unsere Produkte sind einfach zu bedienen, hygienisch und wirtschaftlich — ideal für Einrichtungen mit vielen kleinen Händen und hohem Verbrauch.`,
+    features: ["Seifenspender", "Handtuchspender", "Toilettenpapier", "Sanitärhygiene"],
     image: educationBg,
     color: "from-pink-500/20 to-pink-600/10",
   },
