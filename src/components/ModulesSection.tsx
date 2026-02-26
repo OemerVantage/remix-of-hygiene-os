@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Box, Droplets, SprayCan, Brush } from "lucide-react";
+import { Box, Droplets, Brush } from "lucide-react";
 
 const modules = [
   {
@@ -13,12 +13,6 @@ const modules = [
     title: "Verbrauchsmaterial",
     description: "Seife, Papierhandtücher, Toilettenpapier und mehr",
     color: "from-accent to-accent/50",
-  },
-  {
-    icon: SprayCan,
-    title: "Desinfektion",
-    description: "Flächendesinfektion und Händedesinfektionsmittel",
-    color: "from-primary/10 to-primary/5",
   },
   {
     icon: Brush,
@@ -44,7 +38,7 @@ export function ModulesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {modules.map((module, index) => (
             <Link
               key={module.title}
