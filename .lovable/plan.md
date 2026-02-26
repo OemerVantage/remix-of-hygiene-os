@@ -1,12 +1,13 @@
 
 
-# Plan: Modul "Desinfektion" entfernen
+# Plan: Timeline-Einträge anpassen
 
-## Aenderung
+## Änderung
 
-**Datei:** `src/components/ModulesSection.tsx`
+**Datei:** `src/pages/About.tsx` (Zeilen 54 und 56)
 
-Das dritte Modul "Desinfektion" (SprayCan-Icon) aus dem `modules`-Array entfernen. Es bleiben 3 Module: Spender, Verbrauchsmaterial, Reinigung.
+1. **Expansion (2014):** Text ändern zu: "Partnerschaften mit führenden Herstellern und ein stetig wachsendes Sortiment."
+2. **Marktführer → Ihr Hygienepartner (Heute):** Titel und Text ändern zu: "Zahlreiche zufriedene Kunden vertrauen auf unsere Hygienelösungen."
 
-Das Grid wird von `lg:grid-cols-4` auf `lg:grid-cols-3` angepasst.
+Keine konkreten Zahlen, kein "Marktführer"-Claim.
 
