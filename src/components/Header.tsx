@@ -84,9 +84,9 @@ export function Header() {
               )
             )}
             
-            <Link to="/kontakt">
+            <Link to="/produkte">
               <Button variant="default" size="default">
-                Kontakt aufnehmen
+                Zum Shop
               </Button>
             </Link>
           </div>
@@ -148,9 +148,9 @@ export function Header() {
                 </li>
               )}
               <li className="pt-4">
-                <Link to="/kontakt" onClick={() => setMobileMenuOpen(false)}>
+                <Link to="/produkte" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="default" className="w-full">
-                    Kontakt aufnehmen
+                    Zum Shop
                   </Button>
                 </Link>
               </li>
