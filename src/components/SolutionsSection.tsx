@@ -25,7 +25,7 @@ export function SolutionsSection() {
               <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-4 rounded-xl bg-accent flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
                 <industry.icon className="w-7 h-7 md:w-8 md:h-8 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
               </div>
-              <h3 className="text-heading-md text-foreground mb-2">
+              <h3 className="text-heading-md text-foreground mb-2 break-words hyphens-auto" lang="de">
                 {industry.title}
               </h3>
               <p className="text-body-sm text-muted-foreground hidden md:block">
