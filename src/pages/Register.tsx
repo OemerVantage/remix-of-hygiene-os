@@ -167,6 +167,11 @@ export default function Register() {
       // 6. Create Shopify customer in background
       createShopifyCustomer(email, password).catch(console.error);
 
+      // 7. Notify owner about new registration
+      supabase.functions.invoke("notify-new-registration", {
+        body: { firstName, lastName, email, company, phone },
+      }).catch(console.error);
+
       toast.success("Willkommen bei HYGISWISS!", {
         description: "Dein Konto wurde erfolgreich erstellt.",
       });
