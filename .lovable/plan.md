@@ -1,21 +1,32 @@
 
+Ziel: Den gesamten Textblock in der FreeDispenserSection wirklich mittig platzieren (nicht nur innerhalb der linken Grid-Spalte), damit „Exklusives Angebot“, Titel, Beschreibung, CTA und Öffnungszeiten visuell in der Seitenmitte stehen.
 
-## Plan: FreeDispenserSection – Schriftgrössen, Bild und Zentrierung anpassen
+1) `src/components/FreeDispenserSection.tsx` Layout auf echte Mittelachse umbauen
+- Aktuelles `md:grid-cols-2` entfernen bzw. nur noch für Bilddarstellung nutzen.
+- Einen zentralen Content-Wrapper einführen (`max-w-2xl mx-auto text-center`), der den kompletten Textblock enthält.
+- Dadurch steht der Textblock unabhängig vom Bild exakt in der Mitte des Bereichs.
 
-### Analyse
+2) Textblock gegen „aus dem Block raus“-Effekte absichern
+- Wrapper-Breite klar begrenzen (`max-w-*` + `mx-auto`).
+- Headline/Absatz mit sauberem Umbruch belassen/ergänzen (`break-words` nur falls nötig).
+- CTA-Gruppe weiterhin zentriert (`justify-center`, mobil vertikal, ab `sm` horizontal).
 
-Verglichen mit dem Rest der Seite (Hero, Branchenlösungen etc.) fallen folgende Inkonsistenzen auf:
+3) Bildposition so anpassen, dass die Mitte des Texts nicht verschoben wird
+- Entweder:
+  - mobil/tablet: Bild unter dem Text (zentriert),
+  - große Screens: Bild rechts als separater Bereich, ohne den Text-Mittelpunkt zu verschieben.
+- Ziel: Text bleibt optisch mittig, Bild bleibt harmonisch eingebunden.
 
-1. **Container**: Nutzt `container mx-auto px-4` statt dem projektweiten `container-hygiswiss`
-2. **Schriftgrössen**: Nutzt rohe Tailwind-Klassen (`text-3xl`, `text-4xl`, `text-5xl`) statt des Design-Systems (`text-display-sm`, `text-display-md`)
-3. **Text-Zentrierung**: Text ist zwar `text-center`, aber auf Desktop im Grid linksbündig da nur die linke Spalte. Soll über die volle Breite zentriert werden, mit dem Bild darunter oder daneben passend ausgerichtet.
+4) Feinschliff für Konsistenz mit restlicher Seite
+- Design-System-Typo (`text-display-sm/md`, `text-body-lg`, `text-body-sm`) beibehalten.
+- Container auf `container-hygiswiss` belassen.
+- Vertikale Abstände (Badge → Titel → Text → CTA) auf gleichmäßige Rhythmik prüfen.
 
-### Änderungen in `src/components/FreeDispenserSection.tsx`
-
-1. **Container** auf `container-hygiswiss` umstellen
-2. **Überschrift** auf `text-display-sm md:text-display-md` ändern (konsistent mit SolutionsSection)
-3. **Beschreibungstext** auf `text-body-lg` ändern (konsistent mit HeroSection)
-4. **Öffnungszeiten-Text** auf `text-body-sm` mit korrekter Opacity
-5. **Layout**: Text-Spalte zentriert ausrichten (`text-center` beibehalten, `max-w` auf Absatz anpassen)
-6. **Bild**: Grösse auf `max-h-[380px]` leicht reduzieren für bessere Proportionen zum Text
-
+Technische Details
+- Datei: `src/components/FreeDispenserSection.tsx`
+- Kernänderung: von „2-Spalten-Text links“ zu „zentrierter Text-Wrapper als primäre Struktur“.
+- Relevante Klassen:
+  - entfernen/ändern: `grid grid-cols-1 md:grid-cols-2 ...` (für Textführung)
+  - setzen: `max-w-2xl mx-auto text-center`
+  - CTA: `flex flex-col sm:flex-row items-center justify-center`
+  - Bild: responsive Platzierung (unterhalb oder rechts, ohne Textzentrum zu beeinflussen)
