@@ -1,9 +1,9 @@
 import { toast } from "sonner";
 
 const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_PERMANENT_DOMAIN = '1prwxp-fi.myshopify.com';
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'mp0y11-0r.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '394f4c030b48aa5c0aa64e3817c8fd38';
+const SHOPIFY_STOREFRONT_TOKEN = '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';
 
 export interface ShopifyMetafield {
   key: string;
