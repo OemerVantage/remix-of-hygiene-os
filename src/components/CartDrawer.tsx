@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle, LogIn } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
