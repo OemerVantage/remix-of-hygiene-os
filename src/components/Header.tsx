@@ -18,8 +18,18 @@ const navItems = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const { user, isLoading } = useAuth();
+
+  useEffect(() => {
+    async function checkAdmin() {
+      if (!user) { setIsAdmin(false); return; }
+      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+      setIsAdmin(data === true);
+    }
+    checkAdmin();
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => {
