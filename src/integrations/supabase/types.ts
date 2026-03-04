@@ -103,6 +103,7 @@ export type Database = {
           email: string
           first_name: string | null
           id: string
+          invoice_allowed: boolean | null
           is_approved: boolean
           last_name: string | null
           phone: string | null
@@ -118,6 +119,7 @@ export type Database = {
           email: string
           first_name?: string | null
           id?: string
+          invoice_allowed?: boolean | null
           is_approved?: boolean
           last_name?: string | null
           phone?: string | null
@@ -133,6 +135,7 @@ export type Database = {
           email?: string
           first_name?: string | null
           id?: string
+          invoice_allowed?: boolean | null
           is_approved?: boolean
           last_name?: string | null
           phone?: string | null
