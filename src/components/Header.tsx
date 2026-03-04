@@ -156,6 +156,18 @@ export function Header() {
                   </Link>
                 </li>
               ))}
+              {isAdmin && (
+                <li>
+                  <Link
+                    to="/admin/kunden"
+                    className="flex items-center gap-2 py-2 text-body-lg text-primary font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Shield className="h-4 w-4" />
+                    Admin
+                  </Link>
+                </li>
+              )}
               {!isLoading && !user && (
                 <li>
                   <Link
