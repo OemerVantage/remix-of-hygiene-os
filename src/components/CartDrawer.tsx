@@ -96,6 +96,16 @@ export const CartDrawer = () => {
                   <span className="text-xl font-bold">{totalPrice.toFixed(2)} {items[0]?.price.currencyCode || 'EUR'}</span>
                 </div>
                 
+                {/* Guest login prompt */}
+                {!user && (
+                  <div className="flex items-center gap-2 p-3 rounded-md bg-muted border border-border text-sm">
+                    <LogIn className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <span className="text-muted-foreground">
+                      Bitte <Link to="/login" className="underline font-medium text-primary hover:text-primary/80" onClick={() => setIsOpen(false)}>melde dich an</Link>, um bestellen zu können.
+                    </span>
+                  </div>
+                )}
+
                 {/* Pending approval warning */}
                 {user && !isApproved && (
                   <div className="flex items-center gap-2 p-3 rounded-md bg-warning/10 border border-warning/50 text-sm">
