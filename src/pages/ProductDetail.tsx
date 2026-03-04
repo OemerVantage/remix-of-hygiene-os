@@ -219,7 +219,12 @@ const ProductDetail = () => {
         </div>
 
         {/* Related Products Section */}
-        <RelatedProducts handles={relatedProductHandles} />
+        <RelatedProducts 
+          handles={relatedProductHandles} 
+          systemGroup={systemGroup}
+          productType={product.productType}
+          currentHandle={product.handle}
+        />
 
         {/* Product Inquiry Form */}
         <ProductInquiryForm 
