@@ -17,18 +17,30 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   
   const isApproved = profile?.is_approved ?? false;
+  const invoiceAllowed = profile?.invoice_allowed ?? false;
   const canCheckout = !!user && isApproved;
 
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 
-  const handleCheckout = () => {
+  const handleCheckout = async (invoice = false) => {
     if (!canCheckout) return;
+    const { cartId } = useCartStore.getState();
+    
+    if (invoice && cartId) {
+      set({ isLoading: true });
+      await updateShopifyCartNote(cartId, "ZAHLUNGSART: Auf Rechnung");
+      set({ isLoading: false });
+    }
+    
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       window.open(checkoutUrl, '_blank');
       setIsOpen(false);
     }
   };
+
+  // Helper to set loading from outside store
+  const set = useCartStore.setState;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
