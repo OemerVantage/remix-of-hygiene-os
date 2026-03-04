@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogIn } from "lucide-react";
+import { Menu, X, User, LogIn, Shield } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { CartDrawer } from "@/components/CartDrawer";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
 
 const navItems = [
