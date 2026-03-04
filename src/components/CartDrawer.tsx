@@ -133,7 +133,7 @@ export const CartDrawer = () => {
                   <TooltipTrigger asChild>
                     <span className="w-full">
                       <Button 
-                        onClick={handleCheckout} 
+                        onClick={() => handleCheckout(false)} 
                         className="w-full" 
                         size="lg" 
                         disabled={items.length === 0 || isLoading || isSyncing || !canCheckout}
@@ -155,6 +155,26 @@ export const CartDrawer = () => {
                     </TooltipContent>
                   )}
                 </Tooltip>
+
+                {/* Invoice checkout button */}
+                {canCheckout && invoiceAllowed && (
+                  <Button 
+                    onClick={() => handleCheckout(true)} 
+                    variant="outline"
+                    className="w-full" 
+                    size="lg" 
+                    disabled={items.length === 0 || isLoading || isSyncing}
+                  >
+                    {isLoading || isSyncing ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <FileText className="w-4 h-4 mr-2" />
+                        Auf Rechnung bestellen
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
             </>
           )}
