@@ -1,11 +1,11 @@
 
 
-## Plan: Resend API Key aktualisieren
+## Plan: Spalte `invoice_allowed` zur Tabelle `profiles` hinzufügen
 
-Der `RESEND_API_KEY` ist bereits als Secret konfiguriert. Ich werde ihn mit dem neuen Wert `re_3hgDZaRB_CamwjgGVSNtXDKptJKXFQumu` aktualisieren.
+Ich führe die Migration aus, um die neue Spalte `invoice_allowed` (Boolean, Default `false`) zur `profiles`-Tabelle hinzuzufügen.
 
 ### Änderung
-- **Secret `RESEND_API_KEY`** mit dem neuen Wert überschreiben (via `add_secret` Tool)
+- **Migration**: `ALTER TABLE profiles ADD COLUMN IF NOT EXISTS invoice_allowed BOOLEAN DEFAULT FALSE;`
 
-Keine Code-Änderungen nötig — die Edge Function `notify-new-registration` liest den Key bereits korrekt aus `Deno.env.get("RESEND_API_KEY")`.
+Keine Code-Änderungen nötig — die Spalte wird automatisch in den Supabase-Types reflektiert.
 
