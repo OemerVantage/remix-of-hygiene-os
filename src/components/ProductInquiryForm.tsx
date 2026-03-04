@@ -114,6 +114,17 @@ export const ProductInquiryForm = ({ productTitle, productSku }: ProductInquiryF
 
       if (error) throw error;
 
+      // Fire-and-forget email notification
+      supabase.functions.invoke("notify-contact-submission", {
+        body: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          message: fullMessage,
+          productReference: productReference,
+        },
+      }).catch((err) => console.error("Email notification failed:", err));
+
       setIsSuccess(true);
       toast.success("Anfrage gesendet", {
         description: "Wir werden uns schnellstmöglich bei Ihnen melden.",

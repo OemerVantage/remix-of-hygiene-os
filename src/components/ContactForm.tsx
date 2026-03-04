@@ -91,6 +91,16 @@ const ContactForm = () => {
 
       if (error) throw error;
 
+      // Fire-and-forget email notification
+      supabase.functions.invoke("notify-contact-submission", {
+        body: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          message: data.message,
+        },
+      }).catch((err) => console.error("Email notification failed:", err));
+
       toast.success("Vielen Dank für Ihre Nachricht! Wir melden uns bald bei Ihnen.");
       form.reset();
     } catch (error) {
