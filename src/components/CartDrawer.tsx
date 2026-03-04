@@ -16,7 +16,7 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   
   const isApproved = profile?.is_approved ?? false;
-  const canCheckout = !user || isApproved; // Allow checkout if not logged in (guest) or if approved
+  const canCheckout = !!user && isApproved;
 
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 
