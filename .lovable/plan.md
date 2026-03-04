@@ -1,11 +1,11 @@
 
 
-## Plan: Spalte `invoice_allowed` zur Tabelle `profiles` hinzufügen
+## Plan: Shopify Storefront Token aktualisieren
 
-Ich führe die Migration aus, um die neue Spalte `invoice_allowed` (Boolean, Default `false`) zur `profiles`-Tabelle hinzuzufügen.
+Die Shopify API gibt 401 (UNAUTHORIZED) zurück, weil der aktuelle Token `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` nicht mehr gültig ist.
 
 ### Änderung
-- **Migration**: `ALTER TABLE profiles ADD COLUMN IF NOT EXISTS invoice_allowed BOOLEAN DEFAULT FALSE;`
+- **`src/lib/shopify.ts`** Zeile 5: Den `SHOPIFY_STOREFRONT_TOKEN` auf `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` aktualisieren.
 
-Keine Code-Änderungen nötig — die Spalte wird automatisch in den Supabase-Types reflektiert.
+Das ist die einzige Änderung — alle API-Aufrufe nutzen diesen Token zentral.
 
