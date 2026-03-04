@@ -1,13 +1,16 @@
 
 
-## Plan: Neuen Storefront API Token einsetzen
+## Status: Alles bereits korrekt konfiguriert
 
-Der bisherige Token (`shpss_...`) lieferte 401-Fehler. Der neue Token `6299f84b62a9be79ff8e4b8694dd39f9` wird in `src/lib/shopify.ts` ersetzt.
+### Token
+Der Storefront Token `6299f84b62a9be79ff8e4b8694dd39f9` ist bereits in `src/lib/shopify.ts` (Zeile 6) eingetragen. Die API liefert HTTP 200.
 
-### Änderung
-- **Datei:** `src/lib/shopify.ts`, Zeile 6
-- **Alt:** `const SHOPIFY_STOREFRONT_TOKEN = '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';`
-- **Neu:** `const SHOPIFY_STOREFRONT_TOKEN = '6299f84b62a9be79ff8e4b8694dd39f9';`
+### Metafields
+Die Query in `METAFIELD_IDENTIFIERS` fragt alle 20 Metafield-Keys ab (gtin, material, dimensions, capacity, etc.). Die `ProductDescription`-Komponente verarbeitet diese korrekt in zwei Tabellen: **Produkteigenschaften** und **Versandinformationen**.
 
-Nach der Änderung teste ich die `/produkte`-Seite, um zu prüfen ob Produkte geladen werden.
+### Ergebnis
+Es sind **keine Code-Änderungen nötig**. Da die Metafields jetzt `PUBLIC_READ` Zugriff haben, sollte die Produktdetailseite die strukturierten Daten automatisch anzeigen.
+
+### Empfohlener nächster Schritt
+Die aktuelle Produktdetailseite im Preview laden und prüfen, ob die Tabellen mit den Metafield-Daten korrekt angezeigt werden.
 
