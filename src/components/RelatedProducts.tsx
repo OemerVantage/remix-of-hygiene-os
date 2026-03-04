@@ -1,35 +1,64 @@
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, ShopifyProduct } from "@/lib/shopify";
+import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
 import { ProductCard } from "@/components/ProductCard";
 
 interface RelatedProductsProps {
   handles: string[];
+  systemGroup?: string | null;
+  productType?: string;
+  currentHandle?: string;
 }
 
-export const RelatedProducts = ({ handles }: RelatedProductsProps) => {
+export const RelatedProducts = ({ handles, systemGroup, productType, currentHandle }: RelatedProductsProps) => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchByHandles = async () => {
+      const productPromises = handles.map(async (handle) => {
+        const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle: handle.trim() });
+        if (data?.data?.productByHandle) {
+          return { node: data.data.productByHandle } as ShopifyProduct;
+        }
+        return null;
+      });
+
+      const results = await Promise.all(productPromises);
+      return results.filter((p): p is ShopifyProduct => p !== null);
+    };
+
+    const fetchBySystemGroup = async () => {
+      if (!systemGroup) return [];
+
+      // Fetch products and filter by matching system_group metafield
+      const data = await storefrontApiRequest(PRODUCTS_QUERY, { first: 50 });
+      if (!data?.data?.products?.edges) return [];
+
+      return (data.data.products.edges as ShopifyProduct[]).filter((p) => {
+        // Exclude current product
+        if (p.node.handle === currentHandle) return false;
+        // Must have a different productType (Spender ↔ Papier)
+        if (productType && p.node.productType === productType) return false;
+        // Must share the same system_group
+        const sg = p.node.metafields?.find(m => m?.key === "system_group");
+        return sg?.value === systemGroup;
+      }).slice(0, 4);
+    };
+
     const fetchProducts = async () => {
-      if (handles.length === 0) {
-        setLoading(false);
-        return;
-      }
-
       try {
-        const productPromises = handles.map(async (handle) => {
-          const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle: handle.trim() });
-          if (data?.data?.productByHandle) {
-            return { node: data.data.productByHandle } as ShopifyProduct;
-          }
-          return null;
-        });
+        let result: ShopifyProduct[] = [];
 
-        const results = await Promise.all(productPromises);
-        const validProducts = results.filter((p): p is ShopifyProduct => p !== null);
-        setProducts(validProducts);
+        if (handles.length > 0) {
+          // Priority: manual metafield handles
+          result = await fetchByHandles();
+        } else if (systemGroup) {
+          // Fallback: automatic matching by system_group
+          result = await fetchBySystemGroup();
+        }
+
+        setProducts(result);
       } catch (error) {
         console.error("Failed to fetch related products:", error);
       } finally {
@@ -38,9 +67,11 @@ export const RelatedProducts = ({ handles }: RelatedProductsProps) => {
     };
 
     fetchProducts();
-  }, [handles]);
+  }, [handles, systemGroup, productType, currentHandle]);
 
-  if (handles.length === 0) {
+  const hasSource = handles.length > 0 || !!systemGroup;
+
+  if (!hasSource) {
     return null;
   }
 
