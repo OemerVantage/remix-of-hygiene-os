@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle, LogIn } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle, LogIn, FileText } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { updateShopifyCartNote } from "@/lib/shopify";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,18 +17,30 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   
   const isApproved = profile?.is_approved ?? false;
+  const invoiceAllowed = profile?.invoice_allowed ?? false;
   const canCheckout = !!user && isApproved;
 
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 
-  const handleCheckout = () => {
+  const handleCheckout = async (invoice = false) => {
     if (!canCheckout) return;
+    const { cartId } = useCartStore.getState();
+    
+    if (invoice && cartId) {
+      set({ isLoading: true });
+      await updateShopifyCartNote(cartId, "ZAHLUNGSART: Auf Rechnung");
+      set({ isLoading: false });
+    }
+    
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       window.open(checkoutUrl, '_blank');
       setIsOpen(false);
     }
   };
+
+  // Helper to set loading from outside store
+  const set = useCartStore.setState;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -120,7 +133,7 @@ export const CartDrawer = () => {
                   <TooltipTrigger asChild>
                     <span className="w-full">
                       <Button 
-                        onClick={handleCheckout} 
+                        onClick={() => handleCheckout(false)} 
                         className="w-full" 
                         size="lg" 
                         disabled={items.length === 0 || isLoading || isSyncing || !canCheckout}
@@ -142,6 +155,26 @@ export const CartDrawer = () => {
                     </TooltipContent>
                   )}
                 </Tooltip>
+
+                {/* Invoice checkout button */}
+                {canCheckout && invoiceAllowed && (
+                  <Button 
+                    onClick={() => handleCheckout(true)} 
+                    variant="outline"
+                    className="w-full" 
+                    size="lg" 
+                    disabled={items.length === 0 || isLoading || isSyncing}
+                  >
+                    {isLoading || isSyncing ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <FileText className="w-4 h-4 mr-2" />
+                        Auf Rechnung bestellen
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
             </>
           )}

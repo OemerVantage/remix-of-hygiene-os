@@ -292,6 +292,28 @@ export const CART_LINES_REMOVE_MUTATION = `
   }
 `;
 
+export const CART_NOTE_UPDATE_MUTATION = `
+  mutation cartNoteUpdate($cartId: ID!, $note: String!) {
+    cartNoteUpdate(cartId: $cartId, note: $note) {
+      cart { id }
+      userErrors { field message }
+    }
+  }
+`;
+
+export async function updateShopifyCartNote(cartId: string, note: string): Promise<boolean> {
+  try {
+    const data = await storefrontApiRequest(CART_NOTE_UPDATE_MUTATION, { cartId, note });
+    if (data?.data?.cartNoteUpdate?.userErrors?.length > 0) {
+      console.error('Cart note update failed:', data.data.cartNoteUpdate.userErrors);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Failed to update cart note:', error);
+    return false;
+  }
+}
 function formatCheckoutUrl(checkoutUrl: string): string {
   try {
     const url = new URL(checkoutUrl);
