@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogIn } from "lucide-react";
+import { Menu, X, User, LogIn, Shield } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { CartDrawer } from "@/components/CartDrawer";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
 
 const navItems = [
@@ -17,8 +18,18 @@ const navItems = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const { user, isLoading } = useAuth();
+
+  useEffect(() => {
+    async function checkAdmin() {
+      if (!user) { setIsAdmin(false); return; }
+      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+      setIsAdmin(data === true);
+    }
+    checkAdmin();
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,11 +80,20 @@ export function Header() {
             
             {!isLoading && (
               user ? (
-                <Link to="/konto">
-                  <Button variant="outline" size="icon">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </Link>
+                <>
+                  {isAdmin && (
+                    <Link to="/admin/kunden">
+                      <Button variant="outline" size="icon" title="Admin">
+                        <Shield className="h-5 w-5" />
+                      </Button>
+                    </Link>
+                  )}
+                  <Link to="/konto">
+                    <Button variant="outline" size="icon">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </Link>
+                </>
               ) : (
                 <Link to="/login">
                   <Button variant="outline" className="gap-2">
@@ -136,6 +156,18 @@ export function Header() {
                   </Link>
                 </li>
               ))}
+              {isAdmin && (
+                <li>
+                  <Link
+                    to="/admin/kunden"
+                    className="flex items-center gap-2 py-2 text-body-lg text-primary font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Shield className="h-4 w-4" />
+                    Admin
+                  </Link>
+                </li>
+              )}
               {!isLoading && !user && (
                 <li>
                   <Link
