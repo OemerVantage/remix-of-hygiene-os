@@ -1,16 +1,13 @@
 
 
-## Plan: Bestellsperre für Gäste + nicht-freigegebene Kunden
+## Plan: Neuen Storefront API Token einsetzen
 
-### Änderung in `src/components/CartDrawer.tsx`
+Der bisherige Token (`shpss_...`) lieferte 401-Fehler. Der neue Token `6299f84b62a9be79ff8e4b8694dd39f9` wird in `src/lib/shopify.ts` ersetzt.
 
-1. **`canCheckout`-Logik ändern** (Zeile 17):
-   - Von: `const canCheckout = !user || isApproved;`
-   - Zu: `const canCheckout = !!user && isApproved;`
+### Änderung
+- **Datei:** `src/lib/shopify.ts`, Zeile 6
+- **Alt:** `const SHOPIFY_STOREFRONT_TOKEN = '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';`
+- **Neu:** `const SHOPIFY_STOREFRONT_TOKEN = '6299f84b62a9be79ff8e4b8694dd39f9';`
 
-2. **Hinweis für nicht-eingeloggte Besucher hinzufügen**:
-   - Wenn `!user`: Meldung "Bitte melde dich an, um bestellen zu können" mit Link zur Login-Seite
-   - Wenn `user && !isApproved`: Bestehende Meldung "Dein Konto wartet auf Freigabe" bleibt
-
-3. **"In den Warenkorb"-Button bleibt für alle aktiv** — Besucher können Produkte in den Warenkorb legen, aber erst beim Checkout wird geprüft ob sie berechtigt sind.
+Nach der Änderung teste ich die `/produkte`-Seite, um zu prüfen ob Produkte geladen werden.
 

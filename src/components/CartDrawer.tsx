@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, AlertCircle, LogIn } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,7 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   
   const isApproved = profile?.is_approved ?? false;
-  const canCheckout = !user || isApproved; // Allow checkout if not logged in (guest) or if approved
+  const canCheckout = !!user && isApproved;
 
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 
@@ -95,6 +96,16 @@ export const CartDrawer = () => {
                   <span className="text-xl font-bold">{totalPrice.toFixed(2)} {items[0]?.price.currencyCode || 'EUR'}</span>
                 </div>
                 
+                {/* Guest login prompt */}
+                {!user && (
+                  <div className="flex items-center gap-2 p-3 rounded-md bg-muted border border-border text-sm">
+                    <LogIn className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <span className="text-muted-foreground">
+                      Bitte <Link to="/login" className="underline font-medium text-primary hover:text-primary/80" onClick={() => setIsOpen(false)}>melde dich an</Link>, um bestellen zu können.
+                    </span>
+                  </div>
+                )}
+
                 {/* Pending approval warning */}
                 {user && !isApproved && (
                   <div className="flex items-center gap-2 p-3 rounded-md bg-warning/10 border border-warning/50 text-sm">
