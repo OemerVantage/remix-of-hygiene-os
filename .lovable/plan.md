@@ -1,13 +1,28 @@
 
 
-## Plan: Neuen Storefront API Token einsetzen
+## Plan: Kontaktformulare mit E-Mail-Benachrichtigung verbinden
 
-Der bisherige Token (`shpss_...`) lieferte 401-Fehler. Der neue Token `6299f84b62a9be79ff8e4b8694dd39f9` wird in `src/lib/shopify.ts` ersetzt.
+### Problem
+- **Kontaktformular** und **Produktanfrage** speichern nur in die DB, senden aber keine E-Mail an `info@hygiswiss.ch`
+- Die Registrierungs-Mail nutzt `onboarding@resend.dev` (Resend Test-Absender) statt einer eigenen Domain
 
-### Änderung
-- **Datei:** `src/lib/shopify.ts`, Zeile 6
-- **Alt:** `const SHOPIFY_STOREFRONT_TOKEN = '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';`
-- **Neu:** `const SHOPIFY_STOREFRONT_TOKEN = '6299f84b62a9be79ff8e4b8694dd39f9';`
+### Lösung
 
-Nach der Änderung teste ich die `/produkte`-Seite, um zu prüfen ob Produkte geladen werden.
+#### 1. Neue Edge Function: `notify-contact-submission`
+Erstellt eine neue Edge Function die bei Kontakt- und Produktanfragen eine E-Mail an `info@hygiswiss.ch` sendet:
+- Empfängt: `name`, `email`, `phone`, `message`, `productReference` (optional)
+- Sendet formatierte HTML-Mail via Resend API
+- Unterscheidet zwischen allgemeiner Kontaktanfrage und Produktanfrage im Betreff
+
+#### 2. ContactForm.tsx anpassen
+Nach erfolgreichem DB-Insert zusätzlich `supabase.functions.invoke("notify-contact-submission", ...)` aufrufen (fire-and-forget wie bei der Registrierung).
+
+#### 3. ProductInquiryForm.tsx anpassen
+Gleicher Aufruf nach erfolgreichem DB-Insert, mit `productReference` im Body.
+
+#### 4. Absender-Adresse
+Alle E-Mails verwenden weiterhin `onboarding@resend.dev` als Absender (Resend Free Tier Limitation). Falls ihr eine eigene Domain bei Resend verifiziert habt, kann der Absender angepasst werden.
+
+### Keine DB-Änderungen nötig
+Die `contact_submissions` Tabelle und RLS-Policies bleiben unverändert.
 
