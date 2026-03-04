@@ -1,13 +1,11 @@
 
 
-## Plan: Neuen Shopify-Store verbinden
+## Plan: Resend API Key aktualisieren
 
-Der Storefront Access Token wurde bereitgestellt. Ich aktualisiere die Zugangsdaten in `src/lib/shopify.ts`:
+Der `RESEND_API_KEY` ist bereits als Secret konfiguriert. Ich werde ihn mit dem neuen Wert `re_3hgDZaRB_CamwjgGVSNtXDKptJKXFQumu` aktualisieren.
 
-### Änderungen in `src/lib/shopify.ts`
+### Änderung
+- **Secret `RESEND_API_KEY`** mit dem neuen Wert überschreiben (via `add_secret` Tool)
 
-- **Zeile 4**: `SHOPIFY_STORE_PERMANENT_DOMAIN` → `'mp0y11-0r.myshopify.com'`
-- **Zeile 6**: `SHOPIFY_STOREFRONT_TOKEN` → `'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'`
-
-Das ist alles – Produkte, Warenkorb und Checkout werden automatisch mit dem neuen Store funktionieren.
+Keine Code-Änderungen nötig — die Edge Function `notify-new-registration` liest den Key bereits korrekt aus `Deno.env.get("RESEND_API_KEY")`.
 
