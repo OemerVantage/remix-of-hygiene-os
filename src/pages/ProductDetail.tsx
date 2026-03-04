@@ -108,6 +108,9 @@ const ProductDetail = () => {
     return metafield.value.split(",").map(h => h.trim()).filter(Boolean);
   })();
 
+  // Extract system_group for automatic fallback
+  const systemGroup = product.metafields?.find(m => m?.key === "system_group")?.value || null;
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
