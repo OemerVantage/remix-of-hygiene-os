@@ -14,6 +14,7 @@ interface Profile {
   shopify_customer_id: string | null;
   shopify_customer_token: string | null;
   is_approved: boolean;
+  invoice_allowed: boolean | null;
   created_at: string;
   updated_at: string;
 }
