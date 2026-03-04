@@ -80,11 +80,20 @@ export function Header() {
             
             {!isLoading && (
               user ? (
-                <Link to="/konto">
-                  <Button variant="outline" size="icon">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </Link>
+                <>
+                  {isAdmin && (
+                    <Link to="/admin/kunden">
+                      <Button variant="outline" size="icon" title="Admin">
+                        <Shield className="h-5 w-5" />
+                      </Button>
+                    </Link>
+                  )}
+                  <Link to="/konto">
+                    <Button variant="outline" size="icon">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </Link>
+                </>
               ) : (
                 <Link to="/login">
                   <Button variant="outline" className="gap-2">
