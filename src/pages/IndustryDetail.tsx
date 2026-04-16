@@ -18,7 +18,7 @@ export default function IndustryDetail() {
       <Header alwaysSolid />
 
       {/* Immersive Hero Section */}
-      <section className="relative h-[70vh] min-h-[500px] flex items-end pt-28">
+      <section className="relative h-[70vh] min-h-[500px] flex items-end pt-20">
         <div className="absolute inset-0">
           <img
             src={industry.image}
