@@ -1,28 +1,18 @@
 
-## Plan: Adresse überall auf "Schlachthofstrasse 1, 8406 Winterthur" anpassen
-
-### Suche nach allen Adress-Vorkommen
-
-Ich muss alle Stellen finden, wo die alte Adresse (`Musterstrasse 123, 8001 Zürich`) verwendet wird. Bekannte Stellen:
-
-**1. `src/components/ContactForm.tsx`** (Zeile ~52)
-- `content: "Musterstrasse 123, 8001 Zürich"` → `"Schlachthofstrasse 1, 8406 Winterthur"`
-
-**2. Google Maps iframe in `ContactForm.tsx`** (Zeile ~287)
-- Aktuell zeigt die Karte das **Brandenburger Tor in Berlin** – komplett falsch
-- Neue Embed-URL für Schlachthofstrasse 1, 8406 Winterthur einsetzen
-
-### Weitere zu prüfende Stellen
-Ich werde zusätzlich folgende Dateien nach Adress-/Standort-Erwähnungen durchsuchen, um sicherzustellen, dass nichts übersehen wird:
-- `src/pages/About.tsx` (Firmenstandort/Timeline)
-- `src/components/Footer.tsx` (Adresse im Footer-Bereich)
-- `index.html` (Meta-Tags / Structured Data)
-- Alle anderen Komponenten via Suche nach `Zürich`, `Musterstrasse`, `8001`
+## Plan: Gründungsjahr überall auf 2005 korrigieren
 
 ### Änderungen
-1. **ContactForm.tsx**: Adresstext aktualisieren
-2. **ContactForm.tsx**: Google Maps Embed-URL durch korrekten Winterthur-Link ersetzen
-3. **Sonstige Funde**: Falls die Adresse oder "Zürich" als Standort an weiteren Stellen erscheint, ebenfalls anpassen
 
-### Keine Backend-Änderungen nötig
-Reine Text-/Konfigurationsanpassungen im Frontend.
+**1. `src/components/HeroSection.tsx`** (Zeile 27)
+- `"Seit 2006 Ihr Partner..."` → `"Seit 2005 Ihr Partner..."`
+
+**2. `src/pages/About.tsx`**
+- Zeile 52 (Timeline): `year: "2004"` → `year: "2005"`
+- Zeile 162 (Badge): `"Seit über 20 Jahren"` → `"Seit 2005"`
+- Hero-Text "Seit über 20 Jahren" bleibt (stimmt seit 2005 weiterhin)
+
+**3. Suche nach weiteren Vorkommen**
+Vor der Umsetzung prüfe ich via `search_files` nach `2004`, `2006`, `seit 20`, um sicherzugehen, dass keine Stelle übersehen wird (z.B. in `index.html`, Footer, Meta-Tags).
+
+### Keine Backend-Änderungen
+Reine Textanpassungen im Frontend.
