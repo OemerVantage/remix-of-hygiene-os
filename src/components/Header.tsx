@@ -15,7 +15,7 @@ const navItems = [
   { label: "Kontakt", href: "/kontakt" },
 ];
 
-export function Header() {
+export function Header({ alwaysSolid = false }: { alwaysSolid?: boolean } = {}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -42,7 +42,7 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        alwaysSolid || isScrolled
           ? "bg-card/95 backdrop-blur-md shadow-sm"
           : "bg-transparent"
       }`}
