@@ -1,22 +1,18 @@
 
-## Plan: Navbar auf Branchenlösungs-Detailseiten dauerhaft weiss
+## Plan: Transparenten Rand vom Logo entfernen + Footer-Logo verkleinern
 
 ### Problem
-Auf `/branchenloesungen/:handle` (Hotellerie, Gastronomie, Gesundheitswesen, etc.) gibt es einen grossen Hero mit dunklem Bild. Die Navbar ist im Header nur dann weiss/mit Hintergrund, wenn `window.scrollY > 20`. Ganz oben ist sie transparent → Logo und Menüpunkte sind auf dem Bild kaum lesbar.
+Das hochgeladene Logo (`src/assets/logo.png`) hat rundherum viel transparenten Leerraum. Dadurch wirkt es im Footer (und auch sonst) viel kleiner und „verloren", obwohl es mit `h-28` gerendert wird – die sichtbare Marke nimmt nur einen Bruchteil der Bildfläche ein.
 
 ### Lösung
-Die `Header`-Komponente erhält eine optionale Eigenschaft, die den transparenten Modus deaktiviert und sie immer mit weissem (Card-)Hintergrund rendert. Auf der Detailseite wird diese Variante genutzt.
+1. **Logo-Bild beschneiden (Auto-Crop)**
+   - Mit Python/Pillow im sandbox die transparenten Ränder von `src/assets/logo.png` automatisch entfernen (`image.getbbox()` → `image.crop(bbox)`).
+   - Datei wird an Ort und Stelle überschrieben → wirkt automatisch in Header, Footer und überall sonst, da alle Komponenten dieselbe Datei importieren.
+   - QA: Vorher-/Nachher-Dimensionen ausgeben und das gecroppte Bild kurz visuell prüfen.
 
-### Änderungen
-
-1. **`src/components/Header.tsx`**
-   - Neue optionale Prop `alwaysSolid?: boolean`.
-   - Wenn `alwaysSolid` true ist, wird unabhängig vom Scroll-Status die Klasse `bg-card/95 backdrop-blur-md shadow-sm` verwendet.
-
-2. **`src/pages/IndustryDetail.tsx`**
-   - `<Header alwaysSolid />` verwenden.
-   - Damit der Hero nicht hinter der nun sichtbaren Navbar verschwindet, das Hero-Padding leicht anpassen (bereits `pt-20` vorhanden – ggf. auf `pt-28` erhöhen, passend zur Header-Höhe `h-28`).
+2. **Footer-Logo zusätzlich verkleinern** (`src/components/Footer.tsx`)
+   - `h-28` → `h-16`, damit das Logo proportional zum Footer-Kontext passt (war im vorherigen Plan bereits genehmigt, wird hier mit umgesetzt).
 
 ### Nicht betroffen
-- Startseite, Produkte, Über uns etc. behalten das bisherige Verhalten (transparent → solid beim Scrollen).
+- Header bleibt bei `h-28` – wirkt durch das gecroppte Logo automatisch markanter, ohne Code-Änderung.
 - Keine Backend-Änderungen.
