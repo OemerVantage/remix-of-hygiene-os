@@ -15,10 +15,10 @@ export default function IndustryDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header alwaysSolid />
 
       {/* Immersive Hero Section */}
-      <section className="relative h-[70vh] min-h-[500px] flex items-end pt-20">
+      <section className="relative h-[70vh] min-h-[500px] flex items-end pt-28">
         <div className="absolute inset-0">
           <img
             src={industry.image}
