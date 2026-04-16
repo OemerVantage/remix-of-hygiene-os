@@ -49,7 +49,7 @@ const sustainabilityPoints = [
 ];
 
 const timelineEvents = [
-  { year: "2004", title: "Gründung", description: "Gründung des Unternehmens als Familienbetrieb mit Fokus auf Hygieneprodukte." },
+  { year: "2005", title: "Gründung", description: "Gründung des Unternehmens als Familienbetrieb mit Fokus auf Hygieneprodukte." },
   { year: "2008", title: "Wachstum", description: "Erweiterung des Sortiments und Aufbau eines schweizweiten Kundenstamms." },
   { year: "2014", title: "Expansion", description: "Partnerschaften mit führenden Herstellern und ein stetig wachsendes Sortiment." },
   { year: "2020", title: "Digitalisierung", description: "Launch des Online-Shops und digitaler Bestellprozesse für unsere Kunden." },
@@ -158,7 +158,7 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16 animate-fade-in">
                 <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-                  Seit über 20 Jahren
+                  Seit 2005
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                   Unsere Geschichte
