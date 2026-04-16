@@ -1,23 +1,22 @@
 
-## Plan: Neues HygiSwiss AG Logo überall ersetzen
+## Plan: Navbar auf Branchenlösungs-Detailseiten dauerhaft weiss
 
-### Vorgehen
+### Problem
+Auf `/branchenloesungen/:handle` (Hotellerie, Gastronomie, Gesundheitswesen, etc.) gibt es einen grossen Hero mit dunklem Bild. Die Navbar ist im Header nur dann weiss/mit Hintergrund, wenn `window.scrollY > 20`. Ganz oben ist sie transparent → Logo und Menüpunkte sind auf dem Bild kaum lesbar.
 
-1. **Logo-Datei kopieren**
-   - `user-uploads://ChatGPT_Image_17._Apr._2026_00_08_45.png` → `src/assets/logo.png`
-   - Überschreibt das aktuelle Logo. Da alle Komponenten via `import logo from "@/assets/logo.png"` referenzieren, wird es automatisch überall aktiv.
+### Lösung
+Die `Header`-Komponente erhält eine optionale Eigenschaft, die den transparenten Modus deaktiviert und sie immer mit weissem (Card-)Hintergrund rendert. Auf der Detailseite wird diese Variante genutzt.
 
-2. **Betroffene Stellen (automatisch aktualisiert)**
-   - `src/components/Header.tsx` (Desktop + Mobile Navigation)
-   - `src/components/Footer.tsx` (Footer-Branding)
-   - Alle weiteren Komponenten, die `@/assets/logo.png` importieren
+### Änderungen
 
-3. **Prüfung**
-   - Vor der Umsetzung: `search_files` nach `logo.png` und `logo.svg`, um sicherzustellen, dass keine alternative Logo-Datei woanders eingebunden ist (z.B. `public/`, `index.html`, Edge Functions für Email).
-   - Falls in `index.html` oder Email-Templates ein anderes Logo referenziert wird, ebenfalls anpassen.
+1. **`src/components/Header.tsx`**
+   - Neue optionale Prop `alwaysSolid?: boolean`.
+   - Wenn `alwaysSolid` true ist, wird unabhängig vom Scroll-Status die Klasse `bg-card/95 backdrop-blur-md shadow-sm` verwendet.
 
-4. **Favicon**
-   - Bleibt unverändert (separate Datei `/favicon.png`). Falls das Logo auch als Favicon gewünscht ist, bitte separat melden.
+2. **`src/pages/IndustryDetail.tsx`**
+   - `<Header alwaysSolid />` verwenden.
+   - Damit der Hero nicht hinter der nun sichtbaren Navbar verschwindet, das Hero-Padding leicht anpassen (bereits `pt-20` vorhanden – ggf. auf `pt-28` erhöhen, passend zur Header-Höhe `h-28`).
 
-### Keine Backend-Änderungen
-Reiner Asset-Austausch.
+### Nicht betroffen
+- Startseite, Produkte, Über uns etc. behalten das bisherige Verhalten (transparent → solid beim Scrollen).
+- Keine Backend-Änderungen.
