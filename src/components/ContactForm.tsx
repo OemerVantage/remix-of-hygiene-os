@@ -47,7 +47,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Adresse",
-    content: "Schlachthofstrasse 1, 8406 Winterthur",
+    content: "Zürcherstrasse 320, 8406 Winterthur",
   },
   {
     icon: Phone,
@@ -300,7 +300,7 @@ const ContactForm = () => {
         <div className="mt-16 max-w-6xl mx-auto animate-fade-in">
           <div className="bg-card rounded-3xl p-4 border border-border shadow-lg overflow-hidden">
             <iframe
-              src="https://www.google.com/maps?q=Schlachthofstrasse+1,+8406+Winterthur&output=embed"
+              src="https://www.google.com/maps?q=Z%C3%BCrcherstrasse+320,+8406+Winterthur&output=embed"
               width="100%"
               height="400"
               style={{ border: 0, borderRadius: "1.25rem" }}
