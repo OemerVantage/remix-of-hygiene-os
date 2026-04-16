@@ -1,28 +1,25 @@
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const footerLinks = {
   unternehmen: [
-    { label: "Über uns", href: "#about" },
-    { label: "Karriere", href: "#careers" },
-    { label: "Kontakt", href: "#contact" },
+    { label: "Über uns", to: "/ueber-uns" },
+    { label: "Kontakt", to: "/kontakt" },
   ],
   produkte: [
-    { label: "Spender", href: "#" },
-    { label: "Verbrauchsmaterial", href: "#" },
-    { label: "Desinfektion", href: "#" },
-    { label: "Reinigung", href: "#" },
+    { label: "Alle Produkte", to: "/produkte" },
   ],
   branchen: [
-    { label: "Gastronomie", href: "#" },
-    { label: "Gesundheitswesen", href: "#" },
-    { label: "Büro", href: "#" },
-    { label: "Industrie", href: "#" },
+    { label: "Hotellerie", to: "/branchenloesungen/hotellerie" },
+    { label: "Gastronomie", to: "/branchenloesungen/gastronomie" },
+    { label: "Gesundheitswesen", to: "/branchenloesungen/gesundheitswesen" },
+    { label: "Büro & Verwaltung", to: "/branchenloesungen/buero-verwaltung" },
+    { label: "Industrie & Produktion", to: "/branchenloesungen/industrie-produktion" },
+    { label: "Bildung & Kinderbetreuung", to: "/branchenloesungen/bildung-kinderbetreuung" },
   ],
   service: [
-    { label: "Ratgeber", href: "#guides" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Lieferung", href: "#shipping" },
-    { label: "B2B-Konditionen", href: "#b2b" },
+    { label: "Ratgeber", to: "/ratgeber" },
+    { label: "Branchenlösungen", to: "/branchenloesungen" },
   ],
 };
 
@@ -39,7 +36,6 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Links */}
           <div>
             <h4 className="text-body-md font-medium text-background mb-4">
               Unternehmen
@@ -47,12 +43,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.unternehmen.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.to}
                     className="text-body-sm text-background/60 hover:text-background transition-colors duration-200"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -65,12 +61,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.produkte.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.to}
                     className="text-body-sm text-background/60 hover:text-background transition-colors duration-200"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -83,12 +79,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.branchen.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.to}
                     className="text-body-sm text-background/60 hover:text-background transition-colors duration-200"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -101,12 +97,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.service.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.to}
                     className="text-body-sm text-background/60 hover:text-background transition-colors duration-200"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -114,30 +110,10 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-16 pt-8 border-t border-background/10 flex justify-center items-center">
           <p className="text-body-sm text-background/40">
             © 2024 HygiSwiss AG. Alle Rechte vorbehalten.
           </p>
-          <div className="flex gap-6">
-            <a
-              href="#"
-              className="text-body-sm text-background/40 hover:text-background transition-colors duration-200"
-            >
-              Impressum
-            </a>
-            <a
-              href="#"
-              className="text-body-sm text-background/40 hover:text-background transition-colors duration-200"
-            >
-              Datenschutz
-            </a>
-            <a
-              href="#"
-              className="text-body-sm text-background/40 hover:text-background transition-colors duration-200"
-            >
-              AGB
-            </a>
-          </div>
         </div>
       </div>
     </footer>
