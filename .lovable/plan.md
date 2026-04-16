@@ -1,18 +1,27 @@
 
-## Plan: Transparenten Rand vom Logo entfernen + Footer-Logo verkleinern
+## Plan: Logo überall verkleinern
 
 ### Problem
-Das hochgeladene Logo (`src/assets/logo.png`) hat rundherum viel transparenten Leerraum. Dadurch wirkt es im Footer (und auch sonst) viel kleiner und „verloren", obwohl es mit `h-28` gerendert wird – die sichtbare Marke nimmt nur einen Bruchteil der Bildfläche ein.
+Nach dem Auto-Crop ist das Logo formatfüllend und wirkt dadurch in Header und Footer zu gross/dominant.
 
 ### Lösung
-1. **Logo-Bild beschneiden (Auto-Crop)**
-   - Mit Python/Pillow im sandbox die transparenten Ränder von `src/assets/logo.png` automatisch entfernen (`image.getbbox()` → `image.crop(bbox)`).
-   - Datei wird an Ort und Stelle überschrieben → wirkt automatisch in Header, Footer und überall sonst, da alle Komponenten dieselbe Datei importieren.
-   - QA: Vorher-/Nachher-Dimensionen ausgeben und das gecroppte Bild kurz visuell prüfen.
+Logo-Höhen reduzieren:
 
-2. **Footer-Logo zusätzlich verkleinern** (`src/components/Footer.tsx`)
-   - `h-28` → `h-16`, damit das Logo proportional zum Footer-Kontext passt (war im vorherigen Plan bereits genehmigt, wird hier mit umgesetzt).
+1. **`src/components/Header.tsx`**
+   - Desktop/Mobile Logo: `h-28` → `h-12`
+   - Header-Höhe der Nav: `h-28` → `h-20` (passt zum kleineren Logo, kompaktere Navbar)
+   - Mobile-Menu Top-Position: `top-28` → `top-20` (muss zur Header-Höhe passen)
+
+2. **`src/pages/IndustryDetail.tsx`**
+   - Hero-Padding `pt-28` → `pt-20` (an neue Header-Höhe angleichen)
+
+3. **`src/components/Footer.tsx`**
+   - Logo: `h-16` → `h-12` (proportional zum Header)
 
 ### Nicht betroffen
-- Header bleibt bei `h-28` – wirkt durch das gecroppte Logo automatisch markanter, ohne Code-Änderung.
+- Logo-Datei selbst bleibt unverändert (bereits sauber gecroppt).
+- Keine weiteren Seiten/Komponenten – Logo wird nur in Header und Footer eingebunden.
 - Keine Backend-Änderungen.
+
+### Hinweis
+Solche reinen Grössenanpassungen kannst du in Zukunft auch kostenlos über **Visual Edits** (Edit-Button unten links im Chat) erledigen.
