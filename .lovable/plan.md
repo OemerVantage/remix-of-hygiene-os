@@ -1,48 +1,16 @@
 
-## Plan: Footer-Links korrekt zuweisen oder entfernen
+## Plan: Adresse auf "Zürcherstrasse 320, 8406 Winterthur" aktualisieren
 
-### Bestandsaufnahme der Footer-Links
+### Änderungen in `src/components/ContactForm.tsx`
 
-**Vorhandene Routen in der App:**
-- `/` (Index)
-- `/ueber-uns` (About)
-- `/branchenloesungen` + `/branchenloesungen/:handle`
-- `/produkte` + `/produkt/:handle`
-- `/ratgeber` + `/ratgeber/:handle`
-- `/kontakt`
-- `/login`, `/registrieren`, `/passwort-vergessen`, `/konto`
+1. **Adress-Anzeige** (Zeile ~52):
+   - `"Schlachthofstrasse 1, 8406 Winterthur"` → `"Zürcherstrasse 320, 8406 Winterthur"`
 
-**Aktuelle Footer-Links (alle `<a href="#...">` – tote Anker):**
+2. **Google Maps iframe** (Zeile ~287):
+   - Embed-URL aktualisieren: `https://www.google.com/maps?q=Zürcherstrasse+320,+8406+Winterthur&output=embed`
 
-| Spalte | Link | Aktion |
-|---|---|---|
-| **Unternehmen** | Über uns | → `/ueber-uns` |
-| | Karriere | **entfernen** (keine Seite) |
-| | Kontakt | → `/kontakt` |
-| **Produkte** | Spender | → `/produkte` |
-| | Verbrauchsmaterial | → `/produkte` |
-| | Desinfektion | → `/produkte` |
-| | Reinigung | → `/produkte` |
-| **Branchen** | Gastronomie | → `/branchenloesungen/gastronomie` *(falls handle existiert, sonst `/branchenloesungen`)* |
-| | Gesundheitswesen | → `/branchenloesungen/gesundheitswesen` |
-| | Büro | → `/branchenloesungen/buero` |
-| | Industrie | → `/branchenloesungen/industrie` |
-| **Service** | Ratgeber | → `/ratgeber` |
-| | FAQ | **entfernen** (keine Seite) |
-| | Lieferung | **entfernen** (keine Seite) |
-| | B2B-Konditionen | → `/kontakt` (Anfrage-Kontext) *oder entfernen* |
-| **Bottom-Leiste** | Impressum | **entfernen** (keine Seite) |
-| | Datenschutz | **entfernen** (keine Seite) |
-| | AGB | **entfernen** (keine Seite) |
-
-### Vorgehen
-
-1. **`src/data/industries.ts` prüfen**, um die exakten `handle`-Werte der Branchen zu nutzen. Nur Branchen, die dort existieren, bleiben im Footer; nicht-existierende werden entfernt.
-2. **`src/components/Footer.tsx` umbauen:**
-   - `<a href>` → `<Link to>` aus `react-router-dom`
-   - Tote Links (Karriere, FAQ, Lieferung, B2B, Impressum, Datenschutz, AGB) entfernen
-   - Produkt-Unterkategorien zeigen alle auf `/produkte` (es gibt keine Kategorie-Routen)
-3. **Bottom-Leiste**: Da Impressum/Datenschutz/AGB rechtlich oft nötig sind, werden sie laut Wunsch dennoch entfernt (keine Seiten vorhanden). Nur Copyright bleibt.
+### Prüfung weiterer Vorkommen
+Vor der Umsetzung scanne ich den Code mit `search_files` nach `Schlachthofstrasse`, um sicherzustellen, dass die alte Adresse nirgendwo sonst (z.B. Footer, About, index.html, Edge Functions) referenziert wird. Funde werden ebenfalls aktualisiert.
 
 ### Keine Backend-Änderungen
-Reine Frontend-Anpassung in einer Datei.
+Reine Textanpassung im Frontend.
