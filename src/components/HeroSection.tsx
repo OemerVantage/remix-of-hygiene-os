@@ -24,7 +24,7 @@ export function HeroSection() {
           </h1>
           
           <p className="mt-6 text-body-lg text-muted-foreground max-w-xl animate-fade-in-delay-1">
-            Seit 2006 Ihr Partner für professionelle Hygiene. 
+            Seit 2005 Ihr Partner für professionelle Hygiene. 
             Effiziente Spendersysteme und Verbrauchsmaterial für jede Branche.
           </p>
 
