@@ -1,24 +1,23 @@
 
-## Plan: Bei Seitenwechsel automatisch an den Seitenanfang scrollen
+## Plan: Neues HygiSwiss AG Logo überall ersetzen
 
-### Problem (klargestellt)
-Aktuell: Beim Klicken auf einen Link (Navbar/Footer) öffnet sich die neue Seite, aber die Scroll-Position der alten Seite bleibt erhalten – der Nutzer landet mitten/unten in der neuen Seite.
+### Vorgehen
 
-Gewünscht: Bei jedem Seitenwechsel soll automatisch **ganz nach oben (Anfang der Seite)** gescrollt werden.
+1. **Logo-Datei kopieren**
+   - `user-uploads://ChatGPT_Image_17._Apr._2026_00_08_45.png` → `src/assets/logo.png`
+   - Überschreibt das aktuelle Logo. Da alle Komponenten via `import logo from "@/assets/logo.png"` referenzieren, wird es automatisch überall aktiv.
 
-### Lösung
-Eine kleine `ScrollToTop`-Komponente, die bei jedem Routenwechsel `window.scrollTo(0, 0)` ausführt – also **an den Seitenanfang** springt.
+2. **Betroffene Stellen (automatisch aktualisiert)**
+   - `src/components/Header.tsx` (Desktop + Mobile Navigation)
+   - `src/components/Footer.tsx` (Footer-Branding)
+   - Alle weiteren Komponenten, die `@/assets/logo.png` importieren
 
-### Änderungen
+3. **Prüfung**
+   - Vor der Umsetzung: `search_files` nach `logo.png` und `logo.svg`, um sicherzustellen, dass keine alternative Logo-Datei woanders eingebunden ist (z.B. `public/`, `index.html`, Edge Functions für Email).
+   - Falls in `index.html` oder Email-Templates ein anderes Logo referenziert wird, ebenfalls anpassen.
 
-1. **Neue Datei `src/components/ScrollToTop.tsx`**
-   - Nutzt `useLocation()` aus react-router-dom
-   - `useEffect` reagiert auf `pathname`-Änderung → `window.scrollTo(0, 0)`
-   - Rendert nichts (`return null`)
-
-2. **`src/App.tsx`**
-   - `<ScrollToTop />` direkt nach `<BrowserRouter>` und vor `<AppContent />` einfügen
-   - Wirkt damit global für alle Routen (Navbar-Links, Footer-Links, programmatische Navigation)
+4. **Favicon**
+   - Bleibt unverändert (separate Datei `/favicon.png`). Falls das Logo auch als Favicon gewünscht ist, bitte separat melden.
 
 ### Keine Backend-Änderungen
-Reine Frontend-Anpassung in zwei Dateien.
+Reiner Asset-Austausch.
