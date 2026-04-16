@@ -1,16 +1,24 @@
 
-## Plan: Adresse auf "Zürcherstrasse 320, 8406 Winterthur" aktualisieren
+## Plan: Bei Seitenwechsel automatisch an den Seitenanfang scrollen
 
-### Änderungen in `src/components/ContactForm.tsx`
+### Problem (klargestellt)
+Aktuell: Beim Klicken auf einen Link (Navbar/Footer) öffnet sich die neue Seite, aber die Scroll-Position der alten Seite bleibt erhalten – der Nutzer landet mitten/unten in der neuen Seite.
 
-1. **Adress-Anzeige** (Zeile ~52):
-   - `"Schlachthofstrasse 1, 8406 Winterthur"` → `"Zürcherstrasse 320, 8406 Winterthur"`
+Gewünscht: Bei jedem Seitenwechsel soll automatisch **ganz nach oben (Anfang der Seite)** gescrollt werden.
 
-2. **Google Maps iframe** (Zeile ~287):
-   - Embed-URL aktualisieren: `https://www.google.com/maps?q=Zürcherstrasse+320,+8406+Winterthur&output=embed`
+### Lösung
+Eine kleine `ScrollToTop`-Komponente, die bei jedem Routenwechsel `window.scrollTo(0, 0)` ausführt – also **an den Seitenanfang** springt.
 
-### Prüfung weiterer Vorkommen
-Vor der Umsetzung scanne ich den Code mit `search_files` nach `Schlachthofstrasse`, um sicherzustellen, dass die alte Adresse nirgendwo sonst (z.B. Footer, About, index.html, Edge Functions) referenziert wird. Funde werden ebenfalls aktualisiert.
+### Änderungen
+
+1. **Neue Datei `src/components/ScrollToTop.tsx`**
+   - Nutzt `useLocation()` aus react-router-dom
+   - `useEffect` reagiert auf `pathname`-Änderung → `window.scrollTo(0, 0)`
+   - Rendert nichts (`return null`)
+
+2. **`src/App.tsx`**
+   - `<ScrollToTop />` direkt nach `<BrowserRouter>` und vor `<AppContent />` einfügen
+   - Wirkt damit global für alle Routen (Navbar-Links, Footer-Links, programmatische Navigation)
 
 ### Keine Backend-Änderungen
-Reine Textanpassung im Frontend.
+Reine Frontend-Anpassung in zwei Dateien.
