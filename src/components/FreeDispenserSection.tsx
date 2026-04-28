@@ -1,4 +1,4 @@
-import { Phone, Gift } from "lucide-react";
+import { Phone, Gift, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import dispenserImage from "@/assets/dispenser-systems.png";
 
@@ -20,12 +20,19 @@ export const FreeDispenserSection = () => {
             <span className="text-primary-foreground text-body-sm font-medium">Exklusives Angebot</span>
           </div>
 
-          <h2 className="text-display-sm md:text-display-md text-primary-foreground mb-6">
+          <h2 className="text-display-sm md:text-display-md text-primary-foreground mb-4">
             Gratis Spendersystem
           </h2>
 
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-foreground/15 rounded-full mb-6">
+            <Sparkles className="w-4 h-4 text-primary-foreground" />
+            <span className="text-primary-foreground text-body-sm font-medium">
+              Teil des HygiSwiss Pro Abos
+            </span>
+          </div>
+
           <p className="text-body-lg text-primary-foreground/85 mb-10 max-w-xl mx-auto">
-            Profitieren Sie von unserem kostenlosen Spendersystem für Ihr Unternehmen. 
+            Als Teil unseres <span className="font-semibold text-primary-foreground">HygiSwiss Pro Abos</span> profitieren Sie von einem kostenlosen Spendersystem für Ihr Unternehmen.
             Wir beraten Sie gerne persönlich und finden die perfekte Lösung für Ihre Anforderungen.
           </p>
 

@@ -1,27 +1,25 @@
 
-## Plan: Logo überall verkleinern
+## Plan: "HygiSwiss Pro Abo" Badge in Gratis-Spender-Sektion ergänzen
 
-### Problem
-Nach dem Auto-Crop ist das Logo formatfüllend und wirkt dadurch in Header und Footer zu gross/dominant.
+### Ziel
+In der Sektion „Gratis Spendersystem" auf der Startseite soll deutlich werden, dass das Angebot Teil des **HygiSwiss Pro Abos** ist.
 
-### Lösung
-Logo-Höhen reduzieren:
+### Änderung
+Datei: `src/components/FreeDispenserSection.tsx`
 
-1. **`src/components/Header.tsx`**
-   - Desktop/Mobile Logo: `h-28` → `h-12`
-   - Header-Höhe der Nav: `h-28` → `h-20` (passt zum kleineren Logo, kompaktere Navbar)
-   - Mobile-Menu Top-Position: `top-28` → `top-20` (muss zur Header-Höhe passen)
+1. **Neuer Hinweis-Badge** direkt unter der Überschrift „Gratis Spendersystem":
+   - Text: **„Teil des HygiSwiss Pro Abos"**
+   - Stil: dezenter Pill-Badge mit `bg-primary-foreground/15`, weisser Schrift, kleines Icon (z. B. `Sparkles` oder `BadgeCheck` aus lucide-react), passt zum bestehenden „Exklusives Angebot"-Badge oben.
 
-2. **`src/pages/IndustryDetail.tsx`**
-   - Hero-Padding `pt-28` → `pt-20` (an neue Header-Höhe angleichen)
+2. **Beschreibungstext** bleibt inhaltlich gleich, wird aber leicht ergänzt, damit der Bezug zum Abo klar ist:
+   > „Als Teil unseres **HygiSwiss Pro Abos** profitieren Sie von einem kostenlosen Spendersystem für Ihr Unternehmen. Wir beraten Sie gerne persönlich und finden die perfekte Lösung für Ihre Anforderungen."
 
-3. **`src/components/Footer.tsx`**
-   - Logo: `h-16` → `h-12` (proportional zum Header)
+   „HygiSwiss Pro Abo" wird im Text leicht hervorgehoben (`font-semibold`).
 
 ### Nicht betroffen
-- Logo-Datei selbst bleibt unverändert (bereits sauber gecroppt).
-- Keine weiteren Seiten/Komponenten – Logo wird nur in Header und Footer eingebunden.
-- Keine Backend-Änderungen.
+- Layout, Bild, CTA-Button und Telefonzeiten bleiben unverändert.
+- Keine anderen Seiten/Komponenten.
+- Keine Backend- oder DB-Änderungen.
 
 ### Hinweis
-Solche reinen Grössenanpassungen kannst du in Zukunft auch kostenlos über **Visual Edits** (Edit-Button unten links im Chat) erledigen.
+Falls du möchtest, dass „HygiSwiss Pro Abo" später eine eigene Detailseite (z. B. `/pro-abo`) bekommt, sag kurz Bescheid – dann verlinken wir den Badge direkt dorthin.
