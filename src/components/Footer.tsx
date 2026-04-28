@@ -112,7 +112,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-background/10 flex justify-center items-center">
           <p className="text-body-sm text-background/40">
-            © 2024 HygiSwiss AG. Alle Rechte vorbehalten.
+            © {new Date().getFullYear()} HygiSwiss AG. Alle Rechte vorbehalten.
           </p>
         </div>
       </div>
