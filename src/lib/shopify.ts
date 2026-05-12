@@ -3,7 +3,14 @@ import { toast } from "sonner";
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STORE_PERMANENT_DOMAIN = 'mp0y11-0r.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '6299f84b62a9be79ff8e4b8694dd39f9';
+const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN as string | undefined;
+
+if (!SHOPIFY_STOREFRONT_TOKEN) {
+  console.error(
+    '[Shopify] VITE_SHOPIFY_STOREFRONT_TOKEN ist nicht gesetzt. ' +
+    'Bitte in Workspace Settings → Build Secrets hinterlegen.'
+  );
+}
 
 export interface ShopifyMetafield {
   key: string;
